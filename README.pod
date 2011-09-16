@@ -1,0 +1,8 @@
+=head1 REVISTA IMPACTO
+
+This system will be managing Impacto's inventory, product catalogue, client database, etc.
+
+This software is copyright (c) 2011 by André Walker <andre@andrewalker.net>.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.

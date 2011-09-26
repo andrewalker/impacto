@@ -3,14 +3,19 @@ use warnings;
 use strict;
 use autodie;
 use Parse::Dia::SQL;
+use FindBin '$Bin';
 
 my ($input, $output) = @ARGV;
+
+$input = $Bin . '/../uml/db.dia'
+    if (!defined $input or $input eq '-');
 
 my $dia = Parse::Dia::SQL->new(
     file                 => $input,
     db                   => 'postgres',
     ignore_type_mismatch => 1,
     uml                  => 1,
+    loglevel             => 'ERROR',
 );
 
 my $output_fh = *STDOUT;

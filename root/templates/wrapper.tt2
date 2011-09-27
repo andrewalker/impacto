@@ -1,0 +1,16 @@
+[% IF nowrap %]
+    [% content %]
+[% ELSE %]
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Impacto[% IF title %] - [% title %][% END %]</title>
+    <link href="[% static_root_uri %]/css/main.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="[% static_root_uri %]/js/dojo.js"></script>
+    <script type="text/javascript" src="[% static_root_uri %]/js/main.js"></script>
+</head>
+<body>
+    [% content %]
+</body>
+</html>
+[% END %]

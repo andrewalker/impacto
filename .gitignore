@@ -4,4 +4,6 @@
 root/static/lib/dojo/
 root/static/lib/dojox/
 root/static/lib/dijit/
-impacto_local.* # we don't care about local config
+
+# we don't care about local config
+impacto_local.*

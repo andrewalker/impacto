@@ -1,0 +1,13 @@
+<section id="search">
+    <img src="root/static/images/logotipo-impacto.png" alt="" />
+    <form method="get" action="">
+        <fieldset>
+            <input name="search" data-dojo-type="dijit.form.TextBox" />
+            <button type="submit" data-dojo-type="dijit.form.Button">
+                <img src="root/static/images/search.png" height="23" alt="Pesquisar" />
+            </button>
+        </fieldset>
+    </form>
+</section>
+<section id="datagrid">
+</section>

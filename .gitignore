@@ -1,3 +1,6 @@
 .*
 *~
 !.gitignore
+root/static/lib/dojo/
+root/static/lib/dojox/
+root/static/lib/dijit/

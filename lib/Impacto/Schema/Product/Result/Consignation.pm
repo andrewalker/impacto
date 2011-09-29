@@ -60,6 +60,7 @@ __PACKAGE__->table("consignation");
 =head2 stock_movement
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 0
 
 =cut
@@ -88,11 +89,26 @@ __PACKAGE__->add_columns(
   "representant",
   { data_type => "text", is_nullable => 0 },
   "stock_movement",
-  { data_type => "integer", is_nullable => 0 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
 );
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
+
+=head2 stock_movement
+
+Type: belongs_to
+
+Related object: L<Impacto::Schema::Product::Result::StockMovement>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "stock_movement",
+  "Impacto::Schema::Product::Result::StockMovement",
+  { id => "stock_movement" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+);
 
 =head2 returns
 
@@ -110,8 +126,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2011-09-26 20:07:25
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:19u/4+AFp2cbTIQj0shT7w
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2011-09-29 20:02:46
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:KuwY9pO3Oxg4DFre/adVug
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

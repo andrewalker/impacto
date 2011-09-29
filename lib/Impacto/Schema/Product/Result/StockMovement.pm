@@ -90,6 +90,21 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
+=head2 consignations
+
+Type: has_many
+
+Related object: L<Impacto::Schema::Product::Result::Consignation>
+
+=cut
+
+__PACKAGE__->has_many(
+  "consignations",
+  "Impacto::Schema::Product::Result::Consignation",
+  { "foreign.stock_movement" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 returns
 
 Type: has_many
@@ -136,8 +151,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2011-09-26 20:07:25
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5L6skcHmv8SzOwaI1KTdtw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2011-09-29 20:02:46
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:JiILbY66E0zGMyk6Dwqd9g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

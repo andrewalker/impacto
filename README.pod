@@ -2,6 +2,36 @@
 
 This system will be managing Impacto's inventory, product catalogue, client database, etc.
 
+=head2 INSTALL
+
+Using your CPAN client of choice, install Dist::Zilla.
+
+    $ cpanm Dist::Zilla
+
+Then, install the project dependencies:
+
+    $ dzil listdeps --missing | cpanm
+
+Download Dojo Toolkit libs:
+
+    $ ./script/impacto_get_dojo.sh
+
+Generate the database schema (currently only PostgreSQL supported):
+
+    $ ./script/impacto_generate_sql.pl | psql -U username database
+
+Generate the DBIx::Class schema files:
+
+    $ ./script/impacto_generate_dbic_schema.pl username database password
+
+And finally:
+
+    $ plackup
+
+To test the server.
+
+=head2 COPYRIGHT
+
 This software is copyright (c) 2011 by Andre Walker <andre@andrewalker.net>.
 
 This is free software; you can redistribute it and/or modify it under

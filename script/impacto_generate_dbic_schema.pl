@@ -4,7 +4,7 @@ use strict;
 use FindBin '$Bin';
 
 my @schemas = qw/people product finance user_account/;
-my $schema  = shift @ARGV;
+my $schema  = pop @ARGV;
 my $created = 0;
 
 map { create($_, @ARGV) } @schemas if $schema eq 'all';

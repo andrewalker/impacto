@@ -24,6 +24,10 @@ Generate the DBIx::Class schema files:
 
     $ ./script/impacto_generate_dbic_schema.pl username database password
 
+Copy the config (and customize it, using real usernames and passwords):
+
+    $ cp impacto-example.conf impacto_local.conf
+
 And finally:
 
     $ plackup -Ilib -a impacto.psgi

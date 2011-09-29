@@ -60,6 +60,11 @@ __PACKAGE__->table("product");
   data_type: 'double precision'
   is_nullable: 1
 
+=head2 image
+
+  data_type: 'bytea'
+  is_nullable: 1
+
 =head2 custom_fields
 
   data_type: 'text'
@@ -87,6 +92,8 @@ __PACKAGE__->add_columns(
   { data_type => "money", is_nullable => 0 },
   "weight",
   { data_type => "double precision", is_nullable => 1 },
+  "image",
+  { data_type => "bytea", is_nullable => 1 },
   "custom_fields",
   { data_type => "text", is_nullable => 1 },
 );
@@ -155,8 +162,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2011-09-26 20:07:25
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:zIV5+9ZSPjjtLKwSkGOhAg
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2011-09-29 20:09:18
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:C3/pCDSGJ4bO/mcPufiwig
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

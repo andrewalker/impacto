@@ -1,5 +1,7 @@
 package Impacto::ControllerBase::CRUD;
 use utf8;
+use Form::Sensible;
+use Form::Sensible::Reflector::DBIC;
 use Moose;
 use namespace::autoclean;
 
@@ -11,21 +13,24 @@ has name => (
     default    => '',
 );
 
-#has form => (
-#    isa        => 'HTML::FormHandler',
-#    is         => 'rw',
-#    lazy_build => 1,
-#);
-
-#sub _build_form {
-#    my ( $self ) = @_;
-#    my $class = 'Impacto::Form::' . $self->name;
-#
-#    return $class->new;
-#}
+has current_model_instance => (
+    is         => 'ro',
+);
 
 sub base : Chained('global_base') PathPrefix CaptureArgs(0) {
     my ( $self, $c ) = @_;
+    my $rs = $self->current_model_instance;
+
+    my $form = $reflector->reflect_from(
+        $rs,
+        {
+            form => { name => $rs->result_source->from },
+            with_trigger => 1
+        }
+    );
+
+    my $output = Form::Sensible->get_renderer('HTML')->render($form)->complete;
+    $c->stash( form => $output );
 }
 
 sub base_id : Chained('base') PathPart('') CaptureArgs(1) {
@@ -34,11 +39,12 @@ sub base_id : Chained('base') PathPart('') CaptureArgs(1) {
     $c->stash(id => $id);
 }
 
-sub list   : Chained('base') PathPart Args(0) {}
-sub view   : Chained('base') PathPart Args(0) {}
-sub delete : Chained('base') PathPart Args(0) {}
-sub create : Chained('base') PathPart Args(0) {}
-sub edit   : Chained('base') PathPart Args(0) {}
+sub list      : Chained('base') PathPart Args(0) {}
+sub list_json : Chained('base') PathPart Args(0) {}
+sub view      : Chained('base') PathPart Args(0) {}
+sub delete    : Chained('base') PathPart Args(0) {}
+sub create    : Chained('base') PathPart Args(0) {}
+sub edit      : Chained('base') PathPart Args(0) {}
 
 __PACKAGE__->meta->make_immutable;
 

@@ -14,14 +14,15 @@ has name => (
 );
 
 has current_model_instance => (
-    is         => 'ro',
+    is         => 'rw',
+    required   => 0,
 );
 
 sub base : Chained('global_base') PathPrefix CaptureArgs(0) {
     my ( $self, $c ) = @_;
     my $rs = $self->current_model_instance;
 
-    my $form = $reflector->reflect_from(
+    my $form = Form::Sensible::Reflector::DBIC->new()->reflect_from(
         $rs,
         {
             form => { name => $rs->result_source->from },

@@ -1,0 +1,32 @@
+msgid "form.address.person"
+msgstr "Pessoa"
+
+msgid "form.address.name"
+msgstr "Nome"
+
+msgid "form.address.is_main_address"
+msgstr "Endereço padrão"
+
+msgid "form.address.number"
+msgstr "Número"
+
+msgid "form.address.street"
+msgstr "Rua"
+
+msgid "form.address.zip_code"
+msgstr "CEP"
+
+msgid "form.address.city"
+msgstr "Cidade"
+
+msgid "form.address.state"
+msgstr "Estado"
+
+msgid "form.address.country"
+msgstr "País"
+
+msgid "form.address.phone"
+msgstr "Fone"
+
+msgid "form.address.submit"
+msgstr "Gravar"

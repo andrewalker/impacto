@@ -1,0 +1,32 @@
+msgid "form.address.person"
+msgstr "Person"
+
+msgid "form.address.name"
+msgstr "Name"
+
+msgid "form.address.is_main_address"
+msgstr "Main address"
+
+msgid "form.address.number"
+msgstr "Number"
+
+msgid "form.address.street"
+msgstr "Street"
+
+msgid "form.address.zip_code"
+msgstr "Zip code"
+
+msgid "form.address.city"
+msgstr "City"
+
+msgid "form.address.state"
+msgstr "State"
+
+msgid "form.address.country"
+msgstr "Country"
+
+msgid "form.address.phone"
+msgstr "Phone"
+
+msgid "form.address.submit"
+msgstr "Submit"

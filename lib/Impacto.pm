@@ -18,6 +18,7 @@ use Catalyst::Runtime 5.80;
 
 use Catalyst qw/
     -Debug
+    I18N
     ConfigLoader
     Static::Simple
 /;
@@ -37,6 +38,11 @@ our $VERSION = '0.01';
 
 __PACKAGE__->config(
     name => 'Impacto',
+    'Plugin::I18N' => {
+        maketext_options => {
+            style => 'gettext',
+        },
+    },
     # Disable deprecated behavior needed by old applications
     disable_component_resolution_regex_fallback => 1,
 );

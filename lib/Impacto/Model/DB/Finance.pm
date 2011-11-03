@@ -3,7 +3,12 @@ package Impacto::Model::DB::Finance;
 use strict;
 use base 'Catalyst::Model::DBIC::Schema';
 
-__PACKAGE__->config(schema_class => 'Impacto::Schema::Finance');
+__PACKAGE__->config(
+    schema_class => 'Impacto::Schema::Finance',
+    connect_info => {
+        on_connect_do => "SET search_path TO finance,public",
+    },
+);
 
 =head1 NAME
 

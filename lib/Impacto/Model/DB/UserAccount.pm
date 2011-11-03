@@ -3,7 +3,12 @@ package Impacto::Model::DB::UserAccount;
 use strict;
 use base 'Catalyst::Model::DBIC::Schema';
 
-__PACKAGE__->config(schema_class => 'Impacto::Schema::UserAccount');
+__PACKAGE__->config(
+    schema_class => 'Impacto::Schema::UserAccount',
+    connect_info => {
+        on_connect_do => "SET search_path TO user_account,public",
+    },
+);
 
 =head1 NAME
 

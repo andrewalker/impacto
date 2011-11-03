@@ -3,7 +3,12 @@ package Impacto::Model::DB::People;
 use strict;
 use base 'Catalyst::Model::DBIC::Schema';
 
-__PACKAGE__->config(schema_class => 'Impacto::Schema::People');
+__PACKAGE__->config(
+    schema_class => 'Impacto::Schema::People',
+    connect_info => {
+        on_connect_do => "SET search_path TO people,public",
+    },
+);
 
 =head1 NAME
 

@@ -3,7 +3,12 @@ package Impacto::Model::DB::Product;
 use strict;
 use base 'Catalyst::Model::DBIC::Schema';
 
-__PACKAGE__->config(schema_class => 'Impacto::Schema::Product');
+__PACKAGE__->config(
+    schema_class => 'Impacto::Schema::Product',
+    connect_info => {
+        on_connect_do => "SET search_path TO product,public",
+    },
+);
 
 =head1 NAME
 

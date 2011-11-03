@@ -1,1 +1,2 @@
+[% META extra_css = 'form.css' %]
 [% form_html %]

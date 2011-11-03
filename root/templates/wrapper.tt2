@@ -9,8 +9,14 @@
     <link href="[% static_root_uri %]/lib/dojox/grid/enhanced/resources/EnhancedGrid.css" type="text/css" rel="stylesheet" />
     <link href="[% static_root_uri %]/lib/dojox/grid/enhanced/resources/tundra/EnhancedGrid.css" type="text/css" rel="stylesheet" />
     <link href="[% static_root_uri %]/css/main.css" type="text/css" rel="stylesheet" />
+    [% IF template.extra_css %][% FOREACH css IN template.extra_css.split(' ') %]
+        <link href="[% static_root_uri %]/css/[% css %]" type="text/css" rel="stylesheet" />
+    [% END %][% END %]
     <script type="text/javascript" src="[% static_root_uri %]/lib/dojo/dojo.js" data-dojo-config="parseOnLoad: true"></script>
     <script type="text/javascript" src="[% static_root_uri %]/js/browse.js"></script>
+    [% IF template.extra_js %][% FOREACH js IN template.extra_js.split(' ') %]
+        <script type="text/javascript" src="[% static_root_uri %]/js/[% js %]"></script>
+    [% END %][% END %]
 </head>
 <body>
     <nav id="top-menu">

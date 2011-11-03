@@ -30,3 +30,24 @@ msgstr "Fone"
 
 msgid "form.address.submit"
 msgstr "Gravar"
+
+msgid "form.person.slug"
+msgstr "slug"
+
+msgid "form.person.name"
+msgstr "Nome"
+
+msgid "form.person.phone"
+msgstr "Telefone"
+
+msgid "form.person.email"
+msgstr "E-mail"
+
+msgid "form.person.site"
+msgstr "Site"
+
+msgid "form.person.comments"
+msgstr "Comentários"
+
+msgid "form.person.submit"
+msgstr "Gravar"

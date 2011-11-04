@@ -1,3 +1,37 @@
+# -- contact form --
+
+msgid "form.contact.client"
+msgstr "Client"
+
+msgid "form.contact.date"
+msgstr "Date"
+
+msgid "form.contact.answered"
+msgstr "Answered"
+
+msgid "form.contact.type"
+msgstr "Type"
+
+msgid "form.contact.abstract"
+msgstr "Abstract"
+
+msgid "form.contact.submit"
+msgstr "Submit"
+
+
+
+# -- employee form --
+
+msgid "form.employee.person"
+msgstr "Person"
+
+msgid "form.employee.submit"
+msgstr "Submit"
+
+
+
+# -- address form --
+
 msgid "form.address.person"
 msgstr "Person"
 
@@ -5,7 +39,7 @@ msgid "form.address.name"
 msgstr "Name"
 
 msgid "form.address.is_main_address"
-msgstr "Main address"
+msgstr "Is main address"
 
 msgid "form.address.number"
 msgstr "Number"
@@ -30,3 +64,449 @@ msgstr "Phone"
 
 msgid "form.address.submit"
 msgstr "Submit"
+
+
+
+# -- document form --
+
+msgid "form.document.person"
+msgstr "Person"
+
+msgid "form.document.type"
+msgstr "Type"
+
+msgid "form.document.value"
+msgstr "Value"
+
+msgid "form.document.submit"
+msgstr "Submit"
+
+
+
+# -- representant form --
+
+msgid "form.representant.person"
+msgstr "Person"
+
+msgid "form.representant.submit"
+msgstr "Submit"
+
+
+
+# -- bank_account form --
+
+msgid "form.bank_account.person"
+msgstr "Person"
+
+msgid "form.bank_account.bank"
+msgstr "Bank"
+
+msgid "form.bank_account.account"
+msgstr "Account"
+
+msgid "form.bank_account.agency"
+msgstr "Agency"
+
+msgid "form.bank_account.is_savings_account"
+msgstr "Is savings account"
+
+msgid "form.bank_account.comments"
+msgstr "Comments"
+
+msgid "form.bank_account.submit"
+msgstr "Submit"
+
+
+
+# -- supplier form --
+
+msgid "form.supplier.person"
+msgstr "Person"
+
+msgid "form.supplier.submit"
+msgstr "Submit"
+
+
+
+# -- person form --
+
+msgid "form.person.slug"
+msgstr "Slug"
+
+msgid "form.person.name"
+msgstr "Name"
+
+msgid "form.person.phone"
+msgstr "Phone"
+
+msgid "form.person.email"
+msgstr "Email"
+
+msgid "form.person.site"
+msgstr "Site"
+
+msgid "form.person.comments"
+msgstr "Comments"
+
+msgid "form.person.submit"
+msgstr "Submit"
+
+
+
+# -- client form --
+
+msgid "form.client.person"
+msgstr "Person"
+
+msgid "form.client.submit"
+msgstr "Submit"
+
+
+
+# -- consignation form --
+
+msgid "form.consignation.id"
+msgstr "Id"
+
+msgid "form.consignation.datetime"
+msgstr "Datetime"
+
+msgid "form.consignation.expected_return"
+msgstr "Expected return"
+
+msgid "form.consignation.product"
+msgstr "Product"
+
+msgid "form.consignation.amount"
+msgstr "Amount"
+
+msgid "form.consignation.representant"
+msgstr "Representant"
+
+msgid "form.consignation.stock_movement"
+msgstr "Stock movement"
+
+msgid "form.consignation.submit"
+msgstr "Submit"
+
+
+
+# -- product_category form --
+
+msgid "form.product_category.slug"
+msgstr "Slug"
+
+msgid "form.product_category.id"
+msgstr "Id"
+
+msgid "form.product_category.submit"
+msgstr "Submit"
+
+
+
+# -- return form --
+
+msgid "form.return.id"
+msgstr "Id"
+
+msgid "form.return.datetime"
+msgstr "Datetime"
+
+msgid "form.return.consignation"
+msgstr "Consignation"
+
+msgid "form.return.amount"
+msgstr "Amount"
+
+msgid "form.return.stock_movement"
+msgstr "Stock movement"
+
+msgid "form.return.ledger"
+msgstr "Ledger"
+
+msgid "form.return.submit"
+msgstr "Submit"
+
+
+
+# -- product_stock form --
+
+msgid "form.product_stock.product"
+msgstr "Product"
+
+msgid "form.product_stock.place"
+msgstr "Place"
+
+msgid "form.product_stock.amount"
+msgstr "Amount"
+
+msgid "form.product_stock.submit"
+msgstr "Submit"
+
+
+
+# -- subscription form --
+
+msgid "form.subscription.client"
+msgstr "Client"
+
+msgid "form.subscription.product"
+msgstr "Product"
+
+msgid "form.subscription.active"
+msgstr "Active"
+
+msgid "form.subscription.subscription_date"
+msgstr "Subscription date"
+
+msgid "form.subscription.subscription_edition"
+msgstr "Subscription edition"
+
+msgid "form.subscription.expiry_date"
+msgstr "Expiry date"
+
+msgid "form.subscription.expiry_edition"
+msgstr "Expiry edition"
+
+msgid "form.subscription.submit"
+msgstr "Submit"
+
+
+
+# -- place form --
+
+msgid "form.place.place"
+msgstr "Place"
+
+msgid "form.place.submit"
+msgstr "Submit"
+
+
+
+# -- product form --
+
+msgid "form.product.id"
+msgstr "Id"
+
+msgid "form.product.name"
+msgstr "Name"
+
+msgid "form.product.supplier"
+msgstr "Supplier"
+
+msgid "form.product.cost"
+msgstr "Cost"
+
+msgid "form.product.minimum_price"
+msgstr "Minimum price"
+
+msgid "form.product.price"
+msgstr "Price"
+
+msgid "form.product.weight"
+msgstr "Weight"
+
+msgid "form.product.image"
+msgstr "Image"
+
+msgid "form.product.custom_fields"
+msgstr "Custom fields"
+
+msgid "form.product.submit"
+msgstr "Submit"
+
+
+
+# -- category form --
+
+msgid "form.category.slug"
+msgstr "Slug"
+
+msgid "form.category.parent"
+msgstr "Parent"
+
+msgid "form.category.name"
+msgstr "Name"
+
+msgid "form.category.submit"
+msgstr "Submit"
+
+
+
+# -- stock_movement form --
+
+msgid "form.stock_movement.id"
+msgstr "Id"
+
+msgid "form.stock_movement.datetime"
+msgstr "Datetime"
+
+msgid "form.stock_movement.amount"
+msgstr "Amount"
+
+msgid "form.stock_movement.type"
+msgstr "Type"
+
+msgid "form.stock_movement.place"
+msgstr "Place"
+
+msgid "form.stock_movement.product"
+msgstr "Product"
+
+msgid "form.stock_movement.submit"
+msgstr "Submit"
+
+
+
+# -- ledger form --
+
+msgid "form.ledger.id"
+msgstr "Id"
+
+msgid "form.ledger.ledger_type"
+msgstr "Ledger type"
+
+msgid "form.ledger.account"
+msgstr "Account"
+
+msgid "form.ledger.value"
+msgstr "Value"
+
+msgid "form.ledger.datetime"
+msgstr "Datetime"
+
+msgid "form.ledger.stock_movement"
+msgstr "Stock movement"
+
+msgid "form.ledger.comment"
+msgstr "Comment"
+
+msgid "form.ledger.submit"
+msgstr "Submit"
+
+
+
+# -- installment_payment form --
+
+msgid "form.installment_payment.id"
+msgstr "Id"
+
+msgid "form.installment_payment.ledger"
+msgstr "Ledger"
+
+msgid "form.installment_payment.due"
+msgstr "Due"
+
+msgid "form.installment_payment.date"
+msgstr "Date"
+
+msgid "form.installment_payment.amount"
+msgstr "Amount"
+
+msgid "form.installment_payment.account"
+msgstr "Account"
+
+msgid "form.installment_payment.payment_method"
+msgstr "Payment method"
+
+msgid "form.installment_payment.comments"
+msgstr "Comments"
+
+msgid "form.installment_payment.submit"
+msgstr "Submit"
+
+
+
+# -- account form --
+
+msgid "form.account.name"
+msgstr "Name"
+
+msgid "form.account.bank"
+msgstr "Bank"
+
+msgid "form.account.account_number"
+msgstr "Account number"
+
+msgid "form.account.agency"
+msgstr "Agency"
+
+msgid "form.account.balance"
+msgstr "Balance"
+
+msgid "form.account.submit"
+msgstr "Submit"
+
+
+
+# -- installment form --
+
+msgid "form.installment.ledger"
+msgstr "Ledger"
+
+msgid "form.installment.due"
+msgstr "Due"
+
+msgid "form.installment.amount"
+msgstr "Amount"
+
+msgid "form.installment.payed"
+msgstr "Payed"
+
+msgid "form.installment.submit"
+msgstr "Submit"
+
+
+
+# -- ledger_type form --
+
+msgid "form.ledger_type.slug"
+msgstr "Slug"
+
+msgid "form.ledger_type.name"
+msgstr "Name"
+
+msgid "form.ledger_type.submit"
+msgstr "Submit"
+
+
+
+# -- user_account_role form --
+
+msgid "form.user_account_role.login"
+msgstr "Login"
+
+msgid "form.user_account_role.role"
+msgstr "Role"
+
+msgid "form.user_account_role.submit"
+msgstr "Submit"
+
+
+
+# -- role form --
+
+msgid "form.role.role"
+msgstr "Role"
+
+msgid "form.role.submit"
+msgstr "Submit"
+
+
+
+# -- user_account form --
+
+msgid "form.user_account.login"
+msgstr "Login"
+
+msgid "form.user_account.password"
+msgstr "Password"
+
+msgid "form.user_account.name"
+msgstr "Name"
+
+msgid "form.user_account.submit"
+msgstr "Submit"
+
+
+

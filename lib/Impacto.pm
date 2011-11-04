@@ -17,7 +17,6 @@ use Catalyst::Runtime 5.80;
 #                 directory
 
 use Catalyst qw/
-    -Debug
     I18N
     ConfigLoader
     Static::Simple

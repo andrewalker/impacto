@@ -193,11 +193,11 @@ msgstr "Submit"
 
 # -- product_category form --
 
-msgid "form.product_category.slug"
-msgstr "Slug"
+msgid "form.product_category.category"
+msgstr "Category"
 
-msgid "form.product_category.id"
-msgstr "Id"
+msgid "form.product_category.product"
+msgstr "Product"
 
 msgid "form.product_category.submit"
 msgstr "Submit"

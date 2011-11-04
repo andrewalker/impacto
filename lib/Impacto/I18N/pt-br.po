@@ -193,11 +193,11 @@ msgstr "Gravar"
 
 # -- product_category form --
 
-msgid "form.product_category.slug"
-msgstr "Slug"
+msgid "form.product_category.category"
+msgstr "Categoria"
 
-msgid "form.product_category.id"
-msgstr "Identificação"
+msgid "form.product_category.product"
+msgstr "Produto"
 
 msgid "form.product_category.submit"
 msgstr "Gravar"

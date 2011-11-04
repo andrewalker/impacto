@@ -63,13 +63,13 @@ Related object: L<Impacto::Schema::Product::Result::ProductCategory>
 __PACKAGE__->has_many(
   "product_categories",
   "Impacto::Schema::Product::Result::ProductCategory",
-  { "foreign.slug" => "self.slug" },
+  { "foreign.category" => "self.slug" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2011-09-26 20:07:25
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Tn9WHcoVv0kKp8c9uJgrow
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2011-11-04 11:21:41
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2Q2QFdFJ9Bnx7ifB0Qc9Tw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -112,7 +112,7 @@ Related object: L<Impacto::Schema::Product::Result::ProductCategory>
 __PACKAGE__->has_many(
   "product_categories",
   "Impacto::Schema::Product::Result::ProductCategory",
-  { "foreign.id" => "self.id" },
+  { "foreign.product" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
@@ -162,8 +162,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2011-09-29 20:09:18
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:C3/pCDSGJ4bO/mcPufiwig
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2011-11-04 11:21:41
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:d/TfwIpmfbEs5NekOtfRBA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

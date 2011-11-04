@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS product.product_category;
+
 CREATE TABLE product.product_category (
     product INTEGER NOT NULL,
     category TEXT NOT NULL,

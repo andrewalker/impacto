@@ -1,0 +1,8 @@
+.fs_form_container form.fs_form .fs_formfieldline { padding: 3px; }
+.fs_form_container form.fs_form .fs_formfieldline label.fs_label { padding: 4px; text-align: right; width: 200px; display: block; float: left; }
+.fs_form_container form.fs_form .fs_number input,
+.fs_form_container form.fs_form .fs_text input { padding: 2px; border: 1px solid #bbb; width: 300px; }
+
+/* 514 = 200 + 4*2 (label padding) + 2*2 (input padding) + 1*2 (input border) */
+.fs_form_container form.fs_form .fs_formfieldline.fs_submit { width: 514px; text-align: right; }
+.fs_form_container form.fs_form .fs_formfieldline.fs_submit input.fs_submit_input { border: 1px outset #bbb; }

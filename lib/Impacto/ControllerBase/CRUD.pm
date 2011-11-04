@@ -73,7 +73,7 @@ sub prepare_form {
         ],
     });
     my $rendered_form = $fs_renderer->render($form);
-    $rendered_form->display_name_delegate( FSConnector( sub { _translate_display_name($c, @_) } ) );
+    $rendered_form->display_name_delegate( FSConnector( sub { _translate_form_field($c, @_) } ) );
 
     $c->stash(
         form      => $form,
@@ -124,12 +124,11 @@ sub edit : Chained('crud_base_with_id') PathPart Args(0) {
     $c->stash(template => 'edit.tt2');
 }
 
-sub view      : Chained('crud_base_with_id') PathPart Args(0) {}
+sub view : Chained('crud_base_with_id') PathPart Args(0) {}
 
-sub _translate_display_name {
+sub _translate_form_field {
     my ($c, $caller, $display_name, $origin_object) = @_;
     return $c->loc('form.' . $caller->form->name . '.' . $origin_object->name);
-    #return $display_name;
 }
 
 __PACKAGE__->meta->make_immutable;

@@ -81,8 +81,13 @@ sub prepare_form {
     );
 }
 
-sub list      : Chained('crud_base') PathPart Args(0) {}
-sub list_json : Chained('crud_base') PathPart Args(0) {}
+sub list : Chained('crud_base') PathPart Args(0) {
+    my ($self, $c) = @_;
+
+    $c->stash(template => 'list.tt2');
+}
+sub list_json : Chained('crud_base') PathPart Args(0) {
+}
 sub delete    : Chained('crud_base') PathPart Args(0) {}
 
 sub create : Chained('crud_base') PathPart Args(0) {

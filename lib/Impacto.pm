@@ -37,6 +37,7 @@ our $VERSION = '0.01';
 
 __PACKAGE__->config(
     name => 'Impacto',
+    default_view => 'TT',
     'Plugin::I18N' => {
         maketext_options => {
             style => 'gettext',

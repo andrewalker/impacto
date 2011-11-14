@@ -83,12 +83,44 @@ sub prepare_form {
 
 sub list : Chained('crud_base') PathPart Args(0) {
     my ($self, $c) = @_;
+    my $source = $c->stash->{resultset}->result_source;
+    my @result;
 
-    $c->stash(template => 'list.tt2');
+    for (keys %{ $source->columns_info }) {
+        push @result, {
+            field => $_,
+            name => $c->loc("form." . $source->from . ".$_"),
+            editable => 0,
+            width => 'auto',
+        };
+    }
+
+    $c->stash(
+        template => 'list.tt2',
+        structure => \@result,
+    );
 }
-sub list_json : Chained('crud_base') PathPart Args(0) {
+
+sub list_json_data : Chained('crud_base') PathPart Args(0) {
+    my ($self, $c) = @_;
+    my @columns = $c->stash->{resultset}->result_source->columns;
+    my $search = $c->stash->{resultset}->search();
+    my @items;
+
+    while (my $item = $search->next) {
+        push @items, {
+            map { $_ => $item->get_column($_) } @columns
+        };
+    }
+
+    $c->stash(
+        current_view => 'JSON',
+        items => \@items,
+        identifier => 'slug',
+    );
 }
-sub delete    : Chained('crud_base') PathPart Args(0) {}
+
+sub delete : Chained('crud_base') PathPart Args(0) {}
 
 sub create : Chained('crud_base') PathPart Args(0) {
     my ($self, $c) = @_;

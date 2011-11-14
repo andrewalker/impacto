@@ -9,5 +9,19 @@
         </fieldset>
     </form>
 </section>
+<span data-dojo-type="dojo.data.ItemFileReadStore" data-dojo-id="store1" data-dojo-props="url:'list_json_data'">
 <section id="datagrid">
+    <div>
+    <table data-dojo-type="dojox.grid.EnhancedGrid" data-dojo-props="store: store1, rowSelector: '20px', clientSort: true, id: 'datagrid-table'" style="height: 500px">
+        <thead>
+            <tr>
+                [% FOREACH cell IN structure %]
+                <th width="[% cell.width %]" field="[% cell.field %]">
+                    [% cell.name %]
+                </th>
+                [% END %]
+            </tr>
+        </thead>
+    </table>
+    </div>
 </section>

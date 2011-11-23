@@ -9,12 +9,6 @@ use namespace::autoclean;
 
 BEGIN { extends 'Impacto::ControllerBase::Base' }
 
-has name => (
-    isa        => 'Str',
-    is         => 'ro',
-    default    => '',
-);
-
 has crud_model_name => (
     isa        => 'Str',
     is         => 'ro',
@@ -116,7 +110,6 @@ sub list_json_data : Chained('crud_base') PathPart Args(0) {
     $c->stash(
         current_view => 'JSON',
         items => \@items,
-        identifier => 'slug',
     );
 }
 

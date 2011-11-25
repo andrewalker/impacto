@@ -9,10 +9,9 @@
         </fieldset>
     </form>
 </section>
-<span data-dojo-type="dojo.data.ItemFileReadStore" data-dojo-id="store1" data-dojo-props="url:'list_json_data'">
+<span data-dojo-type="dojo.data.ItemFileReadStore" data-dojo-id="store1" data-dojo-props="url:'[% table_prefix_uri %]/list_json_data', identity: [ [% identity %] ]"></span>
 <section id="datagrid">
-    <div>
-    <table data-dojo-type="dojox.grid.EnhancedGrid" data-dojo-props="store: store1, rowSelector: '20px', clientSort: true, id: 'datagrid-table'" style="height: 500px">
+    <table data-dojo-type="dojox.grid.EnhancedGrid" data-dojo-props="store: store1, rowSelector: '20px', clientSort: true, id: 'datagrid-table'" style="height: 400px">
         <thead>
             <tr>
                 [% FOREACH cell IN structure %]
@@ -23,5 +22,4 @@
             </tr>
         </thead>
     </table>
-    </div>
 </section>

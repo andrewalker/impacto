@@ -26,7 +26,10 @@ sub crud_base : Chained('global_base') PathPrefix CaptureArgs(0) {
      || $self->crud_model_instance(
             $c->model( $self->crud_model_name )
         );
-    $c->stash(resultset => $rs);
+    $c->stash(
+        resultset        => $rs,
+        table_prefix_uri => $c->uri_for('/') . $self->path_prefix($c),
+    );
 }
 
 sub crud_base_with_id : Chained('crud_base') PathPart('') CaptureArgs(1) {
@@ -92,6 +95,7 @@ sub list : Chained('crud_base') PathPart Args(0) {
     $c->stash(
         template => 'list.tt2',
         structure => \@result,
+        identity => join (',', map { "'$_'" } $source->primary_columns),
     );
 }
 

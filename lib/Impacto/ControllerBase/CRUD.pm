@@ -9,6 +9,12 @@ use namespace::autoclean;
 
 BEGIN { extends 'Impacto::ControllerBase::Base' }
 
+has table_prefix_uri => (
+    isa        => 'Str',
+    is         => 'ro',
+    writer     => '_set_table_prefix_uri',
+);
+
 has crud_model_name => (
     isa        => 'Str',
     is         => 'ro',
@@ -16,19 +22,24 @@ has crud_model_name => (
 
 has crud_model_instance => (
     isa        => 'DBIx::Class::ResultSet',
-    is         => 'rw',
+    is         => 'ro',
+    writer     => '_set_crud_model_instance',
     required   => 0,
 );
 
 sub crud_base : Chained('global_base') PathPrefix CaptureArgs(0) {
     my ( $self, $c ) = @_;
+    my $table_prefix_uri = $self->table_prefix_uri
+     || $self->_set_table_prefix_uri(
+            $c->uri_for('/') . $self->path_prefix($c)
+        );
     my $rs = $self->crud_model_instance
-     || $self->crud_model_instance(
+     || $self->_set_crud_model_instance(
             $c->model( $self->crud_model_name )
         );
     $c->stash(
         resultset        => $rs,
-        table_prefix_uri => $c->uri_for('/') . $self->path_prefix($c),
+        table_prefix_uri => $table_prefix_uri,
     );
 }
 
@@ -41,10 +52,11 @@ sub crud_base_with_id : Chained('crud_base') PathPart('') CaptureArgs(1) {
     );
 }
 
-sub prepare_form {
-    my ( $self, $c ) = @_;
+sub execute_form {
+    my ( $self, $c, $action ) = @_;
 
-    my $source = $c->stash->{resultset}->result_source;
+    my $resultset = $c->stash->{resultset};
+    my $source    = $resultset->result_source;
 
     my $form_options = {
         form => { name => $source->from },
@@ -60,17 +72,32 @@ sub prepare_form {
         defaults => { field_class => 'Toggle' },
     };
 
-    my $form = $reflector->reflect_from($c->stash->{resultset}, $form_options);
-    $form->set_values({ $c->stash->{row}->get_columns() })
-        if exists $c->stash->{row};
+    my $form = $reflector->reflect_from($resultset, $form_options);
 
     my $fs_renderer = Form::Sensible::Renderer::HTML->new({
         additional_include_paths => [
             $c->path_to(qw/root templates forms/)->stringify
         ],
     });
+
     my $rendered_form = $fs_renderer->render($form);
-    $rendered_form->display_name_delegate( FSConnector( sub { _translate_form_field($c, @_) } ) );
+    $rendered_form->display_name_delegate(
+        FSConnector(  sub { _translate_form_field($c, @_) }  )
+    );
+
+    if ($c->req->method eq 'POST') {
+        $form->set_values( $c->req->body_params );
+
+        my $result = $form->validate();
+        if ($result->is_valid) {
+            my $values = $form->get_all_values();
+            delete $values->{submit};
+            $resultset->$action( $values );
+        }
+    }
+    elsif (my $row = $c->stash->{row}) {
+        $form->set_values({ $row->get_columns() })
+    }
 
     $c->stash(
         form      => $form,
@@ -122,38 +149,15 @@ sub delete : Chained('crud_base') PathPart Args(0) {}
 sub create : Chained('crud_base') PathPart Args(0) {
     my ($self, $c) = @_;
 
-    $self->prepare_form($c);
-
-    if ($c->req->method eq 'POST') {
-        my $form = $c->stash->{form};
-        $form->set_values($c->req->body_params);
-
-        my $result = $form->validate();
-        if ($result->is_valid) {
-            my $values = $form->get_all_values();
-            delete $values->{submit};
-            $c->stash->{resultset}->create( $values );
-        }
-    }
+    $self->execute_form($c, 'create');
 
     $c->stash(template => 'create.tt2');
 }
 
 sub edit : Chained('crud_base_with_id') PathPart Args(0) {
     my ($self, $c) = @_;
-    $self->prepare_form($c);
 
-    if ($c->req->method eq 'POST') {
-        my $form = $c->stash->{form};
-        $form->set_values($c->req->body_params);
-
-        my $result = $form->validate();
-        if ($result->is_valid) {
-            my $values = $form->get_all_values();
-            delete $values->{submit};
-            $c->stash->{row}->update( $values );
-        }
-    }
+    $self->execute_form($c, 'update');
 
     $c->stash(template => 'edit.tt2');
 }

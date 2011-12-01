@@ -17,7 +17,6 @@ has crud_model_name => (
 has crud_model_instance => (
     isa        => 'DBIx::Class::ResultSet',
     is         => 'ro',
-    writer     => '_set_crud_model_instance',
     lazy_build => 1,
 );
 
@@ -57,12 +56,8 @@ sub _build_crud_model_instance {
 sub crud_base : Chained('global_base') PathPrefix CaptureArgs(0) {
     my ( $self, $c ) = @_;
 
-    my $rs = $self->crud_model_instance;
-#     || $self->_set_crud_model_instance(
-#            $c->model( $self->crud_model_name )
-#        );
     $c->stash(
-        resultset        => $rs,
+        resultset        => $self->crud_model_instance,
         table_prefix_uri => $c->uri_for('/') . $self->path_prefix($c),
     );
 }

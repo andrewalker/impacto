@@ -9,12 +9,6 @@ use namespace::autoclean;
 
 BEGIN { extends 'Impacto::ControllerBase::Base' }
 
-has table_prefix_uri => (
-    isa        => 'Str',
-    is         => 'ro',
-    writer     => '_set_table_prefix_uri',
-);
-
 has crud_model_name => (
     isa        => 'Str',
     is         => 'ro',
@@ -24,22 +18,52 @@ has crud_model_instance => (
     isa        => 'DBIx::Class::ResultSet',
     is         => 'ro',
     writer     => '_set_crud_model_instance',
-    required   => 0,
+    lazy_build => 1,
 );
+
+has form_columns => (
+    isa        => 'ArrayRef[Str]',
+    is         => 'ro',
+    lazy_build => 1,
+);
+
+has datagrid_columns => (
+    isa        => 'ArrayRef[Str]',
+    is         => 'ro',
+    lazy_build => 1,
+);
+
+sub _build_form_columns {     goto \&_fetch_all_columns }
+
+sub _build_datagrid_columns { goto \&_fetch_all_columns }
+
+# Helper method for datagrid_columns and form_columns,
+# which default to all columns.
+# Both of them should be overriden by the controller itself,
+# i.e. list only the relevant ones, when appropriate
+sub _fetch_all_columns {
+    my $self = shift;
+    return [ $self->crud_model_instance->result_source->columns ];
+}
+
+sub _build_crud_model_instance {
+    my $self = shift;
+
+    return $self->_application->model(
+        $self->crud_model_name
+    );
+}
 
 sub crud_base : Chained('global_base') PathPrefix CaptureArgs(0) {
     my ( $self, $c ) = @_;
-    my $table_prefix_uri = $self->table_prefix_uri
-     || $self->_set_table_prefix_uri(
-            $c->uri_for('/') . $self->path_prefix($c)
-        );
-    my $rs = $self->crud_model_instance
-     || $self->_set_crud_model_instance(
-            $c->model( $self->crud_model_name )
-        );
+
+    my $rs = $self->crud_model_instance;
+#     || $self->_set_crud_model_instance(
+#            $c->model( $self->crud_model_name )
+#        );
     $c->stash(
         resultset        => $rs,
-        table_prefix_uri => $table_prefix_uri,
+        table_prefix_uri => $c->uri_for('/') . $self->path_prefix($c),
     );
 }
 
@@ -63,8 +87,8 @@ sub execute_form {
         with_trigger => 1,
     };
     $form_options->{fieldname_filter} = sub {
-        $source->fs_field_order(@_)
-    } if $source->can('fs_field_order');
+        $self->form_columns
+    };
 
     my $reflector = Form::Sensible::Reflector::DBIC->new();
     $reflector->field_type_map->{text}->{defaults}->{field_class} = 'Text';
@@ -107,10 +131,12 @@ sub execute_form {
 
 sub list : Chained('crud_base') PathPart Args(0) {
     my ($self, $c) = @_;
-    my $source = $c->stash->{resultset}->result_source;
     my @result;
 
-    for (keys %{ $source->columns_info }) {
+    my $source  = $c->stash->{resultset}->result_source;
+    my @columns = @{ $self->datagrid_columns };
+
+    for (@columns) {
         push @result, {
             field => $_,
             name => $c->loc("form." . $source->from . ".$_"),
@@ -128,7 +154,8 @@ sub list : Chained('crud_base') PathPart Args(0) {
 
 sub list_json_data : Chained('crud_base') PathPart Args(0) {
     my ($self, $c) = @_;
-    my @columns = $c->stash->{resultset}->result_source->columns;
+    my @columns = @{ $self->datagrid_columns };
+
     my $search = $c->stash->{resultset}->search();
     my @items;
 
@@ -143,8 +170,6 @@ sub list_json_data : Chained('crud_base') PathPart Args(0) {
         items => \@items,
     );
 }
-
-sub delete : Chained('crud_base') PathPart Args(0) {}
 
 sub create : Chained('crud_base') PathPart Args(0) {
     my ($self, $c) = @_;
@@ -162,7 +187,8 @@ sub edit : Chained('crud_base_with_id') PathPart Args(0) {
     $c->stash(template => 'edit.tt2');
 }
 
-sub view : Chained('crud_base_with_id') PathPart Args(0) {}
+# sub view : Chained('crud_base_with_id') PathPart Args(0) {}
+# sub delete : Chained('crud_base') PathPart Args(0) {}
 
 sub _translate_form_field {
     my ($c, $caller, $display_name, $origin_object) = @_;

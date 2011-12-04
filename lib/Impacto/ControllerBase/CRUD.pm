@@ -71,10 +71,10 @@ sub crud_base_with_id : Chained('crud_base') PathPart('') CaptureArgs(1) {
     );
 }
 
-sub execute_form {
-    my ( $self, $c, $action ) = @_;
+sub _build_form {
+    my $self = shift;
 
-    my $resultset = $c->stash->{resultset};
+    my $resultset = $self->crud_model_instance;
     my $source    = $resultset->result_source;
 
     my $form_options = {
@@ -82,7 +82,7 @@ sub execute_form {
         with_trigger => 1,
     };
     $form_options->{fieldname_filter} = sub {
-        $self->form_columns
+        @{ $self->form_columns }
     };
 
     my $reflector = Form::Sensible::Reflector::DBIC->new();
@@ -91,7 +91,25 @@ sub execute_form {
         defaults => { field_class => 'Toggle' },
     };
 
-    my $form = $reflector->reflect_from($resultset, $form_options);
+    return $reflector->reflect_from($resultset, $form_options);
+}
+
+sub _submit_form {
+    my ($self, $form, $action) = @_;
+
+    my $result = $form->validate();
+
+    return 0 if (! $result->is_valid);
+
+    my $values = $form->get_all_values();
+    delete $values->{submit};
+    $self->crud_model_instance->$action( $values );
+
+    return 1;
+}
+
+sub _render_form {
+    my ( $self, $c, $form ) = @_;
 
     my $fs_renderer = Form::Sensible::Renderer::HTML->new({
         additional_include_paths => [
@@ -99,20 +117,22 @@ sub execute_form {
         ],
     });
 
-    my $rendered_form = $fs_renderer->render($form);
+    my $rendered_form = $fs_renderer->render( $form );
     $rendered_form->display_name_delegate(
         FSConnector(  sub { _translate_form_field($c, @_) }  )
     );
 
+    return $rendered_form->complete;
+}
+
+sub make_form_action {
+    my ($self, $c, $action) = @_;
+
+    my $form = $self->_build_form;
+
     if ($c->req->method eq 'POST') {
         $form->set_values( $c->req->body_params );
-
-        my $result = $form->validate();
-        if ($result->is_valid) {
-            my $values = $form->get_all_values();
-            delete $values->{submit};
-            $resultset->$action( $values );
-        }
+        $self->_submit_form( $form, $action );
     }
     elsif (my $row = $c->stash->{row}) {
         $form->set_values({ $row->get_columns() })
@@ -120,11 +140,24 @@ sub execute_form {
 
     $c->stash(
         form      => $form,
-        form_html => $rendered_form->complete,
+        form_html => $self->_render_form( $c, $form ),
+        template  => $action . '.tt2',
     );
 }
 
-sub list : Chained('crud_base') PathPart Args(0) {
+sub create : Chained('crud_base') PathPart Args(0) {
+    my ($self, $c) = @_;
+
+    $self->make_form_action($c, 'create');
+}
+
+sub update : Chained('crud_base_with_id') PathPart Args(0) {
+    my ($self, $c) = @_;
+
+    $self->make_form_action($c, 'update');
+}
+
+sub list : Chained('crud_base') PathPart('') Args(0) {
     my ($self, $c) = @_;
     my @result;
 
@@ -164,22 +197,6 @@ sub list_json_data : Chained('crud_base') PathPart Args(0) {
         current_view => 'JSON',
         items => \@items,
     );
-}
-
-sub create : Chained('crud_base') PathPart Args(0) {
-    my ($self, $c) = @_;
-
-    $self->execute_form($c, 'create');
-
-    $c->stash(template => 'create.tt2');
-}
-
-sub edit : Chained('crud_base_with_id') PathPart Args(0) {
-    my ($self, $c) = @_;
-
-    $self->execute_form($c, 'update');
-
-    $c->stash(template => 'edit.tt2');
 }
 
 # sub view : Chained('crud_base_with_id') PathPart Args(0) {}

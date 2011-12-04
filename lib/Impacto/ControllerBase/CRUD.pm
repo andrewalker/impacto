@@ -138,10 +138,12 @@ sub make_form_action {
         $form->set_values({ $row->get_columns() })
     }
 
+    my $template = $c->view('TT')->get_first_existing_template($c->action, $action);
+
     $c->stash(
         form      => $form,
         form_html => $self->_render_form( $c, $form ),
-        template  => $action . '.tt2',
+        template  => $template,
     );
 }
 

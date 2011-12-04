@@ -14,6 +14,19 @@ __PACKAGE__->config(
     WRAPPER => 'wrapper.tt2',
 );
 
+sub get_first_existing_template {
+    my ($self, @names) = @_;
+
+    my @paths = @{ $self->include_path };
+    my $ext   = $self->config->{TEMPLATE_EXTENSION};
+
+    foreach my $path (@paths) {
+        foreach my $name (@names) {
+            return "$name.$ext" if -e "$path/$name.$ext";
+        }
+    }
+}
+
 =head1 NAME
 
 Impacto::View::TT - TT View for Impacto

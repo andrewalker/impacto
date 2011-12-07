@@ -86,6 +86,8 @@ sub _build_form {
     };
 
     my $reflector = Form::Sensible::Reflector::DBIC->new();
+
+    # TODO: this probably shouldn't be here
     $reflector->field_type_map->{text}->{defaults}->{field_class} = 'Text';
     $reflector->field_type_map->{boolean} = {
         defaults => { field_class => 'Toggle' },
@@ -159,6 +161,8 @@ sub update : Chained('crud_base_with_id') PathPart Args(0) {
     $self->make_form_action($c, 'update');
 }
 
+# TODO: move to Elastic Search
+# and make it more customizable
 sub list : Chained('crud_base') PathPart('') Args(0) {
     my ($self, $c) = @_;
     my @result;
@@ -169,6 +173,8 @@ sub list : Chained('crud_base') PathPart('') Args(0) {
     for (@columns) {
         push @result, {
             field => $_,
+
+            # TODO: this probably shouldn't be named "form.*"
             name => $c->loc("form." . $source->from . ".$_"),
             editable => 0,
             width => 'auto',
@@ -176,9 +182,11 @@ sub list : Chained('crud_base') PathPart('') Args(0) {
     }
 
     $c->stash(
-        template => 'list.tt2',
+        template  => 'list.tt2',
         structure => \@result,
-        identity => join (',', map { "'$_'" } $source->primary_columns),
+
+        # TODO: this is useless, it doesn't work as expected
+        identity  => join (',', map { "'$_'" } $source->primary_columns),
     );
 }
 
@@ -197,10 +205,11 @@ sub list_json_data : Chained('crud_base') PathPart Args(0) {
 
     $c->stash(
         current_view => 'JSON',
-        items => \@items,
+        items        => \@items,
     );
 }
 
+# TODO
 # sub view : Chained('crud_base_with_id') PathPart Args(0) {}
 # sub delete : Chained('crud_base') PathPart Args(0) {}
 

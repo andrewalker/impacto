@@ -21,19 +21,38 @@ has crud_model_instance => (
 );
 
 has form_columns => (
-    isa        => 'ArrayRef[Str]',
+    isa        => 'ArrayRef',
     is         => 'ro',
     lazy_build => 1,
 );
 
 has datagrid_columns => (
-    isa        => 'ArrayRef[Str]',
+    isa        => 'ArrayRef',
     is         => 'ro',
     lazy_build => 1,
 );
 
+
+# in the controller it would be like:
+# sub _build_form_columns {
+#   return [
+#       'name',
+#       'date',
+#       { name => 'long_text_field', type => 'textarea' },
+#   ]
+# }
 sub _build_form_columns {     goto \&_fetch_all_columns }
 
+# in the controller it would be like:
+# sub _build_datagrid_columns {
+#   return [
+#       'name',
+#       'date',
+#       { name => 'special_date_time', format => '%d - %m - %Y' },
+#       'customer.name',
+#       { name => 'blah', width => '40%' },
+#   ]
+# }
 sub _build_datagrid_columns { goto \&_fetch_all_columns }
 
 # Helper method for datagrid_columns and form_columns,
@@ -106,6 +125,12 @@ sub _submit_form {
     my $values = $form->get_all_values();
     delete $values->{submit};
     $self->crud_model_instance->$action( $values );
+# insert into elasticsearch
+# index impacto
+# type $namespace
+# if it's type date
+#       $row->date ? $row->date->strftime('%d/%m/%Y') : ''
+# if its foreign key... deal with it
 
     return 1;
 }

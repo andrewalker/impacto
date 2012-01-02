@@ -21,8 +21,9 @@ $search->create_index(
         analysis => {
             analyzer => {
                 default => {
+                    type        => 'brazilian',
                     tokenizer   => 'standard',
-                    char_filter => ['html_strip'],
+#                    char_filter => ['html_strip'],
                     filter      => [qw(standard lowercase stop asciifolding)],
                 }
             }

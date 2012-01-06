@@ -2,6 +2,7 @@ package Impacto::View::TT;
 
 use strict;
 use warnings;
+use 5.010;
 
 use base 'Catalyst::View::TT';
 
@@ -22,7 +23,7 @@ sub get_first_existing_template {
 
     foreach my $path (@paths) {
         foreach my $name (@names) {
-            return "$name.$ext" if -e "$path/$name.$ext";
+            return "$name$ext" if -e "$path/$name$ext";
         }
     }
 }

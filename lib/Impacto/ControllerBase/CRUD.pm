@@ -26,32 +26,46 @@ has form_columns => (
     lazy_build => 1,
 );
 
+has form_columns_extra_params => (
+    isa        => 'ArrayRef',
+    is         => 'ro',
+    lazy_build => 1,
+);
+
 has datagrid_columns => (
     isa        => 'ArrayRef',
     is         => 'ro',
     lazy_build => 1,
 );
 
+has datagrid_columns_extra_params => (
+    isa        => 'ArrayRef',
+    is         => 'ro',
+    lazy_build => 1,
+);
 
 # in the controller it would be like:
 # sub _build_form_columns {
-#   return [
-#       'name',
-#       'date',
-#       { name => 'long_text_field', type => 'textarea' },
-#   ]
+#   return [ qw/ name date long_text_field foreign_key_field / ]
+# }
+# sub _build_form_columns_extra_params {
+#   return {
+#       long_text_field   => { type => 'TextArea' },
+#       foreign_key_field => { type => 'Select', label_column => 'name', value_column => 'id' },
+#   }
 # }
 sub _build_form_columns {     goto \&_fetch_all_columns }
 
 # in the controller it would be like:
 # sub _build_datagrid_columns {
-#   return [
-#       'name',
-#       'date',
-#       { name => 'special_date_time', format => '%d - %m - %Y' },
-#       'customer.name',
-#       { name => 'blah', width => '40%' },
-#   ]
+#   return [ qw/ name date special_date_time customer_name custom_width_column / ]
+# }
+# sub _build_datagrid_columns_extra_params {
+#    return {
+#       special_date_time   => { format => '%d - %m - %Y' },
+#       customer_name       => { join => 'customer', select => 'customer.name' },
+#       custom_width_column => { width => '40%' },
+#    }
 # }
 sub _build_datagrid_columns { goto \&_fetch_all_columns }
 
@@ -157,6 +171,9 @@ sub make_form_action {
 
     my $form = $self->_build_form;
 
+    # TODO: make customizations here to the $form ($form->get_fields, etc)
+    # using $self->form_columns_extra_params
+
     if ($c->req->method eq 'POST') {
         $form->set_values( $c->req->body_params );
         $self->_submit_form( $form, $action );
@@ -211,7 +228,8 @@ sub list : Chained('crud_base') PathPart('') Args(0) {
         structure => \@result,
 
         # TODO: this is useless, it doesn't work as expected
-        identity  => join (',', map { "'$_'" } $source->primary_columns),
+        # gotta move it to ElasticSearch id
+        # identity  => join (',', map { "'$_'" } $source->primary_columns),
     );
 }
 

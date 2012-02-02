@@ -30,7 +30,7 @@ my @schemas = qw/People Product Finance UserAccount/;
 for my $schema (@schemas) {
     for my $table (values %{ $i->model("DB::$schema")->schema->source_registrations }) {
         my $table_name   = $table->from;
-        print $fh "# -- $table_name form --\n\n";
+        print $fh "# -- $table_name --\n\n";
 
         my @columns = ($table->columns, 'submit');
 
@@ -38,7 +38,7 @@ for my $schema (@schemas) {
             my $display_name = make_display_name( $column );
 
             print $fh <<"TRANSLATION";
-msgid "form.$table_name.$column"
+msgid "crud.$table_name.$column"
 msgstr "$display_name"
 
 TRANSLATION

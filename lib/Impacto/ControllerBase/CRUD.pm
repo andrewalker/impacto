@@ -14,6 +14,7 @@ has crud_model_name => (
     is         => 'ro',
 );
 
+# mainly for caching the persistent object
 has crud_model_instance => (
     isa        => 'DBIx::Class::ResultSet',
     is         => 'ro',
@@ -27,7 +28,7 @@ has form_columns => (
 );
 
 has form_columns_extra_params => (
-    isa        => 'ArrayRef',
+    isa        => 'HashRef',
     is         => 'ro',
     lazy_build => 1,
 );
@@ -39,7 +40,7 @@ has datagrid_columns => (
 );
 
 has datagrid_columns_extra_params => (
-    isa        => 'ArrayRef',
+    isa        => 'HashRef',
     is         => 'ro',
     lazy_build => 1,
 );
@@ -216,8 +217,7 @@ sub list : Chained('crud_base') PathPart('') Args(0) {
         push @result, {
             field => $_,
 
-            # TODO: this probably shouldn't be named "form.*"
-            name => $c->loc("form." . $source->from . ".$_"),
+            name => $c->loc("crud." . $source->from . ".$_"),
             editable => 0,
             width => 'auto',
         };
@@ -258,7 +258,7 @@ sub list_json_data : Chained('crud_base') PathPart Args(0) {
 
 sub _translate_form_field {
     my ($c, $caller, $display_name, $origin_object) = @_;
-    return $c->loc('form.' . $caller->form->name . '.' . $origin_object->name);
+    return $c->loc('crud.' . $caller->form->name . '.' . $origin_object->name);
 }
 
 __PACKAGE__->meta->make_immutable;

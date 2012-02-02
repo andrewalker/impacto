@@ -9,6 +9,8 @@ use namespace::autoclean;
 
 BEGIN { extends 'Impacto::ControllerBase::Base' }
 
+### -- Attributes -- ###
+
 has crud_model_name => (
     isa        => 'Str',
     is         => 'ro',
@@ -44,6 +46,8 @@ has datagrid_columns_extra_params => (
     is         => 'ro',
     lazy_build => 1,
 );
+
+##  -- Builders --  ##
 
 # in the controller it would be like:
 # sub _build_form_columns {
@@ -87,6 +91,9 @@ sub _build_crud_model_instance {
     );
 }
 
+### -- Actions -- ###
+##  -- Beginning of the Chain --  ##
+
 sub crud_base : Chained('global_base') PathPrefix CaptureArgs(0) {
     my ( $self, $c ) = @_;
 
@@ -104,6 +111,74 @@ sub crud_base_with_id : Chained('crud_base') PathPart('') CaptureArgs(1) {
         row => $c->stash->{resultset}->find($id),
     );
 }
+
+##  -- CRUD --  ##
+
+sub create : Chained('crud_base') PathPart Args(0) {
+    my ($self, $c) = @_;
+
+    $self->make_form_action($c, 'create');
+}
+
+sub update : Chained('crud_base_with_id') PathPart Args(0) {
+    my ($self, $c) = @_;
+
+    $self->make_form_action($c, 'update');
+}
+
+# TODO: move to Elastic Search
+# and make it more customizable
+sub list : Chained('crud_base') PathPart('') Args(0) {
+    my ($self, $c) = @_;
+    my @result;
+
+    my $source  = $c->stash->{resultset}->result_source;
+    my @columns = @{ $self->datagrid_columns };
+
+    for (@columns) {
+        push @result, {
+            field => $_,
+
+            name => $c->loc("crud." . $source->from . ".$_"),
+            editable => 0,
+            width => 'auto',
+        };
+    }
+
+    $c->stash(
+        template  => 'list.tt2',
+        structure => \@result,
+
+        # TODO: this is useless, it doesn't work as expected
+        # gotta move it to ElasticSearch id
+        # identity  => join (',', map { "'$_'" } $source->primary_columns),
+    );
+}
+
+sub list_json_data : Chained('crud_base') PathPart Args(0) {
+    my ($self, $c) = @_;
+    my @columns = @{ $self->datagrid_columns };
+
+    my $search = $c->stash->{resultset}->search();
+    my @items;
+
+    while (my $item = $search->next) {
+        push @items, {
+            map { $_ => $item->get_column($_) } @columns
+        };
+    }
+
+    $c->stash(
+        current_view => 'JSON',
+        items        => \@items,
+    );
+}
+
+# TODO
+# sub view : Chained('crud_base_with_id') PathPart Args(0) {}
+# sub delete : Chained('crud_base') PathPart Args(0) {}
+
+### -- Helper Methods -- ###
 
 sub _build_form {
     my $self = shift;
@@ -191,70 +266,6 @@ sub make_form_action {
         template  => $template,
     );
 }
-
-sub create : Chained('crud_base') PathPart Args(0) {
-    my ($self, $c) = @_;
-
-    $self->make_form_action($c, 'create');
-}
-
-sub update : Chained('crud_base_with_id') PathPart Args(0) {
-    my ($self, $c) = @_;
-
-    $self->make_form_action($c, 'update');
-}
-
-# TODO: move to Elastic Search
-# and make it more customizable
-sub list : Chained('crud_base') PathPart('') Args(0) {
-    my ($self, $c) = @_;
-    my @result;
-
-    my $source  = $c->stash->{resultset}->result_source;
-    my @columns = @{ $self->datagrid_columns };
-
-    for (@columns) {
-        push @result, {
-            field => $_,
-
-            name => $c->loc("crud." . $source->from . ".$_"),
-            editable => 0,
-            width => 'auto',
-        };
-    }
-
-    $c->stash(
-        template  => 'list.tt2',
-        structure => \@result,
-
-        # TODO: this is useless, it doesn't work as expected
-        # gotta move it to ElasticSearch id
-        # identity  => join (',', map { "'$_'" } $source->primary_columns),
-    );
-}
-
-sub list_json_data : Chained('crud_base') PathPart Args(0) {
-    my ($self, $c) = @_;
-    my @columns = @{ $self->datagrid_columns };
-
-    my $search = $c->stash->{resultset}->search();
-    my @items;
-
-    while (my $item = $search->next) {
-        push @items, {
-            map { $_ => $item->get_column($_) } @columns
-        };
-    }
-
-    $c->stash(
-        current_view => 'JSON',
-        items        => \@items,
-    );
-}
-
-# TODO
-# sub view : Chained('crud_base_with_id') PathPart Args(0) {}
-# sub delete : Chained('crud_base') PathPart Args(0) {}
 
 sub _translate_form_field {
     my ($c, $caller, $display_name, $origin_object) = @_;

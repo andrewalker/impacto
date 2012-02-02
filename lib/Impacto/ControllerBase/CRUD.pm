@@ -216,11 +216,19 @@ sub _submit_form {
     delete $values->{submit};
     $self->crud_model_instance->$action( $values );
 # insert into elasticsearch
-# index impacto
-# type $namespace
 # if it's type date
 #       $row->date ? $row->date->strftime('%d/%m/%Y') : ''
 # if its foreign key... deal with it
+
+#    my %data;
+#    for my $column ( @{ $self->datagrid_columns } ) {
+#        $data{$column} = $values->{$column};
+#    }
+#    $search->index(
+#        index => 'impacto',
+#        type  => $self->action_namespace($c),
+#        data  => \%data,
+#    );
 
     return 1;
 }

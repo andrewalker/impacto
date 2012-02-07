@@ -4,6 +4,18 @@ use namespace::autoclean;
 
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
+sub _build_form_columns {
+    [qw/
+        name supplier cost minimum_price price weight
+    /]
+}
+
+sub _build_datagrid_columns {
+    [qw/
+        name supplier cost minimum_price price weight
+    /]
+}
+
 has '+crud_model_name' => ( default => 'DB::Product::Product' );
 
 =head1 NAME

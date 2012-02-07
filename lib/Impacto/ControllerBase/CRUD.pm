@@ -1,14 +1,12 @@
 package Impacto::ControllerBase::CRUD;
 use utf8;
-use Form::Sensible;
-use Form::Sensible::Reflector::DBIC;
-use Form::Sensible::Renderer::HTML;
-use Form::Sensible::DelegateConnection;
 use Moose;
 use List::Util qw/first reduce/;
 use namespace::autoclean;
 
 BEGIN { extends 'Impacto::ControllerBase::Base' }
+
+with 'Impacto::ControllerRole::Forms';
 
 ### -- Attributes -- ###
 

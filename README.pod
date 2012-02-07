@@ -18,7 +18,7 @@ Download Dojo Toolkit libs:
 
 Generate the database schema (currently only PostgreSQL supported):
 
-    $ ./script/impacto_generate_sql.pl | psql -U username database
+    $ psql -U username -f schema.sql database
 
 Generate the DBIx::Class schema files:
 

@@ -78,4 +78,10 @@ sub submit_form_update {
     $row->update( $values );
 }
 
+# TODO: this is duplicate of Impacto::ControllerBase::CRUD
+sub _translate_form_field {
+    my ($c, $caller, $display_name, $origin_object) = @_;
+    return $c->loc('crud.' . $caller->form->name . '.' . $origin_object->name);
+}
+
 1;

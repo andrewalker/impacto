@@ -20,6 +20,28 @@ sub index_data {
     );
 }
 
+sub search {
+    my ( $self, $type ) = @_;
+
+    return $self->_es->search(
+        index  => 'impacto',
+        type   => $type,
+        query => {
+            match_all => {}
+        }
+    );
+}
+
+sub get_item {
+    my ( $self, $type, $id ) = @_;
+
+    return $self->_es->get(
+        index  => 'impacto',
+        type   => $type,
+        id     => $id,
+    );
+}
+
 __PACKAGE__->meta->make_immutable;
 
 1;

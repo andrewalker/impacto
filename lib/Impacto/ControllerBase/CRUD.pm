@@ -46,6 +46,18 @@ has datagrid_columns_extra_params => (
     lazy_build => 1,
 );
 
+has search_namespace => (
+    isa     => 'Str',
+    is      => 'ro',
+    lazy    => 1,
+    default => sub {
+        my $self = shift;
+        my $namespace = $self->action_namespace($self->_app);
+        $namespace =~ s#/#-#g;
+        return $namespace;
+    },
+);
+
 ##  -- Builders --  ##
 
 # in the controller it would be like:
@@ -107,9 +119,11 @@ sub crud_base : Chained('global_base') PathPrefix CaptureArgs(0) {
 sub crud_base_with_id : Chained('crud_base') PathPart('') CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
 
+    my $item = $c->model('Search')->get_item($self->search_namespace, $id);
+
     $c->stash(
         id  => $id,
-        row => $c->stash->{resultset}->find($id),
+        row => $c->stash->{resultset}->find($item->{_source}{_pks}),
     );
 }
 
@@ -131,28 +145,29 @@ sub update : Chained('crud_base_with_id') PathPart Args(0) {
 # and make it more customizable
 sub list : Chained('crud_base') PathPart('') Args(0) {
     my ($self, $c) = @_;
-    my @result;
 
     my $source  = $c->stash->{resultset}->result_source;
     my @columns = @{ $self->datagrid_columns };
 
-    for (@columns) {
-        push @result, {
-            field => $_,
-
-            name => $c->loc("crud." . $source->from . ".$_"),
-            editable => 0,
-            width => 'auto',
-        };
-    }
+    my @result = (
+        {
+            field => '_esid',
+            name => 'ID',
+        },
+        map {
+            +{
+                field => $_,
+                name => $c->loc("crud." . $source->from . ".$_"),
+                editable => 0,
+                width => 'auto',
+            }
+        } @columns
+    );
 
     $c->stash(
         template  => 'list.tt2',
         structure => \@result,
-
-        # TODO: this is useless, it doesn't work as expected
-        # gotta move it to ElasticSearch id
-        # identity  => join (',', map { "'$_'" } $source->primary_columns),
+        identity  => '_esid',
     );
 }
 
@@ -160,12 +175,16 @@ sub list_json_data : Chained('crud_base') PathPart Args(0) {
     my ($self, $c) = @_;
     my @columns = @{ $self->datagrid_columns };
 
-    my $search = $c->stash->{resultset}->search();
+    my $search = $c->model('Search')->search(
+        $self->search_namespace
+    );
+
     my @items;
 
-    while (my $item = $search->next) {
+    foreach my $hit (@{ $search->{hits}{hits} }) {
         push @items, {
-            map { $_ => $item->get_column($_) } @columns
+            _esid => $hit->{_id},
+            %{ $hit->{_source} },
         };
     }
 
@@ -196,7 +215,7 @@ sub make_form_action {
         $self->submit_form( $form, $row, $action );
 
         $c->model('Search')->index_data(
-            $self->action_namespace( $self->_app ),
+            $self->search_namespace,
             $self->get_elastic_search_insert_data( $row ),
         );
     }
@@ -219,7 +238,12 @@ sub get_elastic_search_insert_data {
     my $columns_info = $row->result_source->columns_info;
     my $extra_params = $self->datagrid_columns_extra_params;
 
-    my %data;
+    my %data = (
+        _pks => {
+            map { $_ => $row->get_column( $_ ) }
+                $row->result_source->primary_columns
+        }
+    );
 
     for my $column ( @{ $self->datagrid_columns } ) {
         my $column_info   = $columns_info->{$column};
@@ -247,6 +271,7 @@ sub get_elastic_search_insert_data {
 
 ### -- Private Methods -- ###
 
+# TODO: this is duplicate of Impacto::ControllerRole::Forms
 sub _translate_form_field {
     my ($c, $caller, $display_name, $origin_object) = @_;
     return $c->loc('crud.' . $caller->form->name . '.' . $origin_object->name);

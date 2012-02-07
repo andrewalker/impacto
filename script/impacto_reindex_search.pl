@@ -80,18 +80,12 @@ sub reindex_db {
             },
         );
 
-        my $db_search = $rs->search(undef, { columns => $columns });
+        my $db_search = $rs->search();
         while (my $row = $db_search->next) {
-            my %data;
-
-            for my $column ( @{ $columns } ) {
-                $data{$column} = $row->get_column($column);
-            }
-
             $search->index(
                 index => 'impacto',
                 type  => $namespace,
-                data  => \%data,
+                data  => $controller->get_elastic_search_insert_data($row),
             );
         }
         say $namespace;

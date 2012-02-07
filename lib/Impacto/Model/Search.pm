@@ -10,6 +10,16 @@ __PACKAGE__->config(
     max_requests => 10_000,
 );
 
+sub index_data {
+    my ( $self, $type, $data ) = @_;
+
+    return $self->_es->index(
+        index => 'impacto',
+        type  => $type,
+        data  => $data,
+    );
+}
+
 __PACKAGE__->meta->make_immutable;
 
 1;

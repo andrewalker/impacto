@@ -16,6 +16,8 @@ has datagrid_columns_extra_params => (
     lazy_build => 1,
 );
 
+requires 'crud_model_instance';
+
 # in the controller it would be like:
 # sub _build_datagrid_columns {
 #   return [ qw/ name date special_date_time customer_name custom_width_column / ]
@@ -30,6 +32,7 @@ has datagrid_columns_extra_params => (
 sub _build_datagrid_columns { shift->get_all_columns(@_) }
 sub _build_datagrid_columns_extra_params { +{} }
 
+# FIXME: Dependency Injection: the $c makes this untestable
 sub get_browse_structure {
     my ( $self, $c ) = @_;
 

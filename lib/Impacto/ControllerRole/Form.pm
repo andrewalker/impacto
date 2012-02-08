@@ -7,6 +7,8 @@ use Form::Sensible::DelegateConnection;
 use Moose::Role;
 use namespace::autoclean;
 
+requires 'crud_model_instance';
+
 has form_columns => (
     isa        => 'ArrayRef',
     is         => 'ro',
@@ -70,6 +72,7 @@ sub build_form {
     return $reflector->reflect_from($resultset, $form_options);
 }
 
+# FIXME: Dependency Injection: the $c makes this untestable
 sub render_form {
     my ( $self, $c, $form ) = @_;
 

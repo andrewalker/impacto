@@ -5,9 +5,6 @@ use namespace::autoclean;
 
 BEGIN { extends 'Impacto::ControllerBase::Base' }
 
-with 'Impacto::ControllerRole::Form',
-     'Impacto::ControllerRole::DataGrid';
-
 ### -- Attributes -- ###
 
 has crud_model_name => (
@@ -52,6 +49,8 @@ sub get_all_columns {
     return [ $self->crud_model_instance->result_source->columns ];
 }
 
+with 'Impacto::ControllerRole::Form',
+     'Impacto::ControllerRole::DataGrid';
 
 ### -- Actions -- ###
 ##  -- Beginning of the Chain --  ##
@@ -151,8 +150,6 @@ sub make_form_action {
         template  => $template,
     );
 }
-
-sub loc { shift->_app->loc(@_) }
 
 __PACKAGE__->meta->make_immutable;
 

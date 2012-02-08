@@ -11,7 +11,15 @@ __PACKAGE__->config(
 );
 
 sub index_data {
-    my ( $self, $type, $data ) = @_;
+    my ( $self, $type, $data, $id ) = @_;
+
+    if ( $id ) {
+        $self->_es->delete(
+            index => 'impacto',
+            type  => $type,
+            id    => $id
+        );
+    }
 
     return $self->_es->index(
         index => 'impacto',
@@ -20,16 +28,26 @@ sub index_data {
     );
 }
 
-sub search {
+sub browse_data {
     my ( $self, $type ) = @_;
+    my @items;
 
-    return $self->_es->search(
+    my $search = $self->_es->search(
         index  => 'impacto',
         type   => $type,
         query => {
             match_all => {}
         }
     );
+
+    foreach my $hit (@{ $search->{hits}{hits} }) {
+        my %row = %{ $hit->{_source} };
+        delete $row{_pks};
+        $row{_esid} = $hit->{_id};
+        push @items, \%row;
+    }
+
+    return \@items;
 }
 
 sub get_item {
@@ -40,6 +58,12 @@ sub get_item {
         type   => $type,
         id     => $id,
     );
+}
+
+sub get_pks {
+    my ( $self, $type, $id ) = @_;
+
+    return $self->get_item($type, $id)->{_source}{_pks};
 }
 
 __PACKAGE__->meta->make_immutable;

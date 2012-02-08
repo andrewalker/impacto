@@ -1,13 +1,17 @@
-
+#### WEDNESDAY ####
     - Implement search
-    - Deal with foreign keys and other extra params for forms
-
     - Find a way to make Impacto::ControllerBase::CRUD less coupled, and more testable
     - Actually test it
 
+#### THURSDAY ####
+    - Whatever is left from Wednesday
     - Put actual links in the menu
     - Customize all child controllers
 
+#### FRIDAY ####
     - Install and use CatalystX::SimpleLogin
     - Create a page to manage users
     - Create a page for user's settings
+
+    - Deal with foreign keys and other extra params for forms
+        # this is stuck, so I'll delay it a little

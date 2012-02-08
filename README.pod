@@ -16,13 +16,9 @@ Download Dojo Toolkit libs:
 
     $ ./script/impacto_get_dojo.sh
 
-Generate the database schema (currently only PostgreSQL supported):
+Install the database schema (currently only PostgreSQL supported):
 
     $ psql -U username -f schema.sql database
-
-Generate the DBIx::Class schema files:
-
-    $ ./script/impacto_generate_dbic_schema.pl username database password
 
 Copy the config (and customize it, using real usernames and passwords):
 

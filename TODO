@@ -1,14 +1,20 @@
-#### WEDNESDAY ####
-    - Implement search
-    - Find a way to make Impacto::ControllerBase::CRUD less coupled, and more testable
-    - Actually test it
-
 #### THURSDAY ####
-    - Whatever is left from Wednesday
+    - Replace Form::Sensible::Reflector::DBIC with my own defaults
+        - I::CR::Form L64
+    - Find a way to make Impacto::ControllerBase::CRUD less coupled, and more testable
+    - Actually test it (unit tests for now)
+        - create a small schema for testing
+        - create a small class that applies *Role::Form
+            - test form creation
+        - create a small class that applies *Role::DataGrid
+            - test grid creation
+
+#### FRIDAY ####
+    - Implement search
     - Put actual links in the menu
     - Customize all child controllers
 
-#### FRIDAY ####
+#### MONDAY ####
     - Install and use CatalystX::SimpleLogin
     - Create a page to manage users
     - Create a page for user's settings

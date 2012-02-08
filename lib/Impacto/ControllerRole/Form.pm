@@ -1,4 +1,4 @@
-package Impacto::ControllerRole::Forms;
+package Impacto::ControllerRole::Form;
 use utf8;
 use Form::Sensible;
 use Form::Sensible::Reflector::DBIC;
@@ -6,6 +6,31 @@ use Form::Sensible::Renderer::HTML;
 use Form::Sensible::DelegateConnection;
 use Moose::Role;
 use namespace::autoclean;
+
+has form_columns => (
+    isa        => 'ArrayRef',
+    is         => 'ro',
+    lazy_build => 1,
+);
+
+has form_columns_extra_params => (
+    isa        => 'HashRef',
+    is         => 'ro',
+    lazy_build => 1,
+);
+
+# in the controller it would be like:
+# sub _build_form_columns {
+#   return [ qw/ name date long_text_field foreign_key_field / ]
+# }
+# sub _build_form_columns_extra_params {
+#   return {
+#       long_text_field   => { type => 'TextArea' },
+#       foreign_key_field => { type => 'Select', label_column => 'name', value_column => 'id' },
+#   }
+# }
+sub _build_form_columns {     goto \&_fetch_all_columns }
+sub _build_form_columns_extra_params { +{} }
 
 sub build_form {
     my $self = shift;
@@ -78,7 +103,6 @@ sub submit_form_update {
     $row->update( $values );
 }
 
-# TODO: this is duplicate of Impacto::ControllerBase::CRUD
 sub _translate_form_field {
     my ($c, $caller, $display_name, $origin_object) = @_;
     return $c->loc('crud.' . $caller->form->name . '.' . $origin_object->name);

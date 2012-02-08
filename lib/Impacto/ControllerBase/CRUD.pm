@@ -6,7 +6,8 @@ use namespace::autoclean;
 
 BEGIN { extends 'Impacto::ControllerBase::Base' }
 
-with 'Impacto::ControllerRole::Forms';
+with 'Impacto::ControllerRole::Form',
+     'Impacto::ControllerRole::DataGrid';
 
 ### -- Attributes -- ###
 
@@ -22,70 +23,26 @@ has crud_model_instance => (
     lazy_build => 1,
 );
 
-has form_columns => (
-    isa        => 'ArrayRef',
-    is         => 'ro',
-    lazy_build => 1,
-);
-
-has form_columns_extra_params => (
-    isa        => 'HashRef',
-    is         => 'ro',
-    lazy_build => 1,
-);
-
-has datagrid_columns => (
-    isa        => 'ArrayRef',
-    is         => 'ro',
-    lazy_build => 1,
-);
-
-has datagrid_columns_extra_params => (
-    isa        => 'HashRef',
-    is         => 'ro',
-    lazy_build => 1,
-);
-
+# lousy name!
 has search_namespace => (
     isa     => 'Str',
     is      => 'ro',
     lazy    => 1,
     default => sub {
         my $self = shift;
-        my $namespace = $self->action_namespace($self->_app);
+        my $namespace = $self->action_namespace( $self->_app );
         $namespace =~ s#/#-#g;
         return $namespace;
     },
 );
 
-##  -- Builders --  ##
+sub _build_crud_model_instance {
+    my $self = shift;
 
-# in the controller it would be like:
-# sub _build_form_columns {
-#   return [ qw/ name date long_text_field foreign_key_field / ]
-# }
-# sub _build_form_columns_extra_params {
-#   return {
-#       long_text_field   => { type => 'TextArea' },
-#       foreign_key_field => { type => 'Select', label_column => 'name', value_column => 'id' },
-#   }
-# }
-sub _build_form_columns {     goto \&_fetch_all_columns }
-sub _build_form_columns_extra_params { +{} }
-
-# in the controller it would be like:
-# sub _build_datagrid_columns {
-#   return [ qw/ name date special_date_time customer_name custom_width_column / ]
-# }
-# sub _build_datagrid_columns_extra_params {
-#    return {
-#       special_date_time   => { format => '%d - %m - %Y' },
-#       customer_name       => { fk => 'customer.name' },
-#       custom_width_column => { width => '40%' },
-#    }
-# }
-sub _build_datagrid_columns { goto \&_fetch_all_columns }
-sub _build_datagrid_columns_extra_params { +{} }
+    return $self->_application->model(
+        $self->crud_model_name
+    );
+}
 
 # Helper method for datagrid_columns and form_columns,
 # which default to all columns.
@@ -96,13 +53,6 @@ sub _fetch_all_columns {
     return [ $self->crud_model_instance->result_source->columns ];
 }
 
-sub _build_crud_model_instance {
-    my $self = shift;
-
-    return $self->_application->model(
-        $self->crud_model_name
-    );
-}
 
 ### -- Actions -- ###
 ##  -- Beginning of the Chain --  ##
@@ -119,11 +69,11 @@ sub crud_base : Chained('global_base') PathPrefix CaptureArgs(0) {
 sub crud_base_with_id : Chained('crud_base') PathPart('') CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
 
-    my $item = $c->model('Search')->get_item($self->search_namespace, $id);
+    my $pks = $c->model('Search')->get_pks($self->search_namespace, $id);
 
     $c->stash(
         id  => $id,
-        row => $c->stash->{resultset}->find($item->{_source}{_pks}),
+        row => $self->crud_model_instance->find( $pks ),
     );
 }
 
@@ -141,56 +91,26 @@ sub update : Chained('crud_base_with_id') PathPart Args(0) {
     $self->make_form_action($c, 'update');
 }
 
-# TODO: move to Elastic Search
-# and make it more customizable
 sub list : Chained('crud_base') PathPart('') Args(0) {
     my ($self, $c) = @_;
 
-    my $source  = $c->stash->{resultset}->result_source;
-    my @columns = @{ $self->datagrid_columns };
-
-    my @result = (
-        {
-            field => '_esid',
-            name => 'ID',
-        },
-        map {
-            +{
-                field => $_,
-                name => $c->loc("crud." . $source->from . ".$_"),
-                editable => 0,
-                width => 'auto',
-            }
-        } @columns
-    );
-
     $c->stash(
         template  => 'list.tt2',
-        structure => \@result,
+        structure => $self->get_browse_structure,
         identity  => '_esid',
     );
 }
 
 sub list_json_data : Chained('crud_base') PathPart Args(0) {
     my ($self, $c) = @_;
-    my @columns = @{ $self->datagrid_columns };
 
-    my $search = $c->model('Search')->search(
+    my $items = $c->model('Search')->browse_data(
         $self->search_namespace
     );
 
-    my @items;
-
-    foreach my $hit (@{ $search->{hits}{hits} }) {
-        push @items, {
-            _esid => $hit->{_id},
-            %{ $hit->{_source} },
-        };
-    }
-
     $c->stash(
         current_view => 'JSON',
-        items        => \@items,
+        items        => $items,
     );
 }
 
@@ -217,6 +137,7 @@ sub make_form_action {
         $c->model('Search')->index_data(
             $self->search_namespace,
             $self->get_elastic_search_insert_data( $row ),
+            $c->stash->{id},
         );
     }
     elsif ($row) {
@@ -232,6 +153,7 @@ sub make_form_action {
     );
 }
 
+# FIXME: should this be in some model? role?
 sub get_elastic_search_insert_data {
     my ( $self, $row ) = @_;
 
@@ -269,13 +191,9 @@ sub get_elastic_search_insert_data {
     return \%data;
 }
 
-### -- Private Methods -- ###
+sub loc { shift->_app->loc(@_) }
 
-# TODO: this is duplicate of Impacto::ControllerRole::Forms
-sub _translate_form_field {
-    my ($c, $caller, $display_name, $origin_object) = @_;
-    return $c->loc('crud.' . $caller->form->name . '.' . $origin_object->name);
-}
+### -- Private Methods -- ###
 
 sub _is_date {
     my $type = shift;

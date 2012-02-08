@@ -2,18 +2,8 @@ package Impacto::View::TT;
 
 use strict;
 use warnings;
-use 5.010;
 
 use base 'Catalyst::View::TT';
-
-__PACKAGE__->config(
-    TEMPLATE_EXTENSION => '.tt2',
-    render_die => 1,
-    INCLUDE_PATH => [
-        Impacto->path_to( 'root', 'templates' ),
-    ],
-    WRAPPER => 'wrapper.tt2',
-);
 
 sub get_first_existing_template {
     my ($self, @names) = @_;

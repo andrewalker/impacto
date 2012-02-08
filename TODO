@@ -1,0 +1,13 @@
+
+    - Implement search
+    - Deal with foreign keys and other extra params for forms
+
+    - Find a way to make Impacto::ControllerBase::CRUD less coupled, and more testable
+    - Actually test it
+
+    - Put actual links in the menu
+    - Customize all child controllers
+
+    - Install and use CatalystX::SimpleLogin
+    - Create a page to manage users
+    - Create a page for user's settings

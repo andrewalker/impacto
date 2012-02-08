@@ -20,7 +20,7 @@ has form_columns_extra_params => (
 );
 
 has form_templates_paths => (
-    isa        => 'Str',
+    isa        => 'ArrayRef[Str]',
     is         => 'ro',
     lazy_build => 1,
 );
@@ -71,7 +71,7 @@ sub build_form {
 }
 
 sub render_form {
-    my ( $self, $form ) = @_;
+    my ( $self, $c, $form ) = @_;
 
     my $fs_renderer = Form::Sensible::Renderer::HTML->new({
         additional_include_paths => $self->form_templates_paths,
@@ -79,7 +79,7 @@ sub render_form {
 
     my $rendered_form = $fs_renderer->render( $form );
     $rendered_form->display_name_delegate(
-        FSConnector(  sub { $self->_translate_form_field(@_) }  )
+        FSConnector(  sub { _translate_form_field($c, @_) }  )
     );
 
     return $rendered_form->complete;
@@ -115,8 +115,8 @@ sub submit_form_update {
 }
 
 sub _translate_form_field {
-    my ($self, $caller, $display_name, $origin_object) = @_;
-    return $self->loc('crud.' . $caller->form->name . '.' . $origin_object->name);
+    my ($c, $caller, $display_name, $origin_object) = @_;
+    return $c->loc('crud.' . $caller->form->name . '.' . $origin_object->name);
 }
 
 1;

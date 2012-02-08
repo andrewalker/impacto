@@ -1,7 +1,6 @@
 package Impacto::ControllerBase::CRUD;
 use utf8;
 use Moose;
-use List::Util qw/first reduce/;
 use namespace::autoclean;
 
 BEGIN { extends 'Impacto::ControllerBase::Base' }
@@ -96,7 +95,7 @@ sub list : Chained('crud_base') PathPart('') Args(0) {
 
     $c->stash(
         template  => 'list.tt2',
-        structure => $self->get_browse_structure,
+        structure => $self->get_browse_structure($c),
         identity  => '_esid',
     );
 }
@@ -148,7 +147,7 @@ sub make_form_action {
 
     $c->stash(
         form      => $form,
-        form_html => $self->render_form( $form ),
+        form_html => $self->render_form( $c, $form ),
         template  => $template,
     );
 }

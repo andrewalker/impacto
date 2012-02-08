@@ -1,6 +1,7 @@
 package Impacto::ControllerRole::DataGrid;
 use utf8;
 use Moose::Role;
+use List::Util qw/first reduce/;
 use namespace::autoclean;
 
 has datagrid_columns => (
@@ -30,7 +31,7 @@ sub _build_datagrid_columns { shift->get_all_columns(@_) }
 sub _build_datagrid_columns_extra_params { +{} }
 
 sub get_browse_structure {
-    my ( $self ) = @_;
+    my ( $self, $c ) = @_;
 
     my $from = $self->crud_model_instance->result_source->from;
 
@@ -42,7 +43,7 @@ sub get_browse_structure {
         map {
             +{
                 field => $_,
-                name => $self->loc("crud." . $from . ".$_"),
+                name => $c->loc("crud." . $from . ".$_"),
                 editable => 0,
                 width => 'auto',
             }

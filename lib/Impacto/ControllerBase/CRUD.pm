@@ -23,8 +23,8 @@ has crud_model_instance => (
     lazy_build => 1,
 );
 
-# lousy name!
-has search_namespace => (
+# because 'type' is so mainstream
+has elastic_search_pseudo_table => (
     isa     => 'Str',
     is      => 'ro',
     lazy    => 1,
@@ -48,7 +48,7 @@ sub _build_crud_model_instance {
 # which default to all columns.
 # Both of them should be overriden by the controller itself,
 # i.e. list only the relevant ones, when appropriate
-sub _fetch_all_columns {
+sub get_all_columns {
     my $self = shift;
     return [ $self->crud_model_instance->result_source->columns ];
 }
@@ -69,7 +69,7 @@ sub crud_base : Chained('global_base') PathPrefix CaptureArgs(0) {
 sub crud_base_with_id : Chained('crud_base') PathPart('') CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
 
-    my $pks = $c->model('Search')->get_pks($self->search_namespace, $id);
+    my $pks = $c->model('Search')->get_pks($self->elastic_search_pseudo_table, $id);
 
     $c->stash(
         id  => $id,
@@ -105,7 +105,7 @@ sub list_json_data : Chained('crud_base') PathPart Args(0) {
     my ($self, $c) = @_;
 
     my $items = $c->model('Search')->browse_data(
-        $self->search_namespace
+        $self->elastic_search_pseudo_table
     );
 
     $c->stash(
@@ -135,7 +135,7 @@ sub make_form_action {
         $self->submit_form( $form, $row, $action );
 
         $c->model('Search')->index_data(
-            $self->search_namespace,
+            $self->elastic_search_pseudo_table,
             $self->get_elastic_search_insert_data( $row ),
             $c->stash->{id},
         );
@@ -148,62 +148,12 @@ sub make_form_action {
 
     $c->stash(
         form      => $form,
-        form_html => $self->render_form( $c, $form ),
+        form_html => $self->render_form( $form ),
         template  => $template,
     );
 }
 
-# FIXME: should this be in some model? role?
-sub get_elastic_search_insert_data {
-    my ( $self, $row ) = @_;
-
-    my $columns_info = $row->result_source->columns_info;
-    my $extra_params = $self->datagrid_columns_extra_params;
-
-    my %data = (
-        _pks => {
-            map { $_ => $row->get_column( $_ ) }
-                $row->result_source->primary_columns
-        }
-    );
-
-    for my $column ( @{ $self->datagrid_columns } ) {
-        my $column_info   = $columns_info->{$column};
-        my $column_params = $extra_params->{$column};
-
-        if ( $column_info && _is_date($column_info->{data_type}) ) {
-            my $format     = $column_params && $column_params->{format}
-                           ? $column_params->{format}
-                           : '%d/%m/%Y'
-                           ;
-
-            $data{$column} = $row->$column->strftime( $format );
-        }
-        elsif (my $fk = $column_params->{fk}) {
-            my @items      = split /\./, $fk;
-            $data{$column} = reduce { $a->$b } $row, @items;
-        }
-        else {
-            $data{$column} = $row->get_column($column);
-        }
-    }
-
-    return \%data;
-}
-
 sub loc { shift->_app->loc(@_) }
-
-### -- Private Methods -- ###
-
-sub _is_date {
-    my $type = shift;
-
-    my @date_types = qw(
-        date datetime timestamp
-    );
-
-    return first { $_ eq $type } @date_types;
-}
 
 __PACKAGE__->meta->make_immutable;
 

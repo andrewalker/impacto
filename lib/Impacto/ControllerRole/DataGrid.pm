@@ -26,7 +26,7 @@ has datagrid_columns_extra_params => (
 #       custom_width_column => { width => '40%' },
 #    }
 # }
-sub _build_datagrid_columns { shift->_fetch_all_columns(@_) }
+sub _build_datagrid_columns { shift->get_all_columns(@_) }
 sub _build_datagrid_columns_extra_params { +{} }
 
 sub get_browse_structure {
@@ -48,6 +48,53 @@ sub get_browse_structure {
             }
         } @{ $self->datagrid_columns }
     ];
+}
+
+sub get_elastic_search_insert_data {
+    my ( $self, $row ) = @_;
+
+    my $columns_info = $row->result_source->columns_info;
+    my $extra_params = $self->datagrid_columns_extra_params;
+
+    my %data = (
+        _pks => {
+            map { $_ => $row->get_column( $_ ) }
+                $row->result_source->primary_columns
+        }
+    );
+
+    for my $column ( @{ $self->datagrid_columns } ) {
+        my $column_info   = $columns_info->{$column};
+        my $column_params = $extra_params->{$column};
+
+        if ( $column_info && _is_date($column_info->{data_type}) ) {
+            my $format     = $column_params && $column_params->{format}
+                           ? $column_params->{format}
+                           : '%d/%m/%Y'
+                           ;
+
+            $data{$column} = $row->$column->strftime( $format );
+        }
+        elsif (my $fk = $column_params->{fk}) {
+            my @items      = split /\./, $fk;
+            $data{$column} = reduce { $a->$b } $row, @items;
+        }
+        else {
+            $data{$column} = $row->get_column($column);
+        }
+    }
+
+    return \%data;
+}
+
+sub _is_date {
+    my $type = shift;
+
+    my @date_types = qw(
+        date datetime timestamp
+    );
+
+    return first { $_ eq $type } @date_types;
 }
 
 1;

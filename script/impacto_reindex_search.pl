@@ -58,8 +58,7 @@ sub reindex_db {
         $controller = $c->controller($controller);
         next unless $controller->isa('Impacto::ControllerBase::CRUD');
 
-        my $namespace = $controller->action_namespace($c);
-        $namespace    =~ s#/#-#g;
+        my $namespace = $controller->elastic_search_pseudo_table;
         my $rs        = $controller->crud_model_instance;
         my $source    = $rs->result_source;
         my $columns   = $controller->datagrid_columns;

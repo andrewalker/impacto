@@ -19,6 +19,19 @@ has form_columns_extra_params => (
     lazy_build => 1,
 );
 
+has form_templates_paths => (
+    isa        => 'Str',
+    is         => 'ro',
+    lazy_build => 1,
+);
+
+
+sub _build_form_templates_paths {
+    my $self = shift;
+
+    return [ $self->_app->path_to(qw/root templates forms/)->stringify ];
+}
+
 # in the controller it would be like:
 # sub _build_form_columns {
 #   return [ qw/ name date long_text_field foreign_key_field / ]
@@ -29,7 +42,7 @@ has form_columns_extra_params => (
 #       foreign_key_field => { type => 'Select', label_column => 'name', value_column => 'id' },
 #   }
 # }
-sub _build_form_columns {     goto \&_fetch_all_columns }
+sub _build_form_columns { shift->get_all_columns(@_) }
 sub _build_form_columns_extra_params { +{} }
 
 sub build_form {
@@ -58,17 +71,15 @@ sub build_form {
 }
 
 sub render_form {
-    my ( $self, $c, $form ) = @_;
+    my ( $self, $form ) = @_;
 
     my $fs_renderer = Form::Sensible::Renderer::HTML->new({
-        additional_include_paths => [
-            $c->path_to(qw/root templates forms/)->stringify
-        ],
+        additional_include_paths => $self->form_templates_paths,
     });
 
     my $rendered_form = $fs_renderer->render( $form );
     $rendered_form->display_name_delegate(
-        FSConnector(  sub { _translate_form_field($c, @_) }  )
+        FSConnector(  sub { $self->_translate_form_field(@_) }  )
     );
 
     return $rendered_form->complete;
@@ -104,8 +115,8 @@ sub submit_form_update {
 }
 
 sub _translate_form_field {
-    my ($c, $caller, $display_name, $origin_object) = @_;
-    return $c->loc('crud.' . $caller->form->name . '.' . $origin_object->name);
+    my ($self, $caller, $display_name, $origin_object) = @_;
+    return $self->loc('crud.' . $caller->form->name . '.' . $origin_object->name);
 }
 
 1;

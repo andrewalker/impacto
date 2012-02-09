@@ -1,9 +1,9 @@
 package Impacto::ControllerRole::Form;
 use utf8;
 use Form::Sensible;
-use Form::Sensible::Reflector::DBIC;
 use Form::Sensible::Renderer::HTML;
 use Form::Sensible::DelegateConnection;
+use Impacto::Form::Sensible::Reflector::DBIC;
 use Moose::Role;
 use namespace::autoclean;
 
@@ -52,21 +52,12 @@ sub build_form {
 
     my $resultset = $self->crud_model_instance;
     my $source    = $resultset->result_source;
+    my $reflector = Impacto::Form::Sensible::Reflector::DBIC->new();
 
     my $form_options = {
-        form => { name => $source->from },
-        with_trigger => 1,
-    };
-    $form_options->{fieldname_filter} = sub {
-        @{ $self->form_columns }
-    };
-
-    my $reflector = Form::Sensible::Reflector::DBIC->new();
-
-    # TODO: this probably shouldn't be here
-    $reflector->field_type_map->{text}->{defaults}->{field_class} = 'Text';
-    $reflector->field_type_map->{boolean} = {
-        defaults => { field_class => 'Toggle' },
+        form             => { name => $source->from },
+        with_trigger     => 1,
+        fieldname_filter => sub { @{ $self->form_columns } },
     };
 
     return $reflector->reflect_from($resultset, $form_options);

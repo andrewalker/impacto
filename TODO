@@ -1,6 +1,4 @@
 #### THURSDAY ####
-    - Replace Form::Sensible::Reflector::DBIC with my own defaults
-        - I::CR::Form L64
     - Find a way to make Impacto::ControllerBase::CRUD less coupled, and more testable
     - Actually test it (unit tests for now)
         - create a small schema for testing

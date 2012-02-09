@@ -28,14 +28,14 @@ sub get_elastic_search_insert_data {
                            : '%d/%m/%Y'
                            ;
 
-            $data{$column} = $row->$column->strftime( $format );
+            $data{$column} = $self->$column->strftime( $format );
         }
         elsif (my $fk = $column_params->{fk}) {
             my @items      = split /\./, $fk;
-            $data{$column} = reduce { $a->$b } $row, @items;
+            $data{$column} = reduce { $a->$b } $self, @items;
         }
         else {
-            $data{$column} = $row->get_column($column);
+            $data{$column} = $self->get_column($column);
         }
     }
 

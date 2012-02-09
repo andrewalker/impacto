@@ -121,7 +121,7 @@ sub list_json_data : Chained('crud_base') PathPart Args(0) {
 sub make_form_action {
     my ($self, $c, $action) = @_;
 
-    my $form = $self->build_form;
+    my $form = $self->build_form_sensible_object;
     my $row = $c->stash->{row} ||
         $self->crud_model_instance->new_result({});
 

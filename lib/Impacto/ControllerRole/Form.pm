@@ -47,7 +47,7 @@ sub _build_form_templates_paths {
 sub _build_form_columns { shift->get_all_columns(@_) }
 sub _build_form_columns_extra_params { +{} }
 
-sub build_form {
+sub build_form_sensible_object {
     my $self = shift;
 
     my $resultset = $self->crud_model_instance;

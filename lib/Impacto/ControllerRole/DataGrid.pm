@@ -46,7 +46,7 @@ sub get_browse_structure {
         map {
             +{
                 field => $_,
-                name => $c->loc("crud." . $from . ".$_"),
+                name => $c->model('Maketext')->maketext("crud." . $from . ".$_"),
                 editable => 0,
                 width => 'auto',
             }

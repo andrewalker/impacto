@@ -1,7 +1,7 @@
 package Impacto;
 use Moose;
 use namespace::autoclean;
-
+use CatalystX::RoleApplicator;
 use Catalyst::Runtime 5.80;
 
 # Set flags and add plugins for the application.
@@ -17,10 +17,14 @@ use Catalyst::Runtime 5.80;
 #                 directory
 
 use Catalyst qw/
-    I18N
+    +CatalystX::I18N::Role::Base
+    +CatalystX::I18N::Role::Maketext
+    +CatalystX::I18N::Role::GetLocale
     ConfigLoader
     Static::Simple
 /;
+
+__PACKAGE__->apply_request_class_roles('CatalystX::I18N::TraitFor::Request');
 
 extends 'Catalyst';
 
@@ -38,9 +42,13 @@ our $VERSION = '0.01';
 __PACKAGE__->config(
     name => 'Impacto',
     default_view => 'TT',
-    'Plugin::I18N' => {
-        maketext_options => {
-            style => 'gettext',
+    'Model::Maketext' => {},
+    I18N => {
+        default_locale => 'pt_BR',
+        locales     => {
+            'pt_BR' => {},
+            'pt' => {},
+            'en' => {},
         },
     },
     # Disable deprecated behavior needed by old applications

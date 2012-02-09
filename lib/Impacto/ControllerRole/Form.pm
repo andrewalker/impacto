@@ -110,7 +110,7 @@ sub submit_form_update {
 
 sub _translate_form_field {
     my ($c, $caller, $display_name, $origin_object) = @_;
-    return $c->loc('crud.' . $caller->form->name . '.' . $origin_object->name);
+    return $c->model('Maketext')->maketext('crud.' . $caller->form->name . '.' . $origin_object->name);
 }
 
 1;

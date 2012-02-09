@@ -15,7 +15,7 @@ has datagrid_columns_extra_params => (
     lazy_build => 1,
 );
 
-requires 'crud_model_instance';
+requires 'crud_model_instance', 'i18n';
 
 # in the controller it would be like:
 # sub _build_datagrid_columns {
@@ -31,6 +31,14 @@ requires 'crud_model_instance';
 sub _build_datagrid_columns { shift->get_all_columns(@_) }
 sub _build_datagrid_columns_extra_params { +{} }
 
+# just to be sure it exists when needed
+sub get_all_columns {
+    warn 'Method get_all_columns not found.';
+    warn 'You should implement it in the class that uses this role.';
+
+    return [];
+}
+
 sub get_browse_structure {
     my ( $self ) = @_;
 
@@ -44,7 +52,7 @@ sub get_browse_structure {
         map {
             +{
                 field => $_,
-                name => $self->i18n->maketext("crud." . $from . ".$_"),
+                name => $self->i18n->maketext("crud.$from.$_"),
                 editable => 0,
                 width => 'auto',
             }

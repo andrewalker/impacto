@@ -7,7 +7,7 @@ use Impacto::Form::Sensible::Reflector::DBIC;
 use Moose::Role;
 use namespace::autoclean;
 
-requires 'crud_model_instance';
+requires 'crud_model_instance', 'i18n';
 
 has form_columns => (
     isa        => 'ArrayRef',
@@ -46,6 +46,14 @@ sub _build_form_templates_paths {
 # }
 sub _build_form_columns { shift->get_all_columns(@_) }
 sub _build_form_columns_extra_params { +{} }
+
+# just to be sure it exists when needed
+sub get_all_columns {
+    warn 'Method get_all_columns not found.';
+    warn 'You should implement it in the class that uses this role.';
+
+    return [];
+}
 
 sub build_form_sensible_object {
     my $self = shift;
@@ -109,7 +117,10 @@ sub submit_form_update {
 
 sub _translate_form_field {
     my ($self, $caller, $display_name, $origin_object) = @_;
-    return $self->i18n->maketext('crud.' . $caller->form->name . '.' . $origin_object->name);
+
+    return $self->i18n->maketext(
+        'crud.' . $caller->form->name . '.' . $origin_object->name
+    );
 }
 
 1;

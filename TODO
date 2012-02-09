@@ -1,4 +1,5 @@
 #### THURSDAY ####
+    - Documentation
     - Find a way to make Impacto::ControllerBase::CRUD less coupled, and more testable
     - Actually test it (unit tests for now)
         - create a small schema for testing

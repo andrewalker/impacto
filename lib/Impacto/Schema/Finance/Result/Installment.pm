@@ -1,21 +1,40 @@
+use utf8;
 package Impacto::Schema::Finance::Result::Installment;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
-use strict;
-use warnings;
-
-use Moose;
-use MooseX::NonMoose;
-use namespace::autoclean;
-extends 'DBIx::Class::Core';
-
-__PACKAGE__->load_components("InflateColumn::DateTime");
-
 =head1 NAME
 
 Impacto::Schema::Finance::Result::Installment
+
+=cut
+
+use strict;
+use warnings;
+
+=head1 BASE CLASS: L<Impacto::DBIC::Result>
+
+=cut
+
+use Moose;
+use MooseX::NonMoose;
+use MooseX::MarkAsMethods autoclean => 1;
+extends 'Impacto::DBIC::Result';
+
+=head1 COMPONENTS LOADED
+
+=over 4
+
+=item * L<DBIx::Class::InflateColumn::DateTime>
+
+=back
+
+=cut
+
+__PACKAGE__->load_components("InflateColumn::DateTime");
+
+=head1 TABLE: C<installment>
 
 =cut
 
@@ -57,24 +76,22 @@ __PACKAGE__->add_columns(
   "payed",
   { data_type => "boolean", default_value => \"false", is_nullable => 0 },
 );
-__PACKAGE__->set_primary_key("ledger", "due");
 
-=head1 RELATIONS
+=head1 PRIMARY KEY
 
-=head2 ledger
+=over 4
 
-Type: belongs_to
+=item * L</ledger>
 
-Related object: L<Impacto::Schema::Finance::Result::Ledger>
+=item * L</due>
+
+=back
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "ledger",
-  "Impacto::Schema::Finance::Result::Ledger",
-  { id => "ledger" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
+__PACKAGE__->set_primary_key("ledger", "due");
+
+=head1 RELATIONS
 
 =head2 installment_payments
 
@@ -91,9 +108,24 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 ledger
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2011-09-29 20:02:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:tqQVyxvN5CwfBoTc0sHAXQ
+Type: belongs_to
+
+Related object: L<Impacto::Schema::Finance::Result::Ledger>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "ledger",
+  "Impacto::Schema::Finance::Result::Ledger",
+  { id => "ledger" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-09 16:32:11
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1CAw0MrQBfV17/0bmQkJWQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

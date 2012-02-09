@@ -1,21 +1,40 @@
+use utf8;
 package Impacto::Schema::Product::Result::StockMovement;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
-use strict;
-use warnings;
-
-use Moose;
-use MooseX::NonMoose;
-use namespace::autoclean;
-extends 'DBIx::Class::Core';
-
-__PACKAGE__->load_components("InflateColumn::DateTime");
-
 =head1 NAME
 
 Impacto::Schema::Product::Result::StockMovement
+
+=cut
+
+use strict;
+use warnings;
+
+=head1 BASE CLASS: L<Impacto::DBIC::Result>
+
+=cut
+
+use Moose;
+use MooseX::NonMoose;
+use MooseX::MarkAsMethods autoclean => 1;
+extends 'Impacto::DBIC::Result';
+
+=head1 COMPONENTS LOADED
+
+=over 4
+
+=item * L<DBIx::Class::InflateColumn::DateTime>
+
+=back
+
+=cut
+
+__PACKAGE__->load_components("InflateColumn::DateTime");
+
+=head1 TABLE: C<stock_movement>
 
 =cut
 
@@ -86,6 +105,17 @@ __PACKAGE__->add_columns(
   "product",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
@@ -101,21 +131,6 @@ Related object: L<Impacto::Schema::Product::Result::Consignation>
 __PACKAGE__->has_many(
   "consignations",
   "Impacto::Schema::Product::Result::Consignation",
-  { "foreign.stock_movement" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-=head2 returns
-
-Type: has_many
-
-Related object: L<Impacto::Schema::Product::Result::Return>
-
-=cut
-
-__PACKAGE__->has_many(
-  "returns",
-  "Impacto::Schema::Product::Result::Return",
   { "foreign.stock_movement" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -150,9 +165,24 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
+=head2 returns
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2011-09-29 20:02:46
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:JiILbY66E0zGMyk6Dwqd9g
+Type: has_many
+
+Related object: L<Impacto::Schema::Product::Result::Return>
+
+=cut
+
+__PACKAGE__->has_many(
+  "returns",
+  "Impacto::Schema::Product::Result::Return",
+  { "foreign.stock_movement" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-09 16:32:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:nDE9H3twmbXYyep+RgmLaQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

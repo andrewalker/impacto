@@ -1,17 +1,18 @@
+use utf8;
 package Impacto::Schema::Product;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 use Moose;
-use namespace::autoclean;
+use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Schema';
 
 __PACKAGE__->load_namespaces;
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2011-09-26 20:07:25
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:WFyFLCVvYqQ7kCaAsnmVXg
+# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-09 16:32:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:LKp/2jyJOipXmIzxeHwqXQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

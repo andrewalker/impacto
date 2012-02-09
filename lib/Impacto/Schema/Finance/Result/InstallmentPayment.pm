@@ -1,21 +1,40 @@
+use utf8;
 package Impacto::Schema::Finance::Result::InstallmentPayment;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
-use strict;
-use warnings;
-
-use Moose;
-use MooseX::NonMoose;
-use namespace::autoclean;
-extends 'DBIx::Class::Core';
-
-__PACKAGE__->load_components("InflateColumn::DateTime");
-
 =head1 NAME
 
 Impacto::Schema::Finance::Result::InstallmentPayment
+
+=cut
+
+use strict;
+use warnings;
+
+=head1 BASE CLASS: L<Impacto::DBIC::Result>
+
+=cut
+
+use Moose;
+use MooseX::NonMoose;
+use MooseX::MarkAsMethods autoclean => 1;
+extends 'Impacto::DBIC::Result';
+
+=head1 COMPONENTS LOADED
+
+=over 4
+
+=item * L<DBIx::Class::InflateColumn::DateTime>
+
+=back
+
+=cut
+
+__PACKAGE__->load_components("InflateColumn::DateTime");
+
+=head1 TABLE: C<installment_payment>
 
 =cut
 
@@ -100,6 +119,17 @@ __PACKAGE__->add_columns(
   "comments",
   { data_type => "text", is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
@@ -135,8 +165,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2011-09-29 20:02:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:rg+h5dDjhUZ4jvDr+DdgYg
+# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-09 16:32:11
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:j/OWK9klq8JlY6SSK9NIgA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

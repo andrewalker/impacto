@@ -1,21 +1,40 @@
+use utf8;
 package Impacto::Schema::UserAccount::Result::Role;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
-use strict;
-use warnings;
-
-use Moose;
-use MooseX::NonMoose;
-use namespace::autoclean;
-extends 'DBIx::Class::Core';
-
-__PACKAGE__->load_components("InflateColumn::DateTime");
-
 =head1 NAME
 
 Impacto::Schema::UserAccount::Result::Role
+
+=cut
+
+use strict;
+use warnings;
+
+=head1 BASE CLASS: L<Impacto::DBIC::Result>
+
+=cut
+
+use Moose;
+use MooseX::NonMoose;
+use MooseX::MarkAsMethods autoclean => 1;
+extends 'Impacto::DBIC::Result';
+
+=head1 COMPONENTS LOADED
+
+=over 4
+
+=item * L<DBIx::Class::InflateColumn::DateTime>
+
+=back
+
+=cut
+
+__PACKAGE__->load_components("InflateColumn::DateTime");
+
+=head1 TABLE: C<role>
 
 =cut
 
@@ -31,6 +50,17 @@ __PACKAGE__->table("role");
 =cut
 
 __PACKAGE__->add_columns("role", { data_type => "text", is_nullable => 0 });
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</role>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("role");
 
 =head1 RELATIONS
@@ -50,9 +80,19 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 logins
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2011-09-26 20:07:28
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/bBwYiDll0EsJ6TBpUcQPw
+Type: many_to_many
+
+Composing rels: L</user_account_roles> -> login
+
+=cut
+
+__PACKAGE__->many_to_many("logins", "user_account_roles", "login");
+
+
+# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-09 16:32:13
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BcD2CLnW+SNr8Z3CHbQ8dw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

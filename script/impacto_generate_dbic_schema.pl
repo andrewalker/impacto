@@ -22,7 +22,8 @@ sub create {
 
     system $Bin . "/impacto_create.pl model " .
         "DB::${uc_schema} DBIC::Schema Impacto::Schema::${uc_schema} " .
-        "create=static dbi:Pg:dbname=$db $user $password db_schema=$schema";
+        "create=static result_base_class='Impacto::DBIC::Result' " .
+        "dbi:Pg:dbname=$db $user $password db_schema=$schema";
 
     my $new_model = "$Bin/../lib/Impacto/Model/DB/${uc_schema}.pm.new";
     unlink $new_model if -e $new_model;

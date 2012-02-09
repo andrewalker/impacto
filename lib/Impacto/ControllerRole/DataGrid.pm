@@ -32,9 +32,8 @@ requires 'crud_model_instance';
 sub _build_datagrid_columns { shift->get_all_columns(@_) }
 sub _build_datagrid_columns_extra_params { +{} }
 
-# FIXME: Dependency Injection: the $c makes this untestable
 sub get_browse_structure {
-    my ( $self, $c ) = @_;
+    my ( $self ) = @_;
 
     my $from = $self->crud_model_instance->result_source->from;
 
@@ -46,7 +45,7 @@ sub get_browse_structure {
         map {
             +{
                 field => $_,
-                name => $c->loc("crud." . $from . ".$_"),
+                name => $self->i18n->maketext("crud." . $from . ".$_"),
                 editable => 0,
                 width => 'auto',
             }

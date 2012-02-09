@@ -63,9 +63,8 @@ sub build_form_sensible_object {
     return $reflector->reflect_from($resultset, $form_options);
 }
 
-# FIXME: Dependency Injection: the $c makes this untestable
 sub render_form {
-    my ( $self, $c, $form ) = @_;
+    my ( $self, $form ) = @_;
 
     my $fs_renderer = Form::Sensible::Renderer::HTML->new({
         additional_include_paths => $self->form_templates_paths,
@@ -73,7 +72,7 @@ sub render_form {
 
     my $rendered_form = $fs_renderer->render( $form );
     $rendered_form->display_name_delegate(
-        FSConnector(  sub { _translate_form_field($c, @_) }  )
+        FSConnector(  sub { $self->_translate_form_field(@_) }  )
     );
 
     return $rendered_form->complete;
@@ -109,8 +108,8 @@ sub submit_form_update {
 }
 
 sub _translate_form_field {
-    my ($c, $caller, $display_name, $origin_object) = @_;
-    return $c->loc('crud.' . $caller->form->name . '.' . $origin_object->name);
+    my ($self, $caller, $display_name, $origin_object) = @_;
+    return $self->i18n->maketext('crud.' . $caller->form->name . '.' . $origin_object->name);
 }
 
 1;

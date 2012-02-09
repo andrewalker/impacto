@@ -8,6 +8,7 @@ BEGIN { extends 'Catalyst::Controller' }
 sub global_base : Chained('/') PathPart('') CaptureArgs(0) {
     my ( $self, $c ) = @_;
 
+    $c->get_locale();
     $c->stash(static_root_uri => $c->uri_for('/static'));
 
 #    return $c->res->redirect(

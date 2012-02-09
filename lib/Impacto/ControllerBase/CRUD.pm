@@ -19,6 +19,11 @@ has crud_model_instance => (
     lazy_build => 1,
 );
 
+has i18n => (
+    isa => 'Locale::Maketext',
+    is  => 'rw',
+);
+
 # because 'type' is so mainstream
 has elastic_search_pseudo_table => (
     isa     => 'Str',
@@ -58,6 +63,8 @@ with 'Impacto::ControllerRole::Form',
 sub crud_base : Chained('global_base') PathPrefix CaptureArgs(0) {
     my ( $self, $c ) = @_;
 
+    $self->i18n( $c->model('Maketext') );
+
     $c->stash(
         resultset        => $self->crud_model_instance,
         table_prefix_uri => $c->uri_for('/') . $self->path_prefix($c),
@@ -94,7 +101,7 @@ sub list : Chained('crud_base') PathPart('') Args(0) {
 
     $c->stash(
         template  => 'list.tt2',
-        structure => $self->get_browse_structure($c),
+        structure => $self->get_browse_structure(),
         identity  => '_esid',
     );
 }
@@ -146,7 +153,7 @@ sub make_form_action {
 
     $c->stash(
         form      => $form,
-        form_html => $self->render_form( $c, $form ),
+        form_html => $self->render_form( $form ),
         template  => $template,
     );
 }

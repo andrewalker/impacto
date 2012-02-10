@@ -1,6 +1,7 @@
 CREATE TABLE person (
     slug text NOT NULL,
     name text NOT NULL,
+    birthday TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     phone text,
     email text,
     PRIMARY KEY(slug)

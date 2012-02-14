@@ -7,3 +7,6 @@ root/static/lib/dijit/
 
 # we don't care about local config
 impacto_local.*
+
+# or about test db
+t/db/test.db

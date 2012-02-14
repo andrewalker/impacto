@@ -1,8 +1,22 @@
 package Role::CrudModelInstance;
 use Moose::Role;
+use Schema;
+use FindBin '$Bin';
 
-sub crud_model_instance {
-    # return DBIC model
+requires 'crud_model_name';
+
+has crud_model_instance => (
+    is => 'ro',
+    isa => 'DBIx::Class::ResultSet',
+    lazy_build => 1,
+);
+
+sub _build_crud_model_instance {
+    my $self = shift;
+
+    return Schema->connect("dbi:SQLite:$Bin/../../../db/test.db")->resultset(
+        $self->crud_model_name
+    );
 }
 
 no Moose::Role;

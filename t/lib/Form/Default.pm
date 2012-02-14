@@ -8,4 +8,6 @@ with 'Role::CrudModelInstance';
 with 'Role::I18N';
 with 'Impacto::ControllerRole::Form' => { -excludes => 'get_all_columns' };
 
+sub _build_form_templates_paths { [''] }
+
 1;

@@ -13,7 +13,11 @@ Schema::Result::Person
 use strict;
 use warnings;
 
-use base 'DBIx::Class::Core';
+=head1 BASE CLASS: L<Impacto::DBIC::Result>
+
+=cut
+
+use base 'Impacto::DBIC::Result';
 
 =head1 COMPONENTS LOADED
 
@@ -110,8 +114,8 @@ __PACKAGE__->might_have(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-10 19:52:03
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:r8r3TSGRnLZj4XmhaAkj/Q
+# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-14 18:27:46
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:t/EzaEMulxFihneg2UCxLw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

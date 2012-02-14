@@ -19,5 +19,7 @@ sub _build_crud_model_instance {
     );
 }
 
+sub get_all_columns { [ shift->crud_model_instance->result_source->columns ] }
+
 no Moose::Role;
 1;

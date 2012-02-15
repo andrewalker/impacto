@@ -1,6 +1,8 @@
 [% IF nowrap %]
     [% content %]
 [% ELSE %]
+[% SET wrapper_extra_css = extra_css or template.extra_css %]
+[% SET wrapper_extra_js  = extra_js  or template.extra_js %]
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,12 +11,12 @@
     <link href="[% static_root_uri %]/lib/dojox/grid/enhanced/resources/EnhancedGrid.css" type="text/css" rel="stylesheet" />
     <link href="[% static_root_uri %]/lib/dojox/grid/enhanced/resources/tundra/EnhancedGrid.css" type="text/css" rel="stylesheet" />
     <link href="[% static_root_uri %]/css/main.css" type="text/css" rel="stylesheet" />
-    [% IF template.extra_css %][% FOREACH css IN template.extra_css.split(' ') %]
+    [% IF wrapper_extra_css %][% FOREACH css IN wrapper_extra_css.split(' ') %]
         <link href="[% static_root_uri %]/css/[% css %]" type="text/css" rel="stylesheet" />
     [% END %][% END %]
     <script type="text/javascript" src="[% static_root_uri %]/lib/dojo/dojo.js" data-dojo-config="parseOnLoad: true"></script>
     <script type="text/javascript" src="[% static_root_uri %]/js/browse.js"></script>
-    [% IF template.extra_js %][% FOREACH js IN template.extra_js.split(' ') %]
+    [% IF wrapper_extra_js %][% FOREACH js IN wrapper_extra_js.split(' ') %]
         <script type="text/javascript" src="[% static_root_uri %]/js/[% js %]"></script>
     [% END %][% END %]
 </head>

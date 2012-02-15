@@ -1,12 +1,11 @@
-    - Fix search (setTimeout / clearTimeout)
+    - Test non default grid / form
     - Customize all child controllers
-    - Put actual links in the menu
-    - Install and use CatalystX::SimpleLogin
 
 ###########################################
 ###########  Install on server! ###########
 ###########################################
 
+    - Fix search (setTimeout / clearTimeout)
     - Create a page to manage users
     - Create a page for user's settings
     - Deal with foreign keys and other extra params for forms

@@ -30,8 +30,6 @@ sub index :Path Args(0) {
     my ( $self, $c ) = @_;
 
     $c->forward('global_base');
-
-    $c->res->body('logado');
 }
 
 =head2 default

@@ -22,28 +22,45 @@
 </head>
 <body>
     <nav id="top-menu">
-        <h1 class="current-page">Catálogo de Produtos</h1>
+        <h1 class="current-page">[% title or 'Catálogo de Produtos' %]</h1>
         <ul data-dojo-type="dijit.MenuBar">
             <li data-dojo-type="dijit.PopupMenuBarItem">
                 <a>Produtos</a>
                 <ul data-dojo-type="dijit.Menu">
-                    <li data-dojo-type="dijit.MenuItem"><a>Catálogo</a></li>
-                    <li data-dojo-type="dijit.MenuItem"><a>Categoria</a></li>
-                    <li data-dojo-type="dijit.MenuItem"><a>Estoque</a></li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/product/category' }">Categoria</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/product/product' }">Produtos</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/product/productcategory' }">Produtos | Categoria</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/product/subscription' }">Assinatura</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/product/productstock' }">Estoque do Produto</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/product/stockmovement' }">Movimento de Estoque</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/product/place' }">Local de Estoque</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/product/consignation' }">Consignação</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/product/return' }">Retorno</li>
                 </ul>
             </li>
             <li data-dojo-type="dijit.PopupMenuBarItem">
-                <a>Transações</a>
+                <a>Pessoas</a>
                 <ul data-dojo-type="dijit.Menu">
-                    <li data-dojo-type="dijit.MenuItem"><a>Vender</a></li>
-                    <li data-dojo-type="dijit.MenuItem"><a>Comprar</a></li>
-                    <li data-dojo-type="dijit.MenuItem"><a>Movimentar Estoque</a></li>
-                    <li data-dojo-type="dijit.MenuItem"><a>Consignação</a></li>
-                    <li data-dojo-type="dijit.MenuItem"><a>Devolução</a></li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/people/person' }">Pessoa</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/people/address' }">Endereço</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/people/bankaccount' }">Conta bancária</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/people/contact' }">Contato</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/people/document' }">Documento</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/people/employee' }">Empregado</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/people/representant' }">Representante</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/people/supplier' }">Fornecedor</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/people/client' }">Cliente</li>
                 </ul>
             </li>
-            <li data-dojo-type="dijit.MenuBarItem">
+            <li data-dojo-type="dijit.PopupMenuBarItem">
                 <a>Financeiro</a>
+                <ul data-dojo-type="dijit.Menu">
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/finance/account' }">Conta</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/finance/installment' }">Parcela</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/finance/installmentpayment' }">Pagamento da Parcela</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/finance/ledger' }">Transação</li>
+                    <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/finance/ledgertype' }">Tipo de Transação</li>
+                </ul>
             </li>
         </ul>
         <nav id="user-menu" dir="rtl">

@@ -1,14 +1,13 @@
-    - Test *Base::CRUD
-        - create a loop to request list / create / update in every CRUD controller
     - Implement search
-
     - Customize all child controllers
     - Put actual links in the menu
     - Install and use CatalystX::SimpleLogin
 
+###########################################
+###########  Install on server! ###########
+###########################################
+
     - Create a page to manage users
     - Create a page for user's settings
-    - Install on server
-
     - Deal with foreign keys and other extra params for forms
         # this is stuck, so I'll delay it a little

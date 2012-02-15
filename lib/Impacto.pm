@@ -25,6 +25,7 @@ use Catalyst qw/
 /;
 
 __PACKAGE__->apply_request_class_roles('CatalystX::I18N::TraitFor::Request');
+__PACKAGE__->apply_response_class_roles('CatalystX::I18N::TraitFor::Response');
 
 extends 'Catalyst';
 
@@ -42,7 +43,6 @@ our $VERSION = '0.01';
 __PACKAGE__->config(
     name => 'Impacto',
     default_view => 'TT',
-    'Model::Maketext' => {},
     I18N => {
         default_locale => 'pt_BR',
         locales     => {

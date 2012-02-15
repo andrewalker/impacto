@@ -2,6 +2,7 @@ package Impacto::Model::Maketext;
 
 use strict;
 use warnings;
+use utf8;
 use parent qw(CatalystX::I18N::Model::Maketext);
 
 1;

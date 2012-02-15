@@ -1,5 +1,7 @@
 package Impacto::View::JSON;
 
+use utf8;
+use warnings;
 use strict;
 use base 'Catalyst::View::JSON';
 

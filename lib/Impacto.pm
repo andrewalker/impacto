@@ -1,4 +1,5 @@
 package Impacto;
+use utf8;
 use Moose;
 use namespace::autoclean;
 use CatalystX::RoleApplicator;
@@ -27,6 +28,7 @@ use Catalyst qw/
     Session::Store::File
     Session::State::Cookie
     Static::Simple
+    Unicode::Encoding
 /;
 
 __PACKAGE__->apply_request_class_roles('CatalystX::I18N::TraitFor::Request');

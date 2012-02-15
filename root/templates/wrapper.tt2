@@ -15,12 +15,18 @@
         <link href="[% static_root_uri %]/css/[% css %]" type="text/css" rel="stylesheet" />
     [% END %][% END %]
     <script type="text/javascript" src="[% static_root_uri %]/lib/dojo/dojo.js" data-dojo-config="parseOnLoad: true"></script>
-    <script type="text/javascript" src="[% static_root_uri %]/js/browse.js"></script>
+    [% IF table_prefix_uri %]
+    <script type="text/javascript">
+        var table_prefix_uri = '[% table_prefix_uri %]';
+    </script>
+    [% END %]
+    <script type="text/javascript" src="[% static_root_uri %]/js/menu.js"></script>
     [% IF wrapper_extra_js %][% FOREACH js IN wrapper_extra_js.split(' ') %]
         <script type="text/javascript" src="[% static_root_uri %]/js/[% js %]"></script>
     [% END %][% END %]
 </head>
 <body>
+    [% IF user %]
     <nav id="top-menu">
         <h1 class="current-page">[% title or 'Catálogo de Produtos' %]</h1>
         <ul data-dojo-type="dijit.MenuBar">
@@ -66,16 +72,17 @@
         <nav id="user-menu" dir="rtl">
             <ul data-dojo-type="dijit.MenuBar">
                 <li data-dojo-type="dijit.PopupMenuBarItem">
-                    <a>André Walker</a>
+                    <a>[% user.name %]</a>
                     <ul data-dojo-type="dijit.Menu" dir="ltr">
-                        <li data-dojo-type="dijit.MenuItem"><a>Dados</a></li>
-                        <li data-dojo-type="dijit.MenuItem"><a>Opções</a></li>
-                        <li data-dojo-type="dijit.MenuItem"><a>Sair</a></li>
+                        <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/profile/info' }">Dados</li>
+                        <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/profile/options' }">Opções</li>
+                        <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/logout' }">Sair</li>
                     </ul>
                 </li>
             </ul>
         </nav>
     </nav>
+    [% END %]
     <div class="wrapper tundra">
         [% content %]
     </div>

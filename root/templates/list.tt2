@@ -1,3 +1,4 @@
+[% META extra_js = 'browse.js' %]
 <section id="search">
     <img src="[% static_root_uri %]/images/logotipo-impacto.png" alt="" />
     <form method="get" action="">

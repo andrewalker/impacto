@@ -1,13 +1,6 @@
 dojo.require("dojo.data.ItemFileReadStore");
-dojo.require("dojo.parser");
 dojo.require("dojox.grid.EnhancedGrid");
 
-dojo.require("dijit.Menu");
-dojo.require("dijit.MenuItem");
-dojo.require("dijit.MenuBar");
-dojo.require("dijit.MenuBarItem");
-dojo.require("dijit.PopupMenuBarItem");
-dojo.require("dijit.PopupMenuItem");
 dojo.require("dijit.form.TextBox");
 dojo.require("dijit.form.Button");
 
@@ -33,7 +26,7 @@ dojo.addOnLoad(function () {
     function search_input_keypress(e) {
         var search_value = e.currentTarget.value;
         datagrid_table.store.close();
-        datagrid_table.store.url = './list_json_data?q=' + encodeURI(search_value);
+        datagrid_table.store.url = table_prefix_uri + '/list_json_data?q=' + encodeURI(search_value);
         datagrid_table.store.fetch();
         datagrid_table._refresh();
     }

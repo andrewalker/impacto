@@ -31,6 +31,8 @@ body {
     margin: 0 8px;
     border-top: 2px solid #DD4B39;
     text-shadow: 1px 1px 0.5px #6d6d6d;
+    min-width: 150px;
+    text-align: center;
 }
 
 .dijitMenuItem {

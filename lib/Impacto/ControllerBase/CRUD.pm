@@ -109,8 +109,11 @@ sub list : Chained('crud_base') PathPart('') Args(0) {
 sub list_json_data : Chained('crud_base') PathPart Args(0) {
     my ($self, $c) = @_;
 
+    my $search_terms = $c->req->query_params->{q};
+
     my $items = $c->model('Search')->browse_data(
-        $self->elastic_search_pseudo_table
+        $self->elastic_search_pseudo_table,
+        $search_terms
     );
 
     $c->stash(

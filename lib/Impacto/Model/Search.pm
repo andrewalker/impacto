@@ -29,15 +29,18 @@ sub index_data {
 }
 
 sub browse_data {
-    my ( $self, $type ) = @_;
+    my ( $self, $type, $search_terms ) = @_;
     my @items;
 
+    my $query = defined $search_terms
+              ? { text => { _all => $search_terms } }
+              : { match_all => {} }
+              ;
+
     my $search = $self->_es->search(
-        index  => 'impacto',
-        type   => $type,
-        query => {
-            match_all => {}
-        }
+        index => 'impacto',
+        type  => $type,
+        query => $query
     );
 
     foreach my $hit (@{ $search->{hits}{hits} }) {

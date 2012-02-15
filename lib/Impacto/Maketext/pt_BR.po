@@ -228,7 +228,7 @@ msgid "crud.return.stock_movement"
 msgstr "Movimento de estoque"
 
 msgid "crud.return.ledger"
-msgstr "Livro-"
+msgstr "Transação"
 
 msgid "crud.return.submit"
 msgstr "Gravar"
@@ -370,7 +370,7 @@ msgid "crud.ledger.id"
 msgstr "Identificação"
 
 msgid "crud.ledger.ledger_type"
-msgstr "Tipo do livro-"
+msgstr "Tipo da Transação"
 
 msgid "crud.ledger.account"
 msgstr "Conta"
@@ -398,7 +398,7 @@ msgid "crud.installment_payment.id"
 msgstr "Identificação"
 
 msgid "crud.installment_payment.ledger"
-msgstr "Livro-"
+msgstr "Transação"
 
 msgid "crud.installment_payment.due"
 msgstr "Devido"
@@ -448,7 +448,7 @@ msgstr "Gravar"
 # -- installment form --
 
 msgid "crud.installment.ledger"
-msgstr "Livro-"
+msgstr "Transação"
 
 msgid "crud.installment.due"
 msgstr "Devido"

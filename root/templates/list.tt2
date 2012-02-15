@@ -2,14 +2,14 @@
     <img src="[% static_root_uri %]/images/logotipo-impacto.png" alt="" />
     <form method="get" action="">
         <fieldset>
-            <input name="search" data-dojo-type="dijit.form.TextBox" />
-            <button type="submit" data-dojo-type="dijit.form.Button">
+            <input name="q" data-dojo-type="dijit.form.TextBox" id='input_query' />
+            <button data-dojo-type="dijit.form.Button">
                 <img src="[% static_root_uri %]/images/search.png" height="23" alt="Pesquisar" />
             </button>
         </fieldset>
     </form>
 </section>
-<span data-dojo-type="dojo.data.ItemFileReadStore" data-dojo-id="store1" data-dojo-props="url:'[% table_prefix_uri %]/list_json_data', identity: '[% identity %]'"></span>
+<span data-dojo-type="dojo.data.ItemFileReadStore" data-dojo-id="store1" data-dojo-props="clearOnClose: true, url:'[% table_prefix_uri %]/list_json_data', identity: '[% identity %]'"></span>
 <section id="datagrid">
     <table data-dojo-id="datagrid_table"  id="datagrid_table" data-dojo-type="dojox.grid.EnhancedGrid" data-dojo-props="store: store1, rowSelector: '20px', clientSort: true, id: 'datagrid-table'" style="height: 400px">
         <thead>

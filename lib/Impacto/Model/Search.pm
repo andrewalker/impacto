@@ -32,7 +32,7 @@ sub browse_data {
     my ( $self, $type, $search_terms ) = @_;
     my @items;
 
-    my $query = defined $search_terms
+    my $query = $search_terms
               ? { text => { _all => $search_terms } }
               : { match_all => {} }
               ;

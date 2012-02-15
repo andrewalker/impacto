@@ -1,4 +1,4 @@
-    - Implement search
+    - Fix search (setTimeout / clearTimeout)
     - Customize all child controllers
     - Put actual links in the menu
     - Install and use CatalystX::SimpleLogin

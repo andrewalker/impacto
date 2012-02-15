@@ -6,510 +6,510 @@ msgstr ""
 
 # -- contact form --
 
-msgid "form.contact.client"
+msgid "crud.contact.client"
 msgstr "Cliente"
 
-msgid "form.contact.date"
+msgid "crud.contact.date"
 msgstr "Data"
 
-msgid "form.contact.answered"
+msgid "crud.contact.answered"
 msgstr "Respondido"
 
-msgid "form.contact.type"
+msgid "crud.contact.type"
 msgstr "Tipo"
 
-msgid "form.contact.abstract"
+msgid "crud.contact.abstract"
 msgstr "Resumo"
 
-msgid "form.contact.submit"
+msgid "crud.contact.submit"
 msgstr "Gravar"
 
 
 
 # -- employee form --
 
-msgid "form.employee.person"
+msgid "crud.employee.person"
 msgstr "Pessoa"
 
-msgid "form.employee.submit"
+msgid "crud.employee.submit"
 msgstr "Gravar"
 
 
 
 # -- address form --
 
-msgid "form.address.person"
+msgid "crud.address.person"
 msgstr "Pessoa"
 
-msgid "form.address.name"
+msgid "crud.address.name"
 msgstr "Nome"
 
-msgid "form.address.is_main_address"
+msgid "crud.address.is_main_address"
 msgstr "Endereço principal"
 
-msgid "form.address.number"
+msgid "crud.address.number"
 msgstr "Número"
 
-msgid "form.address.street"
+msgid "crud.address.street"
 msgstr "Rua"
 
-msgid "form.address.zip_code"
+msgid "crud.address.zip_code"
 msgstr "CEP"
 
-msgid "form.address.city"
+msgid "crud.address.city"
 msgstr "Cidade"
 
-msgid "form.address.state"
+msgid "crud.address.state"
 msgstr "Estado"
 
-msgid "form.address.country"
+msgid "crud.address.country"
 msgstr "País"
 
-msgid "form.address.phone"
+msgid "crud.address.phone"
 msgstr "Telefone"
 
-msgid "form.address.submit"
+msgid "crud.address.submit"
 msgstr "Gravar"
 
 
 
 # -- document form --
 
-msgid "form.document.person"
+msgid "crud.document.person"
 msgstr "Pessoa"
 
-msgid "form.document.type"
+msgid "crud.document.type"
 msgstr "Tipo"
 
-msgid "form.document.value"
+msgid "crud.document.value"
 msgstr "Valor"
 
-msgid "form.document.submit"
+msgid "crud.document.submit"
 msgstr "Gravar"
 
 
 
 # -- representant form --
 
-msgid "form.representant.person"
+msgid "crud.representant.person"
 msgstr "Pessoa"
 
-msgid "form.representant.submit"
+msgid "crud.representant.submit"
 msgstr "Gravar"
 
 
 
 # -- bank_account form --
 
-msgid "form.bank_account.person"
+msgid "crud.bank_account.person"
 msgstr "Pessoa"
 
-msgid "form.bank_account.bank"
+msgid "crud.bank_account.bank"
 msgstr "Banco"
 
-msgid "form.bank_account.account"
+msgid "crud.bank_account.account"
 msgstr "Conta"
 
-msgid "form.bank_account.agency"
+msgid "crud.bank_account.agency"
 msgstr "Agência"
 
-msgid "form.bank_account.is_savings_account"
+msgid "crud.bank_account.is_savings_account"
 msgstr "É poupança"
 
-msgid "form.bank_account.comments"
+msgid "crud.bank_account.comments"
 msgstr "Comentários"
 
-msgid "form.bank_account.submit"
+msgid "crud.bank_account.submit"
 msgstr "Gravar"
 
 
 
 # -- supplier form --
 
-msgid "form.supplier.person"
+msgid "crud.supplier.person"
 msgstr "Pessoa"
 
-msgid "form.supplier.submit"
+msgid "crud.supplier.submit"
 msgstr "Gravar"
 
 
 
 # -- person form --
 
-msgid "form.person.slug"
+msgid "crud.person.slug"
 msgstr "Slug"
 
-msgid "form.person.name"
+msgid "crud.person.name"
 msgstr "Nome"
 
-msgid "form.person.phone"
+msgid "crud.person.phone"
 msgstr "Telefone"
 
-msgid "form.person.email"
+msgid "crud.person.email"
 msgstr "Email"
 
-msgid "form.person.site"
+msgid "crud.person.site"
 msgstr "Site"
 
-msgid "form.person.comments"
+msgid "crud.person.comments"
 msgstr "Comentários"
 
-msgid "form.person.submit"
+msgid "crud.person.submit"
 msgstr "Gravar"
 
 
 
 # -- client form --
 
-msgid "form.client.person"
+msgid "crud.client.person"
 msgstr "Pessoa"
 
-msgid "form.client.submit"
+msgid "crud.client.submit"
 msgstr "Gravar"
 
 
 
 # -- consignation form --
 
-msgid "form.consignation.id"
+msgid "crud.consignation.id"
 msgstr "Identificação"
 
-msgid "form.consignation.datetime"
+msgid "crud.consignation.datetime"
 msgstr "Datetime"
 
-msgid "form.consignation.expected_return"
+msgid "crud.consignation.expected_return"
 msgstr "Retorno previsto"
 
-msgid "form.consignation.product"
+msgid "crud.consignation.product"
 msgstr "Produto"
 
-msgid "form.consignation.amount"
+msgid "crud.consignation.amount"
 msgstr "Quantidade"
 
-msgid "form.consignation.representant"
+msgid "crud.consignation.representant"
 msgstr "Representante"
 
-msgid "form.consignation.stock_movement"
+msgid "crud.consignation.stock_movement"
 msgstr "Movimento de estoque"
 
-msgid "form.consignation.submit"
+msgid "crud.consignation.submit"
 msgstr "Gravar"
 
 
 
 # -- product_category form --
 
-msgid "form.product_category.category"
+msgid "crud.product_category.category"
 msgstr "Categoria"
 
-msgid "form.product_category.product"
+msgid "crud.product_category.product"
 msgstr "Produto"
 
-msgid "form.product_category.submit"
+msgid "crud.product_category.submit"
 msgstr "Gravar"
 
 
 
 # -- return form --
 
-msgid "form.return.id"
+msgid "crud.return.id"
 msgstr "Identificação"
 
-msgid "form.return.datetime"
+msgid "crud.return.datetime"
 msgstr "Datetime"
 
-msgid "form.return.consignation"
+msgid "crud.return.consignation"
 msgstr "Consignação"
 
-msgid "form.return.amount"
+msgid "crud.return.amount"
 msgstr "Quantidade"
 
-msgid "form.return.stock_movement"
+msgid "crud.return.stock_movement"
 msgstr "Movimento de estoque"
 
-msgid "form.return.ledger"
+msgid "crud.return.ledger"
 msgstr "Livro-"
 
-msgid "form.return.submit"
+msgid "crud.return.submit"
 msgstr "Gravar"
 
 
 
 # -- product_stock form --
 
-msgid "form.product_stock.product"
+msgid "crud.product_stock.product"
 msgstr "Produto"
 
-msgid "form.product_stock.place"
+msgid "crud.product_stock.place"
 msgstr "Lugar"
 
-msgid "form.product_stock.amount"
+msgid "crud.product_stock.amount"
 msgstr "Quantidade"
 
-msgid "form.product_stock.submit"
+msgid "crud.product_stock.submit"
 msgstr "Gravar"
 
 
 
 # -- subscription form --
 
-msgid "form.subscription.client"
+msgid "crud.subscription.client"
 msgstr "Cliente"
 
-msgid "form.subscription.product"
+msgid "crud.subscription.product"
 msgstr "Produto"
 
-msgid "form.subscription.active"
+msgid "crud.subscription.active"
 msgstr "Ativo"
 
-msgid "form.subscription.subscription_date"
+msgid "crud.subscription.subscription_date"
 msgstr "Data da assinatura"
 
-msgid "form.subscription.subscription_edition"
+msgid "crud.subscription.subscription_edition"
 msgstr "Edição da assinatura"
 
-msgid "form.subscription.expiry_date"
+msgid "crud.subscription.expiry_date"
 msgstr "Data de expiração"
 
-msgid "form.subscription.expiry_edition"
+msgid "crud.subscription.expiry_edition"
 msgstr "Edição da expiração"
 
-msgid "form.subscription.submit"
+msgid "crud.subscription.submit"
 msgstr "Gravar"
 
 
 
 # -- place form --
 
-msgid "form.place.place"
+msgid "crud.place.place"
 msgstr "Lugar"
 
-msgid "form.place.submit"
+msgid "crud.place.submit"
 msgstr "Gravar"
 
 
 
 # -- product form --
 
-msgid "form.product.id"
+msgid "crud.product.id"
 msgstr "Identificação"
 
-msgid "form.product.name"
+msgid "crud.product.name"
 msgstr "Nome"
 
-msgid "form.product.supplier"
+msgid "crud.product.supplier"
 msgstr "Fornecedor"
 
-msgid "form.product.cost"
+msgid "crud.product.cost"
 msgstr "Custo"
 
-msgid "form.product.minimum_price"
+msgid "crud.product.minimum_price"
 msgstr "Preço mínimo"
 
-msgid "form.product.price"
+msgid "crud.product.price"
 msgstr "Preço"
 
-msgid "form.product.weight"
+msgid "crud.product.weight"
 msgstr "Peso"
 
-msgid "form.product.image"
+msgid "crud.product.image"
 msgstr "Imagem"
 
-msgid "form.product.custom_fields"
+msgid "crud.product.custom_fields"
 msgstr "Campos feitos sob encomenda"
 
-msgid "form.product.submit"
+msgid "crud.product.submit"
 msgstr "Gravar"
 
 
 
 # -- category form --
 
-msgid "form.category.slug"
+msgid "crud.category.slug"
 msgstr "Slug"
 
-msgid "form.category.parent"
+msgid "crud.category.parent"
 msgstr "Pai"
 
-msgid "form.category.name"
+msgid "crud.category.name"
 msgstr "Nome"
 
-msgid "form.category.submit"
+msgid "crud.category.submit"
 msgstr "Gravar"
 
 
 
 # -- stock_movement form --
 
-msgid "form.stock_movement.id"
+msgid "crud.stock_movement.id"
 msgstr "Identificação"
 
-msgid "form.stock_movement.datetime"
+msgid "crud.stock_movement.datetime"
 msgstr "Datetime"
 
-msgid "form.stock_movement.amount"
+msgid "crud.stock_movement.amount"
 msgstr "Quantidade"
 
-msgid "form.stock_movement.type"
+msgid "crud.stock_movement.type"
 msgstr "Tipo"
 
-msgid "form.stock_movement.place"
+msgid "crud.stock_movement.place"
 msgstr "Lugar"
 
-msgid "form.stock_movement.product"
+msgid "crud.stock_movement.product"
 msgstr "Produto"
 
-msgid "form.stock_movement.submit"
+msgid "crud.stock_movement.submit"
 msgstr "Gravar"
 
 
 
 # -- ledger form --
 
-msgid "form.ledger.id"
+msgid "crud.ledger.id"
 msgstr "Identificação"
 
-msgid "form.ledger.ledger_type"
+msgid "crud.ledger.ledger_type"
 msgstr "Tipo do livro-"
 
-msgid "form.ledger.account"
+msgid "crud.ledger.account"
 msgstr "Conta"
 
-msgid "form.ledger.value"
+msgid "crud.ledger.value"
 msgstr "Valor"
 
-msgid "form.ledger.datetime"
+msgid "crud.ledger.datetime"
 msgstr "Datetime"
 
-msgid "form.ledger.stock_movement"
+msgid "crud.ledger.stock_movement"
 msgstr "Movimento de estoque"
 
-msgid "form.ledger.comment"
+msgid "crud.ledger.comment"
 msgstr "Comentário"
 
-msgid "form.ledger.submit"
+msgid "crud.ledger.submit"
 msgstr "Gravar"
 
 
 
 # -- installment_payment form --
 
-msgid "form.installment_payment.id"
+msgid "crud.installment_payment.id"
 msgstr "Identificação"
 
-msgid "form.installment_payment.ledger"
+msgid "crud.installment_payment.ledger"
 msgstr "Livro-"
 
-msgid "form.installment_payment.due"
+msgid "crud.installment_payment.due"
 msgstr "Devido"
 
-msgid "form.installment_payment.date"
+msgid "crud.installment_payment.date"
 msgstr "Data"
 
-msgid "form.installment_payment.amount"
+msgid "crud.installment_payment.amount"
 msgstr "Quantidade"
 
-msgid "form.installment_payment.account"
+msgid "crud.installment_payment.account"
 msgstr "Cliente"
 
-msgid "form.installment_payment.payment_method"
+msgid "crud.installment_payment.payment_method"
 msgstr "Forma de pagamento"
 
-msgid "form.installment_payment.comments"
+msgid "crud.installment_payment.comments"
 msgstr "Comentários"
 
-msgid "form.installment_payment.submit"
+msgid "crud.installment_payment.submit"
 msgstr "Gravar"
 
 
 
 # -- account form --
 
-msgid "form.account.name"
+msgid "crud.account.name"
 msgstr "Nome"
 
-msgid "form.account.bank"
+msgid "crud.account.bank"
 msgstr "Banco"
 
-msgid "form.account.account_number"
+msgid "crud.account.account_number"
 msgstr "Número da conta"
 
-msgid "form.account.agency"
+msgid "crud.account.agency"
 msgstr "Agência"
 
-msgid "form.account.balance"
+msgid "crud.account.balance"
 msgstr "Saldo"
 
-msgid "form.account.submit"
+msgid "crud.account.submit"
 msgstr "Gravar"
 
 
 
 # -- installment form --
 
-msgid "form.installment.ledger"
+msgid "crud.installment.ledger"
 msgstr "Livro-"
 
-msgid "form.installment.due"
+msgid "crud.installment.due"
 msgstr "Devido"
 
-msgid "form.installment.amount"
+msgid "crud.installment.amount"
 msgstr "Quantidade"
 
-msgid "form.installment.payed"
+msgid "crud.installment.payed"
 msgstr "Pago"
 
-msgid "form.installment.submit"
+msgid "crud.installment.submit"
 msgstr "Gravar"
 
 
 
 # -- ledger_type form --
 
-msgid "form.ledger_type.slug"
+msgid "crud.ledger_type.slug"
 msgstr "Slug"
 
-msgid "form.ledger_type.name"
+msgid "crud.ledger_type.name"
 msgstr "Nome"
 
-msgid "form.ledger_type.submit"
+msgid "crud.ledger_type.submit"
 msgstr "Gravar"
 
 
 
 # -- user_account_role form --
 
-msgid "form.user_account_role.login"
+msgid "crud.user_account_role.login"
 msgstr "Login"
 
-msgid "form.user_account_role.role"
+msgid "crud.user_account_role.role"
 msgstr "Papel"
 
-msgid "form.user_account_role.submit"
+msgid "crud.user_account_role.submit"
 msgstr "Gravar"
 
 
 
 # -- role form --
 
-msgid "form.role.role"
+msgid "crud.role.role"
 msgstr "Papel"
 
-msgid "form.role.submit"
+msgid "crud.role.submit"
 msgstr "Gravar"
 
 
 
 # -- user_account form --
 
-msgid "form.user_account.login"
+msgid "crud.user_account.login"
 msgstr "Login"
 
-msgid "form.user_account.password"
+msgid "crud.user_account.password"
 msgstr "Senha"
 
-msgid "form.user_account.name"
+msgid "crud.user_account.name"
 msgstr "Nome"
 
-msgid "form.user_account.submit"
+msgid "crud.user_account.submit"
 msgstr "Gravar"

@@ -6,6 +6,9 @@ msgstr ""
 
 # -- contact form --
 
+msgid "page_title.contact"
+msgstr "Contato"
+
 msgid "crud.contact.client"
 msgstr "Cliente"
 
@@ -28,6 +31,9 @@ msgstr "Gravar"
 
 # -- employee form --
 
+msgid "page_title.employee"
+msgstr "Funcionário"
+
 msgid "crud.employee.person"
 msgstr "Pessoa"
 
@@ -37,6 +43,9 @@ msgstr "Gravar"
 
 
 # -- address form --
+
+msgid "page_title.address"
+msgstr "Endereço"
 
 msgid "crud.address.person"
 msgstr "Pessoa"
@@ -75,6 +84,9 @@ msgstr "Gravar"
 
 # -- document form --
 
+msgid "page_title.document"
+msgstr "Documento"
+
 msgid "crud.document.person"
 msgstr "Pessoa"
 
@@ -91,6 +103,9 @@ msgstr "Gravar"
 
 # -- representant form --
 
+msgid "page_title.representant"
+msgstr "Representante"
+
 msgid "crud.representant.person"
 msgstr "Pessoa"
 
@@ -100,6 +115,9 @@ msgstr "Gravar"
 
 
 # -- bank_account form --
+
+msgid "page_title.bank_account"
+msgstr "Conta bancária"
 
 msgid "crud.bank_account.person"
 msgstr "Pessoa"
@@ -126,6 +144,9 @@ msgstr "Gravar"
 
 # -- supplier form --
 
+msgid "page_title.supplier"
+msgstr "Fornecedor"
+
 msgid "crud.supplier.person"
 msgstr "Pessoa"
 
@@ -135,6 +156,9 @@ msgstr "Gravar"
 
 
 # -- person form --
+
+msgid "page_title.person"
+msgstr "Pessoa"
 
 msgid "crud.person.slug"
 msgstr "Slug"
@@ -161,6 +185,9 @@ msgstr "Gravar"
 
 # -- client form --
 
+msgid "page_title.client"
+msgstr "Cliente"
+
 msgid "crud.client.person"
 msgstr "Pessoa"
 
@@ -170,6 +197,9 @@ msgstr "Gravar"
 
 
 # -- consignation form --
+
+msgid "page_title.consignation"
+msgstr "Consignação"
 
 msgid "crud.consignation.id"
 msgstr "Identificação"
@@ -199,6 +229,9 @@ msgstr "Gravar"
 
 # -- product_category form --
 
+msgid "page_title.product_category"
+msgstr "Categoria do Produto"
+
 msgid "crud.product_category.category"
 msgstr "Categoria"
 
@@ -211,6 +244,9 @@ msgstr "Gravar"
 
 
 # -- return form --
+
+msgid "page_title.return"
+msgstr "Retorno"
 
 msgid "crud.return.id"
 msgstr "Identificação"
@@ -237,6 +273,9 @@ msgstr "Gravar"
 
 # -- product_stock form --
 
+msgid "page_title.product_stock"
+msgstr "Estoque do Produto"
+
 msgid "crud.product_stock.product"
 msgstr "Produto"
 
@@ -252,6 +291,9 @@ msgstr "Gravar"
 
 
 # -- subscription form --
+
+msgid "page_title.subscription"
+msgstr "Assinatura"
 
 msgid "crud.subscription.client"
 msgstr "Cliente"
@@ -281,6 +323,9 @@ msgstr "Gravar"
 
 # -- place form --
 
+msgid "page_title.place"
+msgstr "Local"
+
 msgid "crud.place.place"
 msgstr "Lugar"
 
@@ -290,6 +335,9 @@ msgstr "Gravar"
 
 
 # -- product form --
+
+msgid "page_title.product"
+msgstr "Produto"
 
 msgid "crud.product.id"
 msgstr "Identificação"
@@ -325,6 +373,9 @@ msgstr "Gravar"
 
 # -- category form --
 
+msgid "page_title.category"
+msgstr "Categoria"
+
 msgid "crud.category.slug"
 msgstr "Slug"
 
@@ -340,6 +391,9 @@ msgstr "Gravar"
 
 
 # -- stock_movement form --
+
+msgid "page_title.stock_movement"
+msgstr "Movimento de estoque"
 
 msgid "crud.stock_movement.id"
 msgstr "Identificação"
@@ -365,6 +419,9 @@ msgstr "Gravar"
 
 
 # -- ledger form --
+
+msgid "page_title.ledger"
+msgstr "Transações"
 
 msgid "crud.ledger.id"
 msgstr "Identificação"
@@ -393,6 +450,9 @@ msgstr "Gravar"
 
 
 # -- installment_payment form --
+
+msgid "page_title.installment_payment"
+msgstr "Pagamento da Parcela"
 
 msgid "crud.installment_payment.id"
 msgstr "Identificação"
@@ -425,6 +485,9 @@ msgstr "Gravar"
 
 # -- account form --
 
+msgid "page_title.account"
+msgstr "Conta"
+
 msgid "crud.account.name"
 msgstr "Nome"
 
@@ -447,6 +510,9 @@ msgstr "Gravar"
 
 # -- installment form --
 
+msgid "page_title.installment"
+msgstr "Parcela"
+
 msgid "crud.installment.ledger"
 msgstr "Transação"
 
@@ -466,6 +532,9 @@ msgstr "Gravar"
 
 # -- ledger_type form --
 
+msgid "page_title.ledger_type"
+msgstr "Tipo de Transação"
+
 msgid "crud.ledger_type.slug"
 msgstr "Slug"
 
@@ -479,11 +548,14 @@ msgstr "Gravar"
 
 # -- user_account_role form --
 
+msgid "page_title.user_account_role"
+msgstr "Nível do usuário"
+
 msgid "crud.user_account_role.login"
 msgstr "Login"
 
 msgid "crud.user_account_role.role"
-msgstr "Papel"
+msgstr "Nível"
 
 msgid "crud.user_account_role.submit"
 msgstr "Gravar"
@@ -492,8 +564,11 @@ msgstr "Gravar"
 
 # -- role form --
 
+msgid "page_title.role"
+msgstr "Níveis de usuário"
+
 msgid "crud.role.role"
-msgstr "Papel"
+msgstr "Nível"
 
 msgid "crud.role.submit"
 msgstr "Gravar"
@@ -501,6 +576,9 @@ msgstr "Gravar"
 
 
 # -- user_account form --
+
+msgid "page_title.user_account"
+msgstr "Usuário"
 
 msgid "crud.user_account.login"
 msgstr "Login"

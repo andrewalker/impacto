@@ -68,6 +68,7 @@ sub crud_base : Chained('global_base') PathPrefix CaptureArgs(0) {
     $c->stash(
         resultset        => $self->crud_model_instance,
         table_prefix_uri => $c->uri_for('/') . $self->path_prefix($c),
+        title            => $self->i18n->maketext('page_title.' . $self->crud_model_instance->result_source->from),
     );
 }
 

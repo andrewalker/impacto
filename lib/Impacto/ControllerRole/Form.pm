@@ -124,3 +124,50 @@ sub _translate_form_field {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Impacto::ControllerRole::Form
+
+=head1 DESCRIPTION
+
+Builds an HTML form to insert or update rows from the database.
+
+=head1 METHODS
+
+=head2 build_form_sensible_object
+
+Builds a Form::Sensible object based on the DBIx::Class resultset.
+
+=head2 get_all_columns
+
+Makes sure that either this method is overridden by the consumer class, or
+it is just not needed (because datagrid_columns don't need it's default value).
+
+=head2 render_form
+
+Renders the Form::Sensible object in HTML.
+
+=head2 submit_form
+
+Prepares the form data to insert a new row into the database, or to update an
+existing one.
+
+=head2 submit_form_create
+
+Actually inserts the new row.
+
+=head2 submit_form_update
+
+Actually updates the row.
+
+=head1 AUTHOR
+
+André Walker <andre@andrewalker.net>
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify
+it under the same terms as Perl itself.

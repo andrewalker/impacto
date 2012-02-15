@@ -70,3 +70,41 @@ sub get_elastic_search_insert_data {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Impacto::ControllerRole::DataGrid
+
+=head1 DESCRIPTION
+
+Builds an HTML table with rows from the database.
+
+=head1 METHODS
+
+=head2 get_all_columns
+
+Makes sure that either this method is overridden by the consumer class, or
+it is just not needed (because datagrid_columns don't need it's default value).
+
+=head2 get_browse_structure
+
+Gets the structure that the HTML table will have, based on the controller
+settings, or the defaults from the database.
+
+=head2 get_elastic_search_insert_data
+
+Based on datagrid_columns and datagrid_columns_extra_params attributes, this
+method gets information about a row in the database (or about to be inserted),
+so that it is inserted in Elastic Search and therefore be easily fetched when
+displaying the grid.
+
+=head1 AUTHOR
+
+André Walker <andre@andrewalker.net>
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify
+it under the same terms as Perl itself.

@@ -161,3 +161,73 @@ sub make_form_action {
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+
+=head1 NAME
+
+Impacto::ControllerBase::CRUD - Base controller for CRUD classes
+
+=head1 DESCRIPTION
+
+Adds basic create / read / update / delete actions for a given controller, which
+has a specific result class (table) associated.
+It generates a basic form for creating / updating records (which should be
+overridable), and creates a grid to display the data.
+
+=head1 METHODS
+
+=head2 crud_base
+
+The beginning of the chain for every other method in this class.
+
+=head2 crud_base_with_id
+
+The beginning of the chain for those methods which require the id to be given
+as an argument (e.g. update, view)
+
+=head2 create
+
+Displays a form to insert a new record into the database. When the form is
+submitted, this same method is called.
+
+=head2 update
+
+Displays a form to update an existing record in the database. When the form is
+submitted, this same method is called.
+
+=head2 delete
+
+Unimplemented. Deletes a record (maybe multiple?).
+
+=head2 view
+
+Unimplemented. Displays more information about a record.
+
+=head2 list
+
+Displays a page with an HTML table, with 10 records from the database. These
+records are fetched using ajax.
+
+=head2 list_json_data
+
+This is called by the list page, by ajax, to populate the HTML table.
+
+=head2 get_all_columns
+
+Helps the builder of datagrid_columns and form_columns attributes, so that
+their default values are all the columns in the table.
+
+=head2 make_form_action
+
+All the logic from update and create actions. It decides wether to display or
+submit the form, and wether it's an 'update' or a 'create' action.
+
+=head1 AUTHOR
+
+André Walker <andre@andrewalker.net>
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify
+it under the same terms as Perl itself.

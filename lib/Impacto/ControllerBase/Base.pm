@@ -19,3 +19,29 @@ sub global_base : Chained('/') PathPart('') CaptureArgs(0) {
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+
+=head1 NAME
+
+Impacto::ControllerBase::Base - Base controller class for Impacto
+
+=head1 DESCRIPTION
+
+All Impacto controller inherit from this one. Set locale stuff, check if
+user is logged in, etc.
+
+=head1 METHODS
+
+=head2 global_base
+
+Beginning of the chain in every action in this application.
+
+=head1 AUTHOR
+
+André Walker <andre@andrewalker.net>
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify
+it under the same terms as Perl itself.

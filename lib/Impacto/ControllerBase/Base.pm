@@ -8,8 +8,11 @@ BEGIN { extends 'Catalyst::Controller' }
 sub global_base : Chained('/login/required') PathPart('') CaptureArgs(0) {
     my ( $self, $c ) = @_;
 
-    $c->get_locale();
-    $c->stash(static_root_uri => $c->uri_for('/static'));
+    $c->set_locale('pt_BR');
+    $c->stash(
+        static_root_uri => $c->uri_for('/static'),
+        user            => $c->user,
+    );
 
 #    return $c->res->redirect(
 #        $c->uri_for_action('/user/login')

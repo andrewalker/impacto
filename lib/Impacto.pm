@@ -21,6 +21,11 @@ use Catalyst qw/
     +CatalystX::I18N::Role::Maketext
     +CatalystX::I18N::Role::GetLocale
     ConfigLoader
+    +CatalystX::SimpleLogin
+    Authentication
+    Session
+    Session::Store::File
+    Session::State::Cookie
     Static::Simple
 /;
 
@@ -43,6 +48,24 @@ our $VERSION = '0.01';
 __PACKAGE__->config(
     name => 'Impacto',
     default_view => 'TT',
+    authentication => {
+       default_realm => 'user_account',
+       realms        => {
+          user_account => {
+             credential => {
+                class          => 'Password',
+                password_field => 'password',
+                password_type  => 'clear'
+             },
+             store => {
+                class         => 'DBIx::Class',
+                user_model    => 'DB::UserAccount::UserAccount',
+                role_relation => 'roles',
+                role_field    => 'role',
+             }
+          }
+       },
+    },
     I18N => {
         default_locale => 'pt_BR',
         locales     => {

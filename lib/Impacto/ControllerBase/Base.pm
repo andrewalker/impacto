@@ -5,7 +5,7 @@ use namespace::autoclean;
 
 BEGIN { extends 'Catalyst::Controller' }
 
-sub global_base : Chained('/') PathPart('') CaptureArgs(0) {
+sub global_base : Chained('/login/required') PathPart('') CaptureArgs(0) {
     my ( $self, $c ) = @_;
 
     $c->get_locale();

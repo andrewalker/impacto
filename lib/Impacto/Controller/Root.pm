@@ -2,7 +2,7 @@ package Impacto::Controller::Root;
 use Moose;
 use namespace::autoclean;
 
-BEGIN { extends 'Catalyst::Controller' }
+BEGIN { extends 'Impacto::ControllerBase::Base' }
 
 #
 # Sets the actions in this controller to be registered with no prefix
@@ -26,11 +26,12 @@ The root page (/)
 
 =cut
 
-sub index :Path :Args(0) {
+sub index :Path Args(0) {
     my ( $self, $c ) = @_;
 
-    # Hello World
-    $c->response->body( $c->welcome_message );
+    $c->forward('global_base');
+
+    $c->res->body('logado');
 }
 
 =head2 default

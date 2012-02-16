@@ -1,7 +1,3 @@
-    - Deal with foreign keys and other extra params for forms
-        # perldoc Form::Sensible::FAQ
-        # Can I set the options for my Select field directly from a DBIx::Class resultset?
-    - Test form custom
     - Customize all child controllers
 
 ###########################################

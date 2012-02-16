@@ -21,7 +21,7 @@ dojo.addOnLoad(function () {
     datagrid_table.layout.setColumnVisibility(0, false);
 
     function datagrid_row_click_event(e) {
-        location.href = './' + datagrid_table.getItem(datagrid_table.focus.rowIndex)._esid[0] + '/update';
+        location.href = table_prefix_uri + '/' + datagrid_table.getItem(datagrid_table.focus.rowIndex)._esid[0] + '/update';
     }
     function search_input_keypress(e) {
         var search_value = e.currentTarget.value;

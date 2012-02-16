@@ -14,7 +14,7 @@ has crud_model_instance => (
 sub _build_crud_model_instance {
     my $self = shift;
 
-    return Schema->connect("dbi:SQLite:$Bin/../../../db/test.db")->resultset(
+    return Schema->connect("dbi:SQLite:$Bin/db/test.db")->resultset(
         $self->crud_model_name
     );
 }

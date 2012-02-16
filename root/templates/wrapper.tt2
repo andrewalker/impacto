@@ -28,8 +28,18 @@
 <body>
     [% IF user %]
     <nav id="top-menu">
-        <h1 class="current-page">[% title or 'Catálogo de Produtos' %]</h1>
+        <h1 class="current-page">[% title %]</h1>
         <ul data-dojo-type="dijit.MenuBar">
+            [% IF table_prefix_uri %]
+            <script type="text/javascript">
+                if (location.href == '[% table_prefix_uri %]') {
+                    document.write('<li data-dojo-type="dijit.MenuBarItem" data-dojo-props="onClick: function(){ location.href = \'[% table_prefix_uri %]/create\' }">Inserir</li>');
+                }
+                else if (location.href.indexOf('create') != -1 || location.href.indexOf('update') != -1) {
+                    document.write('<li data-dojo-type="dijit.MenuBarItem" data-dojo-props="onClick: function(){ location.href = \'[% table_prefix_uri %]\' }">Listar</li>');
+                }
+            </script>
+            [% END %]
             <li data-dojo-type="dijit.PopupMenuBarItem">
                 <a>Produtos</a>
                 <ul data-dojo-type="dijit.Menu">

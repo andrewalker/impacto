@@ -136,9 +136,6 @@ sub make_form_action {
     my $row = $c->stash->{row} ||
         $self->crud_model_instance->new_result({});
 
-    # TODO: make customizations here to the $form ($form->get_fields, etc)
-    # using $self->form_columns_extra_params
-
     if ($c->req->method eq 'POST') {
         $form->set_values( $c->req->body_params );
         $self->submit_form( $form, $row, $action );

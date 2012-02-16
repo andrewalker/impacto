@@ -202,10 +202,10 @@ msgid "page_title.consignation"
 msgstr "Consignação"
 
 msgid "crud.consignation.id"
-msgstr "Identificação"
+msgstr "Código"
 
 msgid "crud.consignation.datetime"
-msgstr "Datetime"
+msgstr "Data"
 
 msgid "crud.consignation.expected_return"
 msgstr "Retorno previsto"
@@ -249,10 +249,10 @@ msgid "page_title.return"
 msgstr "Retorno"
 
 msgid "crud.return.id"
-msgstr "Identificação"
+msgstr "Código"
 
 msgid "crud.return.datetime"
-msgstr "Datetime"
+msgstr "Data"
 
 msgid "crud.return.consignation"
 msgstr "Consignação"
@@ -340,7 +340,7 @@ msgid "page_title.product"
 msgstr "Produto"
 
 msgid "crud.product.id"
-msgstr "Identificação"
+msgstr "Código"
 
 msgid "crud.product.name"
 msgstr "Nome"
@@ -396,10 +396,10 @@ msgid "page_title.stock_movement"
 msgstr "Movimento de estoque"
 
 msgid "crud.stock_movement.id"
-msgstr "Identificação"
+msgstr "Código"
 
 msgid "crud.stock_movement.datetime"
-msgstr "Datetime"
+msgstr "Data"
 
 msgid "crud.stock_movement.amount"
 msgstr "Quantidade"
@@ -424,10 +424,10 @@ msgid "page_title.ledger"
 msgstr "Transações"
 
 msgid "crud.ledger.id"
-msgstr "Identificação"
+msgstr "Código"
 
 msgid "crud.ledger.ledger_type"
-msgstr "Tipo da Transação"
+msgstr "Tipo de Transação"
 
 msgid "crud.ledger.account"
 msgstr "Conta"
@@ -436,7 +436,7 @@ msgid "crud.ledger.value"
 msgstr "Valor"
 
 msgid "crud.ledger.datetime"
-msgstr "Datetime"
+msgstr "Data"
 
 msgid "crud.ledger.stock_movement"
 msgstr "Movimento de estoque"
@@ -455,7 +455,7 @@ msgid "page_title.installment_payment"
 msgstr "Pagamento da Parcela"
 
 msgid "crud.installment_payment.id"
-msgstr "Identificação"
+msgstr "Código"
 
 msgid "crud.installment_payment.ledger"
 msgstr "Transação"
@@ -517,10 +517,10 @@ msgid "crud.installment.ledger"
 msgstr "Transação"
 
 msgid "crud.installment.due"
-msgstr "Devido"
+msgstr "Data a pagar"
 
 msgid "crud.installment.amount"
-msgstr "Quantidade"
+msgstr "Valor"
 
 msgid "crud.installment.payed"
 msgstr "Pago"

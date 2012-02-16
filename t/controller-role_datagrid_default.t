@@ -62,26 +62,19 @@ is_deeply($dg->datagrid_columns_extra_params, $extra_params, 'default datagrid_c
 is_deeply($dg->get_browse_structure, $structure, 'structure is correct');
 
 my $row;
-eval {
-    $row = $dg->crud_model_instance->new_result({
-        id    => 1,
-        name  => "my product",
-        cost  => 25,
-        price => 50,
-    });
-};
+eval { $row = $dg->crud_model_instance->find(1) };
 
 my $expected_data = {
     id       => 1,
-    name     => 'my product',
+    name     => 'Product 1',
     cost     => 25,
     price    => 50,
-    supplier => undef,
+    supplier => 'person1',
     _pks     => { id => 1 },
 };
 
 ok(!$@, "the code didn't die");
-isa_ok($row, 'Schema::Result::Product', 'created the new result');
+isa_ok($row, 'Schema::Result::Product', 'found the row');
 is_deeply( $dg->get_elastic_search_insert_data($row), $expected_data, 'elastic search data is correctly generated' );
 
 done_testing;

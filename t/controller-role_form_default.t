@@ -46,22 +46,23 @@ my $expected_form = Form::Sensible->create_form({
         {
             field_class => 'Text',
             name => 'supplier',
-            maximum_length => 256,
             render_hints => {},
+            maximum_length => 256,
             validation => { required => 0 },
         },
         {
-            field_class => 'Text',
+            field_class => 'Number',
             name => 'cost',
             validation => { required => 1 },
             render_hints => {},
+            integer_only => 1
         },
         {
-            field_class => 'Text',
+            field_class => 'Number',
             name => 'price',
-            maximum_length => 256,
             validation => { required => 1 },
             render_hints => {},
+            integer_only => 1
         },
         {
             field_class => 'Trigger',

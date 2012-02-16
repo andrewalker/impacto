@@ -19,63 +19,13 @@ has_attribute_ok($f, 'form_columns');
 has_attribute_ok($f, 'form_columns_extra_params');
 
 my $form_columns = [ qw/id name supplier cost/ ];
-my $extra_params = { supplier => { field_class => 'Select', label_column => 'person', value_column => 'person' } };
-
 is_deeply($f->form_columns, $form_columns, 'custom form_columns are correct');
-is_deeply($f->form_columns_extra_params, $extra_params, 'custom form_columns_extra_params are correct');
-
-my $expected_form = Form::Sensible->create_form({
-    name => 'product',
-    fields => [
-        {
-            field_class => 'Number',
-            name => 'id',
-            validation => { required => 1 },
-            render_hints => {
-                 field_type => 'hidden'
-            },
-            integer_only => 1
-        },
-        {
-            field_class => 'Text',
-            name => 'name',
-            maximum_length => 256,
-            validation => { required => 1 },
-            render_hints => {},
-        },
-        {
-            field_class => 'Select',
-            name => 'supplier',
-            render_hints => {},
-            validation => { required => 0 },
-        },
-        {
-            field_class => 'Number',
-            name => 'cost',
-            validation => { required => 1 },
-            render_hints => {},
-            integer_only => 1
-        },
-        {
-            field_class => 'Number',
-            name => 'price',
-            validation => { required => 1 },
-            render_hints => {},
-            integer_only => 1
-        },
-        {
-            field_class => 'Trigger',
-            name => 'submit',
-        },
-    ]
-});
 
 my $generated_form;
 eval { $generated_form = $f->build_form_sensible_object };
 
 ok(!$@, "build_form_sensible_object doesn't die");
 isa_ok($generated_form, 'Form::Sensible::Form');
-is_deeply([ $generated_form->get_fields ], [ $expected_form->get_fields ], 'it has the expected fields');
 
 my $form_html;
 eval { $form_html = $f->render_form($generated_form) };
@@ -91,10 +41,15 @@ my $h_form = $h->find('form');
 is($h_form->tag, 'form', "there is a <form> tag in the generated html");
 
 is($h_form->look_down(_tag => 'input',  name => 'id')->attr('type'), 'hidden', "The id input is hidden");
-is($h_form->look_down(_tag => 'input',  name => 'name')->attr('type'), 'text', "The name input is text");
+is($h_form->look_down(_tag => 'textarea',  name => 'name')->tag, 'textarea', "The name field is textarea");
 is($h_form->look_down(_tag => 'select', name => 'supplier')->tag, 'select', "The supplier field is select");
+
+my $h_select = $h_form->look_down(_tag => 'select', name => 'supplier');
+is_deeply( [ $h_select->look_down(_tag => 'option', value => 'person1')->content_list ], [ 'André Walker'     ], "First option is correct");
+is_deeply( [ $h_select->look_down(_tag => 'option', value => 'person4')->content_list ], [ 'Sir André Walker' ], "Second option is correct");
+
 is($h_form->look_down(_tag => 'input',  name => 'cost')->attr('type'), 'text', "The cost input is text");
-is($h_form->look_down(_tag => 'input',  name => 'price')->attr('type'), 'text', "The price input is text");
+ok(!$h_form->look_down(_tag => 'input',  name => 'price'), "There is no price");
 is($h_form->look_down(_tag => 'input',  name => 'submit')->attr('type'), 'submit', "The submit input is submit");
 
 done_testing;

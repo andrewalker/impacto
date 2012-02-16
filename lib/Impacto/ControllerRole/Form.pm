@@ -27,6 +27,12 @@ has form_templates_paths => (
     lazy_build => 1,
 );
 
+has form_sensible_flattened => (
+    isa        => 'HashRef|Undef',
+    is         => 'rw',
+    required   => 0,
+);
+
 
 sub _build_form_templates_paths {
     my $self = shift;
@@ -41,9 +47,7 @@ sub _build_form_templates_paths {
 # sub _build_form_columns_extra_params {
 #   return {
 #       long_text_field   => { field_class => 'TextArea' },
-#       foreign_key_field => { field_class => 'Select', label_column => 'name', value_column => 'id' },
-#       # eventual syntax:
-#       # foreign_key_field => { fk => 1, label => '${customer.company} - ${customer.person.name}', value_column => 'id' },
+#       foreign_key_field => { fk => 1, label => 'customer.company', value => 'id', order_by => 'id', filter => { name => 'filtered' } },
 #   }
 # }
 sub _build_form_columns { shift->get_all_columns(@_) }
@@ -60,6 +64,11 @@ sub get_all_columns {
 sub build_form_sensible_object {
     my $self = shift;
 
+    # FIXME: use some sort of cache? CHI?
+    if (defined $self->form_sensible_flattened) {
+        return Form::Sensible->create_form($self->form_sensible_flattened);
+    }
+
     my $resultset = $self->crud_model_instance;
     my $source    = $resultset->result_source;
     my $reflector = Impacto::Form::Sensible::Reflector::DBIC->new();
@@ -70,7 +79,39 @@ sub build_form_sensible_object {
         fieldname_filter => sub { @{ $self->form_columns } },
     };
 
-    return $reflector->reflect_from($resultset, $form_options);
+    my $form_definition = $reflector->reflect_from($resultset, $form_options)->flatten;
+
+    my %extra_params = %{ $self->form_columns_extra_params };
+
+    foreach my $field (keys %extra_params) {
+        my $fd_field = $form_definition->{fields}{$field};
+        my %field_params = %{ $extra_params{$field} };
+
+        if ($field_params{field_class}) {
+            delete $fd_field->{field_type};
+        }
+
+        if (delete $field_params{fk}) {
+            $field_params{related_source} = $field;
+
+            delete $fd_field->{field_type};
+            $fd_field->{field_class} = 'Select';
+
+            $fd_field->{options_delegate} = FSConnector(
+                $self,
+                'get_options_from_db',
+                \%field_params
+            );
+        }
+        else {
+            $fd_field->{$_} = $field_params{$_} for (keys %field_params);
+        }
+    }
+
+    $self->form_sensible_flattened( $form_definition );
+
+    # it's cool to be recursive sometimes :)
+    return $self->build_form_sensible_object;
 }
 
 sub render_form {
@@ -115,6 +156,55 @@ sub submit_form_create {
 sub submit_form_update {
     my ( $self, $row, $values ) = @_;
     $row->update( $values );
+}
+
+sub get_options_from_db {
+    my ($self, $field, $args) = @_;
+
+    my $label    = $args->{label}    || $args->{value};
+    my $value    = $args->{value}    || $args->{label};
+
+    (my $label_as = $label) =~ s[\.][_]g; # being friendly with older perls
+
+    my $order_by = $args->{order_by} || $label;
+
+    my $columns  = $args->{columns};
+
+    if (!$columns) {
+        # using hash to avoid duplicate columns
+        # if it's a foreign key (e.g. person.name)
+        # I only want the column (person)
+        my %columns = map {
+            m[(.*)\.] ? ( $1 => 1 ) : ( $_ => 1 )
+        } ($label, $value);
+
+        $columns = [ keys %columns ];
+    }
+
+    my %options = (
+        columns   => $columns,
+        order_by  => $order_by,
+    );
+
+    if ($label =~ m[(.*)\.]) {
+        @options{'+select', '+as', 'join'} = (
+            [ $label        ],
+            [ $label_as     ],
+            [ $1            ],
+        );
+    }
+    my $search = $self->crud_model_instance->result_source->related_source(
+        $args->{related_source}
+    )->resultset->search($args->{filter}, \%options);
+
+    return [
+        map {
+            {
+                name  => $_->get_column($label_as),
+                value => $_->get_column($value),
+            }
+        } $search->all
+    ];
 }
 
 sub _translate_form_field {

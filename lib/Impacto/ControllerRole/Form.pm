@@ -40,8 +40,10 @@ sub _build_form_templates_paths {
 # }
 # sub _build_form_columns_extra_params {
 #   return {
-#       long_text_field   => { type => 'TextArea' },
-#       foreign_key_field => { type => 'Select', label_column => 'name', value_column => 'id' },
+#       long_text_field   => { field_class => 'TextArea' },
+#       foreign_key_field => { field_class => 'Select', label_column => 'name', value_column => 'id' },
+#       # eventual syntax:
+#       # foreign_key_field => { fk => 1, label => '${customer.company} - ${customer.person.name}', value_column => 'id' },
 #   }
 # }
 sub _build_form_columns { shift->get_all_columns(@_) }

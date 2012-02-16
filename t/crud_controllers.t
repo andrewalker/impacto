@@ -5,6 +5,8 @@ use Test::WWW::Mechanize::Catalyst;
 use Impacto;
 
 my $mech = Test::WWW::Mechanize::Catalyst->new(catalyst_app => 'Impacto');
+$mech->get('/login');
+$mech->submit_form(fields => { username => 'admin', password => 'admin' });
 
 my $c = new Impacto();
 foreach my $controller ($c->controllers) {
@@ -13,12 +15,12 @@ foreach my $controller ($c->controllers) {
 
     my $namespace = '/' . $controller->action_namespace($c);
 
-    diag "Testing $namespace";
-
     $mech->get_ok($namespace);
-    is($mech->ct, "text/html");
+    $mech->content_like(qr/datagrid_table/, "$namespace has a table");
+    $mech->content_like(qr/search/, "$namespace has a search form");
+
     $mech->get_ok($namespace . "/create");
-    is($mech->ct, "text/html");
+    $mech->content_like(qr/fs_form/, "$namespace/create has a Form::Sensible form");
 }
 
 done_testing;

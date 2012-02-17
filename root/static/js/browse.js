@@ -12,6 +12,32 @@ dojo.require("dojox.grid.enhanced.plugins.IndirectSelection");
 */
 
 var datagrid_table;
+var timeout = 0;
+var last_term;
+
+function datagrid_row_click_event(e) {
+    location.href = table_prefix_uri + '/' + datagrid_table.getItem(datagrid_table.focus.rowIndex)._esid[0] + '/update';
+}
+
+function search_input_keypress(e) {
+    var term = e.currentTarget.value;
+
+    if (timeout)
+        clearTimeout(timeout);
+    if (last_term == term)
+        return;
+
+    timeout = setTimeout(function () { execute_search(term) }, 700);
+}
+
+function execute_search(term) {
+    last_term = term;
+    datagrid_table.store.close();
+    datagrid_table.store.url = table_prefix_uri + '/list_json_data?q=' + encodeURI(term);
+    datagrid_table.store.fetch();
+    datagrid_table._refresh();
+    timeout = 0;
+}
 
 dojo.addOnLoad(function () {
     dojo.connect(datagrid_table, "onRowClick", datagrid_row_click_event);
@@ -19,15 +45,4 @@ dojo.addOnLoad(function () {
     dojo.connect(dojo.byId('input_query'), "onkeyup", search_input_keypress);
 
     datagrid_table.layout.setColumnVisibility(0, false);
-
-    function datagrid_row_click_event(e) {
-        location.href = table_prefix_uri + '/' + datagrid_table.getItem(datagrid_table.focus.rowIndex)._esid[0] + '/update';
-    }
-    function search_input_keypress(e) {
-        var search_value = e.currentTarget.value;
-        datagrid_table.store.close();
-        datagrid_table.store.url = table_prefix_uri + '/list_json_data?q=' + encodeURI(search_value);
-        datagrid_table.store.fetch();
-        datagrid_table._refresh();
-    }
 });

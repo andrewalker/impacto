@@ -1,22 +1,23 @@
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.require("dojox.grid.EnhancedGrid");
+dojo.require("dojox.grid.enhanced.plugins.Menu");
+dojo.require("dojox.grid.enhanced.plugins.NestedSorting");
+dojo.require("dojox.grid.enhanced.plugins.IndirectSelection");
+
 
 dojo.require("dijit.form.TextBox");
 dojo.require("dijit.form.Button");
 
 /*
 dojo.require("dojox.grid.enhanced.plugins.DnD");
-dojo.require("dojox.grid.enhanced.plugins.Menu");
-dojo.require("dojox.grid.enhanced.plugins.NestedSorting");
-dojo.require("dojox.grid.enhanced.plugins.IndirectSelection");
 */
-
 var datagrid_table;
 var timeout = 0;
-var last_term;
+var last_term = '';
 
 function datagrid_row_click_event(e) {
-    location.href = table_prefix_uri + '/' + datagrid_table.getItem(datagrid_table.focus.rowIndex)._esid[0] + '/update';
+    if (dojo.hasClass(e.target, 'dojoxGridCell'))
+        location.href = table_prefix_uri + '/' + datagrid_table.getItem(datagrid_table.focus.rowIndex)._esid[0] + '/update';
 }
 
 function search_input_keypress(e) {
@@ -44,5 +45,5 @@ dojo.addOnLoad(function () {
     dojo.connect(datagrid_table, "_onFetchComplete", function () { dojo.byId('input_query').focus() });
     dojo.connect(dojo.byId('input_query'), "onkeyup", search_input_keypress);
 
-    datagrid_table.layout.setColumnVisibility(0, false);
+    datagrid_table.layout.setColumnVisibility(1, false);
 });

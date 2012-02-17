@@ -32,7 +32,8 @@
         <ul data-dojo-type="dijit.MenuBar">
             [% IF table_prefix_uri %]
             <script type="text/javascript">
-                if (location.href == '[% table_prefix_uri %]') {
+                var this_uri = location.href.replace(/\/$/, '');
+                if (this_uri == '[% table_prefix_uri %]') {
                     document.write('<li data-dojo-type="dijit.MenuBarItem" data-dojo-props="onClick: function(){ location.href = \'[% table_prefix_uri %]/create\' }">Inserir</li>');
                 }
                 else if (location.href.indexOf('create') != -1 || location.href.indexOf('update') != -1) {

@@ -139,6 +139,12 @@ sub submit_form {
     my $values = $form->get_all_values();
     delete $values->{submit};
 
+    for (keys %$values) {
+        if ($values->{$_} eq '') {
+            delete $values->{$_};
+        }
+    }
+
     my $submit_form_action = "submit_form_$action";
 
     return $self->$submit_form_action($row, $values);
@@ -200,14 +206,19 @@ sub get_options_from_db {
         $args->{related_source}
     )->resultset->search($args->{filter}, \%options);
 
-    return [
+    my @options = ($field->required)
+                ? ()
+                : ({ name => 'Selecione' })
+                ;
+    push @options,
         map {
             {
                 name  => $_->get_column($label_as),
                 value => $_->get_column($value),
             }
-        } $search->all
-    ];
+        } $search->all;
+
+    return \@options;
 }
 
 sub _translate_form_field {

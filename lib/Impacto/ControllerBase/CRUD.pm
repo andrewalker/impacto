@@ -2,6 +2,7 @@ package Impacto::ControllerBase::CRUD;
 use utf8;
 use Moose;
 use namespace::autoclean;
+use Data::Dumper;
 
 BEGIN { extends 'Impacto::ControllerBase::Base' }
 
@@ -125,7 +126,29 @@ sub list_json_data : Chained('crud_base') PathPart Args(0) {
 
 # TODO
 # sub view : Chained('crud_base_with_id') PathPart Args(0) {}
-# sub delete : Chained('crud_base') PathPart Args(0) {}
+sub delete : Chained('crud_base') PathPart Args(0) {
+    my ( $self, $c ) = @_;
+
+    my $response = '';
+
+    foreach my $id (values $c->req->body_params) {
+        my $pks = $c->model('Search')->get_pks(
+            $self->elastic_search_pseudo_table,
+            $id
+        );
+
+        $self->crud_model_instance->find($pks)->delete;
+
+        $c->model('Search')->delete(
+            index => 'impacto',
+            type  => $self->elastic_search_pseudo_table,
+            id    => $id
+        );
+
+        $response .= "Registro $id removido";
+    }
+    $c->res->body($response);
+}
 
 ### -- Helper Methods -- ###
 

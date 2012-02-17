@@ -13,11 +13,11 @@
 <span data-dojo-type="dojo.data.ItemFileReadStore" data-dojo-id="store1" data-dojo-props="clearOnClose: true, url:'[% table_prefix_uri %]/list_json_data', identity: '[% identity %]'"></span>
 <section id="datagrid">
     <div data-dojo-type="dijit.Menu" id="rowMenu" style="display: none;">
-        <div data-dojo-type="dijit.MenuItem">Visualizar</div>
-        <div data-dojo-type="dijit.MenuItem">Excluir</div>
+        <!--div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: view">Visualizar</div-->
+        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: delete_row">Excluir</div>
     </div>
     <div data-dojo-type="dijit.Menu" id="selectedRegionMenu" style="display: none;">
-        <div data-dojo-type="dijit.MenuItem">Excluir selecionados</div>
+        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: delete_selected">Excluir</div>
     </div>
 
     <table data-dojo-id="datagrid_table"  id="datagrid_table" data-dojo-type="dojox.grid.EnhancedGrid" data-dojo-props="plugins: { menus: { rowMenu:'rowMenu', selectedRegionMenu: 'selectedRegionMenu' }, nestedSorting: true, indirectSelection: true }, store: store1, rowSelector: '20px', id: 'datagrid-table'" style="height: 400px">

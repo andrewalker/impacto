@@ -3,6 +3,7 @@ use utf8;
 use Moose;
 use namespace::autoclean;
 use Data::Dumper;
+use JSON;
 
 BEGIN { extends 'Impacto::ControllerBase::Base' }
 
@@ -103,7 +104,7 @@ sub list : Chained('crud_base') PathPart('') Args(0) {
 
     $c->stash(
         template  => 'list.tt2',
-        structure => $self->get_browse_structure(),
+        structure => to_json($self->get_browse_structure()),
         identity  => '_esid',
     );
 }

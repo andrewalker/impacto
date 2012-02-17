@@ -141,9 +141,7 @@ sub submit_form {
 
     my $submit_form_action = "submit_form_$action";
 
-    $self->$submit_form_action($row, $values);
-
-    return 1;
+    return $self->$submit_form_action($row, $values);
 }
 
 sub submit_form_create {
@@ -151,11 +149,16 @@ sub submit_form_create {
 
     $row->set_columns( $values );
     $row->insert;
+
+    return 1;
 }
 
 sub submit_form_update {
     my ( $self, $row, $values ) = @_;
+
     $row->update( $values );
+
+    return 1;
 }
 
 sub get_options_from_db {

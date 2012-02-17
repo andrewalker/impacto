@@ -138,13 +138,20 @@ sub make_form_action {
 
     if ($c->req->method eq 'POST') {
         $form->set_values( $c->req->body_params );
-        $self->submit_form( $form, $row, $action );
 
-        $c->model('Search')->index_data(
-            $self->elastic_search_pseudo_table,
-            $self->get_elastic_search_insert_data( $row ),
-            $c->stash->{id},
-        );
+        # TODO
+        # this 'if' is wrong
+        # if something goes wrong, it should display an error message
+        if ( $self->submit_form( $form, $row, $action ) ) {
+            $c->model('Search')->index_data(
+                $self->elastic_search_pseudo_table,
+                $self->get_elastic_search_insert_data( $row ),
+                $c->stash->{id},
+            );
+
+            return $c->res->redirect( $c->uri_for( $self->action_for( 'list' ) ) );
+        }
+
     }
     elsif ($row) {
         $form->set_values({ $row->get_columns() })

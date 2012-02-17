@@ -5,6 +5,13 @@ use namespace::autoclean;
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
 has '+crud_model_name' => ( default => 'DB::Product::Consignation' );
+sub _build_form_columns_extra_params {
+    {
+        representant => { fk => 1, label => 'person.name', value => 'person' },
+        stock_movement => { fk => 1, value => 'id' },
+        product => { fk => 1, label => 'name', value => 'id' },
+    }
+}
 
 =head1 NAME
 

@@ -6,8 +6,14 @@ BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
 sub _build_form_columns {
     [qw/
-        name supplier cost minimum_price price weight
+        name supplier cost minimum_price price weight image
     /]
+}
+sub _build_form_columns_extra_params {
+    {
+        supplier => { fk => 1, label => 'person.name', value => 'person' },
+        image    => { field_class => 'FileUpload' },
+    }
 }
 
 sub _build_datagrid_columns {

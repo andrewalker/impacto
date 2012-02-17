@@ -1,10 +1,32 @@
 package Impacto::Controller::Product::StockMovement;
+use utf8;
 use Moose;
 use namespace::autoclean;
+use Form::Sensible::DelegateConnection;
 
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
 has '+crud_model_name' => ( default => 'DB::Product::StockMovement' );
+sub _build_form_columns_extra_params {
+    my $self = shift;
+    {
+        type => { field_class => 'Select', options_delegate => FSConnector($self, 'get_stock_movement_types') },
+        place => { fk => 1, label => 'place' },
+        product => { fk => 1, label => 'name', value => 'id' },
+    }
+}
+
+sub get_stock_movement_types {
+    my ($self, $field, $args) = @_;
+    return [
+        { value => 'sell',         name => 'Venda' },
+        { value => 'buy',          name => 'Compra' },
+        { value => 'consignation', name => 'Consignação' },
+        { value => 'return',       name => 'Retorno' },
+        { value => 'donation',     name => 'Doação' },
+        { value => 'relocation',   name => 'Mudança de local' },
+    ];
+}
 
 =head1 NAME
 

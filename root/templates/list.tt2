@@ -1,7 +1,12 @@
 [% META extra_js = 'browse.js' %]
+
+<script type="text/javascript">
+    datagrid_layout = [% structure %];
+</script>
+
 <section id="search">
     <img src="[% static_root_uri %]/images/logotipo-impacto.png" alt="" />
-    <form method="get" action="">
+    <form method="get" action="" onsubmit="return false">
         <fieldset>
             <input name="q" data-dojo-type="dijit.form.TextBox" id='input_query' />
             <button data-dojo-type="dijit.form.Button">
@@ -10,7 +15,6 @@
         </fieldset>
     </form>
 </section>
-<span data-dojo-type="dojo.data.ItemFileReadStore" data-dojo-id="store1" data-dojo-props="clearOnClose: true, url:'[% table_prefix_uri %]/list_json_data', identity: '[% identity %]'"></span>
 <section id="datagrid">
     <div data-dojo-type="dijit.Menu" id="rowMenu" style="display: none;">
         <!--div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: view">Visualizar</div-->
@@ -19,16 +23,4 @@
     <div data-dojo-type="dijit.Menu" id="selectedRegionMenu" style="display: none;">
         <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: delete_selected">Excluir</div>
     </div>
-
-    <table data-dojo-id="datagrid_table"  id="datagrid_table" data-dojo-type="dojox.grid.EnhancedGrid" data-dojo-props="plugins: { menus: { rowMenu:'rowMenu', selectedRegionMenu: 'selectedRegionMenu' }, nestedSorting: true, indirectSelection: true }, store: store1, rowSelector: '20px', id: 'datagrid-table'" style="height: 400px">
-        <thead>
-            <tr>
-                [% FOREACH cell IN structure %]
-                <th width="[% cell.width %]" field="[% cell.field %]">
-                    [% cell.name %]
-                </th>
-                [% END %]
-            </tr>
-        </thead>
-    </table>
 </section>

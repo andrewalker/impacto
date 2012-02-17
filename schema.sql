@@ -899,6 +899,9 @@ ALTER TABLE ONLY consignation
 ALTER TABLE ONLY consignation
     ADD CONSTRAINT consignation_stock_movement_fkey FOREIGN KEY (stock_movement) REFERENCES stock_movement(id);
 
+ALTER TABLE ONLY category
+    ADD CONSTRAINT category_category_fkey FOREIGN KEY (parent) REFERENCES category(slug);
+
 
 --
 -- Name: product_category_category_fkey; Type: FK CONSTRAINT; Schema: product; Owner: -

@@ -3,7 +3,8 @@
 label,
 .fs_form_container form.fs_form .fs_formfieldline label.fs_label { padding: 4px; text-align: right; width: 200px; display: block; float: left; }
 
-input[type="text"], input[type="password"],
+textarea, input[type="text"], input[type="password"],
+.fs_form_container form.fs_form .fs_longtext textarea,
 .fs_form_container form.fs_form .fs_number input,
 .fs_form_container form.fs_form .fs_text input { padding: 2px; border: 1px solid #bbb; width: 300px; }
 

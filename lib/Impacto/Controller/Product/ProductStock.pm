@@ -4,7 +4,7 @@ use namespace::autoclean;
 
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
-has '+crud_model_name' => ( default => 'DB::Product::ProductStock' );
+has '+crud_model_name' => ( default => 'DB::ProductProductStock' );
 sub _build_form_columns_extra_params {
     {
         product => { fk => 1, label => 'name', value => 'id' },

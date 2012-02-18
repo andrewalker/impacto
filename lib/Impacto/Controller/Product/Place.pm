@@ -4,7 +4,7 @@ use namespace::autoclean;
 
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
-has '+crud_model_name' => ( default => 'DB::Product::Place' );
+has '+crud_model_name' => ( default => 'DB::ProductPlace' );
 
 =head1 NAME
 

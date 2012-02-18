@@ -61,7 +61,7 @@ __PACKAGE__->config(
              },
              store => {
                 class         => 'DBIx::Class',
-                user_model    => 'DB::UserAccount::UserAccount',
+                user_model    => 'DB::UserAccountUserAccount',
                 role_relation => 'roles',
                 role_field    => 'role',
              }

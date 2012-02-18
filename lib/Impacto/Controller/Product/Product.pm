@@ -11,8 +11,8 @@ sub _build_form_columns {
 }
 sub _build_form_columns_extra_params {
     {
-        supplier => { fk => 1, label => 'person.name', value => 'person' },
-        image    => { field_class => 'FileUpload' },
+        supplier => { fk => 1, label => 'person', value => 'person' },
+        image    => { field_class => 'FileSelector' },
     }
 }
 
@@ -22,7 +22,7 @@ sub _build_datagrid_columns {
     /]
 }
 
-has '+crud_model_name' => ( default => 'DB::Product::Product' );
+has '+crud_model_name' => ( default => 'DB::ProductProduct' );
 
 =head1 NAME
 

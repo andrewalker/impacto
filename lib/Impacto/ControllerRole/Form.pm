@@ -6,6 +6,7 @@ use Form::Sensible::DelegateConnection;
 use Impacto::Form::Sensible::Reflector::DBIC;
 use Moose::Role;
 use namespace::autoclean;
+use Data::Dumper;
 
 requires 'crud_model_instance', 'i18n';
 
@@ -173,6 +174,8 @@ sub get_options_from_db {
     my $label    = $args->{label}    || $args->{value};
     my $value    = $args->{value}    || $args->{label};
 
+    print Dumper \$args;
+
     (my $label_as = $label) =~ s[\.][_]g; # being friendly with older perls
 
     my $order_by = $args->{order_by} || $label;
@@ -202,9 +205,14 @@ sub get_options_from_db {
             [ $1            ],
         );
     }
+
+    print Dumper \%options;
+
     my $search = $self->crud_model_instance->result_source->related_source(
         $args->{related_source}
     )->resultset->search($args->{filter}, \%options);
+
+    print 'got here';
 
     my @options = ($field->required)
                 ? ()
@@ -217,6 +225,8 @@ sub get_options_from_db {
                 value => $_->get_column($value),
             }
         } $search->all;
+
+    print Dumper \@options;
 
     return \@options;
 }

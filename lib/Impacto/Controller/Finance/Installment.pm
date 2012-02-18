@@ -4,7 +4,7 @@ use namespace::autoclean;
 
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
-has '+crud_model_name' => ( default => 'DB::Finance::Installment' );
+has '+crud_model_name' => ( default => 'DB::FinanceInstallment' );
 sub _build_form_columns_extra_params {
     {
         ledger => { fk => 1, label => 'id', },

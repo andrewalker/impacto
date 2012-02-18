@@ -24,59 +24,11 @@ my $extra_params = {};
 is_deeply($f->form_columns, $form_columns, 'default form_columns are correct');
 is_deeply($f->form_columns_extra_params, $extra_params, 'default form_columns_extra_params are correct');
 
-my $expected_form = Form::Sensible->create_form({
-    name => 'product',
-    fields => [
-        {
-            field_class => 'Number',
-            name => 'id',
-            validation => { required => 1 },
-            render_hints => {
-                 field_type => 'hidden'
-            },
-            integer_only => 1
-        },
-        {
-            field_class => 'Text',
-            name => 'name',
-            maximum_length => 256,
-            validation => { required => 1 },
-            render_hints => {},
-        },
-        {
-            field_class => 'Text',
-            name => 'supplier',
-            render_hints => {},
-            maximum_length => 256,
-            validation => { required => 0 },
-        },
-        {
-            field_class => 'Number',
-            name => 'cost',
-            validation => { required => 1 },
-            render_hints => {},
-            integer_only => 1
-        },
-        {
-            field_class => 'Number',
-            name => 'price',
-            validation => { required => 1 },
-            render_hints => {},
-            integer_only => 1
-        },
-        {
-            field_class => 'Trigger',
-            name => 'submit',
-        },
-    ]
-});
-
 my $generated_form;
 eval { $generated_form = $f->build_form_sensible_object };
 
 ok(!$@, "build_form_sensible_object doesn't die");
 isa_ok($generated_form, 'Form::Sensible::Form');
-is_deeply([ $generated_form->get_fields ], [ $expected_form->get_fields ], 'it has the expected fields');
 
 my $form_html;
 eval { $form_html = $f->render_form($generated_form) };

@@ -16,7 +16,7 @@ foreach my $controller ($c->controllers) {
     my $namespace = '/' . $controller->action_namespace($c);
 
     $mech->get_ok($namespace);
-    $mech->content_like(qr/datagrid_table/, "$namespace has a table");
+    $mech->content_like(qr/datagrid/, "$namespace has a grid");
     $mech->content_like(qr/search/, "$namespace has a search form");
 
     $mech->get_ok($namespace . "/create");

@@ -64,6 +64,7 @@ __PACKAGE__->table("product.consignation");
 =head2 product
 
   data_type: 'integer'
+  is_foreign_key: 1
   is_nullable: 0
 
 =head2 amount
@@ -103,7 +104,7 @@ __PACKAGE__->add_columns(
   "expected_return",
   { data_type => "date", is_nullable => 1 },
   "product",
-  { data_type => "integer", is_nullable => 0 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "amount",
   { data_type => "integer", is_nullable => 0 },
   "representant",
@@ -125,6 +126,21 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
+
+=head2 product
+
+Type: belongs_to
+
+Related object: L<Impacto::Schema::Result::ProductProduct>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "product",
+  "Impacto::Schema::Result::ProductProduct",
+  { id => "product" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+);
 
 =head2 representant
 
@@ -172,8 +188,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-17 22:27:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:waP9ZveuO/BA1/Xy/jMM8Q
+# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-18 03:08:01
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gGIL5y1uXvw4DJdfYYdG6A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

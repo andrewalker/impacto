@@ -132,6 +132,21 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
+=head2 consignations
+
+Type: has_many
+
+Related object: L<Impacto::Schema::Result::ProductConsignation>
+
+=cut
+
+__PACKAGE__->has_many(
+  "consignations",
+  "Impacto::Schema::Result::ProductConsignation",
+  { "foreign.product" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 product_categories
 
 Type: has_many
@@ -223,8 +238,8 @@ Composing rels: L</product_categories> -> category
 __PACKAGE__->many_to_many("categories", "product_categories", "category");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-17 22:27:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:eEk2iovmj3QsCoJ1yqTRhg
+# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-18 03:08:01
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:SRLy+Gglf+vZn1ONcslPLA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -65,7 +65,7 @@ __PACKAGE__->table("finance.account");
 =head2 balance
 
   data_type: 'money'
-  default_value: '$0.00'
+  default_value: 'R$0,00'
   is_nullable: 0
 
 =cut
@@ -80,7 +80,7 @@ __PACKAGE__->add_columns(
   "agency",
   { data_type => "text", is_nullable => 1 },
   "balance",
-  { data_type => "money", default_value => "\$0.00", is_nullable => 0 },
+  { data_type => "money", default_value => "R\$0,00", is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
@@ -128,8 +128,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-17 22:27:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:FqKwiZV7g37pTYxEYmwppw
+# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-18 03:08:01
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:mCCtTIIYo5R5usjTdTVlKw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

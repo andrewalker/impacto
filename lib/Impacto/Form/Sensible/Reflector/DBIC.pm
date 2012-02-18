@@ -1,7 +1,6 @@
 package Impacto::Form::Sensible::Reflector::DBIC;
 use Moose;
 use namespace::autoclean;
-use Data::Dumper;
 
 extends 'Form::Sensible::Reflector::DBIC';
 

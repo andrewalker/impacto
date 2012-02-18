@@ -4,7 +4,6 @@ use strict;
 use FindBin '$Bin';
 use lib "$Bin/../lib";
 use Impacto;
-use Data::Dumper;
 use 5.012;
 
 my $c = new Impacto();

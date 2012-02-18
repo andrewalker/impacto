@@ -1,5 +1,7 @@
+    - ** Select's with more than one field in the label **
+        - write tests!
+    - Decide what to do with IC::Finance::InstallmentPayment (due, ledger)
+        - write tests!
     - Further customizations on controllers
-    - Select's with more than one field in the label
-    - QueryReadStore (server side sort, pagination)
     - Create a page to manage users
     - Create a page for user's settings

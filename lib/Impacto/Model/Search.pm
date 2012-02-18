@@ -29,18 +29,23 @@ sub index_data {
 }
 
 sub browse_data {
-    my ( $self, $type, $search_terms ) = @_;
+    my ( $self, $args ) = @_;
     my @items;
 
-    my $query = $search_terms
-              ? { text => { _all => $search_terms } }
+    my $query = $args->{query}
+              ? { text => { _all => $args->{query} } }
               : { match_all => {} }
               ;
 
+    my $sort = _get_sort_array($args->{sort});
+
     my $search = $self->_es->search(
         index => 'impacto',
-        type  => $type,
-        query => $query
+        type  => $args->{type},
+        sort  => $sort,
+        query => $query,
+        from  => $args->{start},
+        size  => $args->{count},
     );
 
     foreach my $hit (@{ $search->{hits}{hits} }) {
@@ -50,7 +55,10 @@ sub browse_data {
         push @items, \%row;
     }
 
-    return \@items;
+    return {
+        total => $search->{hits}{total},
+        items => \@items,
+    }
 }
 
 sub get_item {
@@ -67,6 +75,22 @@ sub get_pks {
     my ( $self, $type, $id ) = @_;
 
     return $self->get_item($type, $id)->{_source}{_pks};
+}
+
+sub _get_sort_array {
+    my $sort = shift;
+
+    return [ '_score' ] unless $sort;
+
+    my @result = map {
+        ( substr($_, 0, 1) eq '-' ) ?
+            { substr($_, 1) . '.untouched' => 'desc' } :
+            { $_            . '.untouched' => 'asc'  }
+    } split /,/, $sort;
+
+    push @result, '_score';
+
+    return \@result;
 }
 
 __PACKAGE__->meta->make_immutable;

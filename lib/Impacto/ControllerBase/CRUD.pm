@@ -112,21 +112,26 @@ sub list : Chained('crud_base') PathPart('') Args(0) {
 sub list_json_data : Chained('crud_base') PathPart Args(0) {
     my ($self, $c) = @_;
 
-    my $search_terms = $c->req->query_params->{q};
+    my $query = $c->req->query_params;
 
-    my $items = $c->model('Search')->browse_data(
-        $self->elastic_search_pseudo_table,
-        $search_terms
-    );
+    my $results = $c->model('Search')->browse_data({
+        type  => $self->elastic_search_pseudo_table,
+        query => $query->{q},
+        start => $query->{start},
+        count => $query->{count},
+        sort  => $query->{sort},
+    });
 
     $c->stash(
         current_view => 'JSON',
-        items        => $items,
+        items        => $results->{items},
+        numRows      => $results->{total},
     );
 }
 
 # TODO
 # sub view : Chained('crud_base_with_id') PathPart Args(0) {}
+
 sub delete : Chained('crud_base') PathPart Args(0) {
     my ( $self, $c ) = @_;
 

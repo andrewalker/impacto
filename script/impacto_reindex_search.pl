@@ -66,8 +66,19 @@ sub reindex_db {
         my %properties;
 
         foreach my $column (@{ $columns }) {
+            my $type = get_type( $source->column_info($column)->{data_type} );
             $properties{$column} = {
-                type => get_type( $source->column_info($column)->{data_type} ),
+                type   => 'multi_field',
+                fields => {
+                    $column => {
+                        type => $type,
+                    },
+                    untouched => {
+                        type => $type,
+                        index => 'not_analyzed',
+                        include_in_all => 0,
+                    },
+                }
             }
         }
 

@@ -6,7 +6,7 @@ use strict;
 use base 'Catalyst::View::JSON';
 
 __PACKAGE__->config(
-    expose_stash => [ qw/list_json_structure items identifier/ ],
+    expose_stash => [ qw/list_json_structure items identifier numRows/ ],
 );
 
 =head1 NAME

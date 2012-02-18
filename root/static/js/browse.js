@@ -93,7 +93,7 @@ dojo.addOnLoad(function () {
     datagrid_table = new dojox.grid.EnhancedGrid({
         plugins: {
             pagination: {
-                pageSizes: [ "10", "25", "50", "100", "All" ],
+                pageSizes: [ "1", "25", "50", "100" ],
                 description: true,
                 sizeSwitch: true,
                 pageStepper: true,

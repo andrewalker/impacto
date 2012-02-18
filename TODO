@@ -1,8 +1,5 @@
-    - Customize all child controllers
-
-###########################################
-###########  Install on server! ###########
-###########################################
-
+    - Further customizations on controllers
+    - Select's with more than one field in the label
+    - QueryReadStore (server side sort, pagination)
     - Create a page to manage users
     - Create a page for user's settings

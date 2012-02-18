@@ -7,6 +7,17 @@ use Form::Sensible::DelegateConnection;
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
 has '+crud_model_name' => ( default => 'DB::ProductStockMovement' );
+sub _build_datagrid_columns {
+    [ qw/ datetime amount type place product / ]
+}
+sub _build_datagrid_columns_extra_params {
+    {
+        product => { fk => 'product.name' }
+    }
+}
+sub _build_form_columns {
+    [ qw/ datetime amount type place product / ]
+}
 sub _build_form_columns_extra_params {
     my $self = shift;
     {

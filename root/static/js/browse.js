@@ -79,11 +79,6 @@ function _delete(rows) {
 }
 
 dojo.addOnLoad(function () {
-    dojo.connect(datagrid_table, 'onRowContextMenu', set_row_index);
-    dojo.connect(datagrid_table, "onRowClick", datagrid_row_click_event);
-    dojo.connect(datagrid_table, "_onFetchComplete", function () { dojo.byId('input_query').focus() });
-    dojo.connect(dojo.byId('input_query'), "onkeyup", search_input_keypress);
-
     var datagrid_store = new dojox.data.QueryReadStore({
         clearOnClose: true,
         url:          table_prefix_uri + '/list_json_data',
@@ -118,14 +113,10 @@ dojo.addOnLoad(function () {
 
     datagrid_table.startup();
 
+    dojo.connect(datagrid_table, 'onRowContextMenu', set_row_index);
+    dojo.connect(datagrid_table, "onRowClick", datagrid_row_click_event);
+    dojo.connect(datagrid_table, "_onFetchComplete", function () { dojo.byId('input_query').focus() });
+    dojo.connect(dojo.byId('input_query'), "onkeyup", search_input_keypress);
 
-/*
-    <table data-dojo-id="datagrid_table"  id="datagrid_table" data-dojo-type="dojox.grid.EnhancedGrid" data-dojo-props="datagrid_props" style="height: 400px">
-        <thead>
-            <tr>
-            </tr>
-        </thead>
-    </table>
-    */
     datagrid_table.layout.setColumnVisibility(1, false);
 });

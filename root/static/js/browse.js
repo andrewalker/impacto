@@ -2,6 +2,7 @@ dojo.require("dojox.grid.EnhancedGrid");
 dojo.require("dojox.grid.enhanced.plugins.Menu");
 dojo.require("dojox.grid.enhanced.plugins.NestedSorting");
 dojo.require("dojox.grid.enhanced.plugins.IndirectSelection");
+dojo.require("dojox.grid.enhanced.plugins.Pagination");
 dojo.require("dojox.data.QueryReadStore");
 
 
@@ -91,6 +92,15 @@ dojo.addOnLoad(function () {
 
     datagrid_table = new dojox.grid.EnhancedGrid({
         plugins: {
+            pagination: {
+                pageSizes: [ "10", "25", "50", "100", "All" ],
+                description: true,
+                sizeSwitch: true,
+                pageStepper: true,
+                gotoButton: true,
+                maxPageStep: 4,
+                position: "bottom"
+            },
             menus: {
                 rowMenu:            'rowMenu',
                 selectedRegionMenu: 'selectedRegionMenu'

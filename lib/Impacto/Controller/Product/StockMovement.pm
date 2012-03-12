@@ -22,8 +22,8 @@ sub _build_form_columns_extra_params {
     my $self = shift;
     {
         type => { field_class => 'Select', options_delegate => FSConnector($self, 'get_stock_movement_types') },
-        place => { fk => 1, label => 'place' },
-        product => { fk => 1, label => 'name', value => 'id' },
+        place => { fk => 1, option_label => 'place' },
+        product => { fk => 1, option_label => 'name', option_value => 'id' },
     }
 }
 

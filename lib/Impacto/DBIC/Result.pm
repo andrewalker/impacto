@@ -6,6 +6,12 @@ use List::Util qw/first reduce/;
 use namespace::autoclean;
 extends 'DBIx::Class::Core';
 
+sub concat_columns {
+    my ( $self, $columns, $sep ) = @_;
+
+    return join $sep, map { $self->get_column($_) } @$columns;
+}
+
 sub get_elastic_search_insert_data {
     my ($self, $columns, $extra_params) = @_;
 

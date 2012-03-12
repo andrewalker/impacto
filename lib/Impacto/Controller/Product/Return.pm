@@ -7,9 +7,9 @@ BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 has '+crud_model_name' => ( default => 'DB::ProductReturn' );
 sub _build_form_columns_extra_params {
     {
-        consignation   => { fk => 1, value => 'id' },
-        stock_movement => { fk => 1, value => 'id' },
-        ledger         => { fk => 1, value => 'id' },
+        consignation   => { fk => 1, option_value => 'id' },
+        stock_movement => { fk => 1, option_value => 'id' },
+        ledger         => { fk => 1, option_value => 'id' },
     }
 }
 

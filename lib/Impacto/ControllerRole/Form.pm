@@ -3,6 +3,7 @@ use utf8;
 use Form::Sensible;
 use Form::Sensible::Renderer::HTML;
 use Form::Sensible::DelegateConnection;
+use Form::SensibleX::Field::Select::OptionsFromDBIC;
 use Impacto::Form::Sensible::Reflector::DBIC;
 use Moose::Role;
 use namespace::autoclean;
@@ -92,20 +93,13 @@ sub build_form_sensible_object {
         }
 
         if (delete $field_params{fk}) {
-            $field_params{related_source} = $field;
-
             delete $fd_field->{field_type};
-            $fd_field->{field_class} = 'Select';
 
-            $fd_field->{options_delegate} = FSConnector(
-                $self,
-                'get_options_from_db',
-                \%field_params
-            );
+            $fd_field->{field_class} = '+Form::SensibleX::Field::Select::OptionsFromDBIC';
+            $fd_field->{resultset}   = $source->related_source( $field )->resultset;
         }
-        else {
-            $fd_field->{$_} = $field_params{$_} for (keys %field_params);
-        }
+
+        $fd_field->{$_} = $field_params{$_} for (keys %field_params);
     }
 
     $self->form_sensible_flattened( $form_definition );
@@ -165,98 +159,6 @@ sub submit_form_update {
     $row->update( $values );
 
     return 1;
-}
-
-sub get_options_from_db {
-    my ($self, $field, $args) = @_;
-
-    my $label    = $args->{label} || $args->{value};
-    my $value    = $args->{value} || $args->{label};
-
-    my @values   = ref $value
-                 ? ref $value eq 'ARRAY' ? @$value : die "expecting ARRAY ref"
-                 : ($value)
-                 ;
-
-    my @labels   = ref $label
-                 ? ref $label eq 'ARRAY' ? @$label : die "expecting ARRAY ref"
-                 : ($label)
-                 ;
-
-    my @labels_as = map { $a = $_; $a =~ s[\.][_]g; $a } @labels;
-
-    my $order_by = $args->{order_by} || \@labels;
-
-    my $columns  = $args->{columns};
-
-    if (!$columns) {
-        # using hash to avoid duplicate columns
-        # if it's a foreign key (e.g. person.name)
-        # I only want the column (person)
-        my %columns = map {
-            m[(.*)\.] ? ( $1 => 1 ) : ( $_ => 1 )
-        } (@labels, @values);
-
-        $columns = [ keys %columns ];
-    }
-
-    my %options = (
-        columns  => $columns,
-        order_by => $order_by,
-    );
-
-    my $found = 0;
-    my %join;
-
-    for (my $i = 0; $i < scalar @labels; $i++) {
-        if ($labels[$i] =~ m[(.*)\.]) {
-            if (!$found) {
-                @options{ '+select', '+as' } = ( [], [] );
-                $found = 1;
-            }
-
-            push @{ $options{'+select'} }, $labels[$i];
-            push @{ $options{'+as'} },     $labels_as[$i];
-            $join{$1} = 1;
-        }
-    }
-
-    $options{join} = [ keys %join ];
-
-    my $search = $self->crud_model_instance->result_source->related_source(
-        $args->{related_source}
-    )->resultset->search($args->{filter}, \%options);
-
-    my @options = ($field->required)
-                ? ()
-                : ({ name => 'Selecione' })
-                ;
-
-    my $sep = $args->{separator} || ' - ';
-
-    push @options,
-        map {
-            my $row   = $_;
-            my $name  = '';
-            my $value = '';
-
-            for (@labels_as) {
-                $name .= $row->get_column($_) . $sep;
-            }
-            $name = substr $name, 0, - ( length $sep );
-
-            for (@values) {
-                $value .= $row->get_column($_) . $sep;
-            }
-            $value = substr $value, 0, - ( length $sep );
-
-            {
-                name  => $name,
-                value => $value,
-            }
-        } $search->all;
-
-    return \@options;
 }
 
 sub _translate_form_field {

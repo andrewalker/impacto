@@ -7,8 +7,8 @@ BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 has '+crud_model_name' => ( default => 'DB::ProductProductStock' );
 sub _build_form_columns_extra_params {
     {
-        product => { fk => 1, label => 'name', value => 'id' },
-        place   => { fk => 1, label => 'place' }
+        product => { fk => 1, option_label => 'name', option_value => 'id' },
+        place   => { fk => 1, option_label => 'place' }
     }
 }
 

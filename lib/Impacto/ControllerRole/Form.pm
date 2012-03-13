@@ -3,7 +3,7 @@ use utf8;
 use Form::Sensible;
 use Form::Sensible::Renderer::HTML;
 use Form::Sensible::DelegateConnection;
-use Form::SensibleX::Field::Select::OptionsFromDBIC;
+use Form::SensibleX::Field::Select::DBIC;
 use Impacto::Form::Sensible::Reflector::DBIC;
 use Moose::Role;
 use namespace::autoclean;
@@ -95,7 +95,7 @@ sub build_form_sensible_object {
         if (delete $field_params{fk}) {
             delete $fd_field->{field_type};
 
-            $fd_field->{field_class} = '+Form::SensibleX::Field::Select::OptionsFromDBIC';
+            $fd_field->{field_class} = '+Form::SensibleX::Field::Select::DBIC';
             $fd_field->{resultset}   = $source->related_source( $field )->resultset;
         }
 
@@ -134,8 +134,15 @@ sub submit_form {
     delete $values->{submit};
 
     for (keys %$values) {
-        if ($values->{$_} eq '') {
+        if (defined $values->{$_} && $values->{$_} eq '') {
             delete $values->{$_};
+        }
+    }
+
+    # this sucks big time
+    foreach my $field ($form->get_fields) {
+        if ($field->field_type eq 'fileselector') {
+            $values->{ $field->name } = $field->{file_ref}->slurp;
         }
     }
 

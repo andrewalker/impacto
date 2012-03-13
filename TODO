@@ -1,14 +1,15 @@
     - ** Select's with more than one field in the label **
         - write tests!
     - Decide what to do with IC::Finance::InstallmentPayment (due, ledger)
-        - MIME::Base64::encode_base64url('2000-02-02 00:00:00 @#$% Deus me ama @#$% Loja')
-          or something like that...
-        - write tests!
+        - This is mad:
+          MIME::Base64::encode_base64url('2000-02-02 00:00:00 @#$% Deus me ama @#$% Loja')
+        - subforms would fix it. maybe this is still interesting?
 
     - many_to_many
     - record_meta
-    - FileSelector -> bytea
     - subforms!
+
+    - subclass FileSelector -> bytea -> display image when editing
 
     - Further customizations on controllers
     - Create a page to manage users

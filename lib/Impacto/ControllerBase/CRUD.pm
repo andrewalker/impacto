@@ -166,7 +166,16 @@ sub make_form_action {
         $self->crud_model_instance->new_result({});
 
     if ($c->req->method eq 'POST') {
-        $form->set_values( $c->req->body_params );
+        my $values = $c->req->body_params;
+
+# TODO: check ::Role::Form L 142
+        foreach my $field ($form->get_fields) {
+            if ($field->field_type eq 'fileselector') {
+                $field->{file_ref} = $c->req->upload( $field->name );
+            }
+        }
+
+        $form->set_values( $values );
 
         # TODO
         # this 'if' is wrong

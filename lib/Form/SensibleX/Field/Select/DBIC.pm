@@ -1,8 +1,10 @@
-package Form::SensibleX::Field::Select::OptionsFromDBIC;
+package Form::SensibleX::Field::Select::DBIC;
 
 use Moose;
 use namespace::autoclean;
 use Form::Sensible::DelegateConnection;
+#use MIME::Base64 qw/encode_base64url/;
+#use JSON;
 
 extends 'Form::Sensible::Field::Select';
 
@@ -162,7 +164,7 @@ sub options_delegate_get_from_db {
         map {
             {
                 name  => $_->concat_columns( $name,  $sep ),
-                value => $_->concat_columns( $value, $sep ),
+                value => _encode_value( $_, $value ),
             }
         } @$records
     ];
@@ -178,6 +180,18 @@ sub _fix_array_ref {
     }
 
     return [ $value_or_label ];
+}
+
+sub _encode_value {
+    my ($row, $value) = @_;
+
+    return $row->get_column( $value->[0] )
+        if scalar @$value == 1;
+
+# ok, ok. this is madness.
+#    return encode_base64url(
+#        encode_json([ map { $row->get_column($_) } @$value ])
+#    );
 }
 
 __PACKAGE__->meta->make_immutable;

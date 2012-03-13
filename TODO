@@ -8,6 +8,7 @@
     - many_to_many
     - record_meta
     - FileSelector -> bytea
+    - subforms!
 
     - Further customizations on controllers
     - Create a page to manage users

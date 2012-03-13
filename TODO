@@ -1,7 +1,14 @@
     - ** Select's with more than one field in the label **
         - write tests!
     - Decide what to do with IC::Finance::InstallmentPayment (due, ledger)
+        - MIME::Base64::encode_base64url('2000-02-02 00:00:00 @#$% Deus me ama @#$% Loja')
+          or something like that...
         - write tests!
+
+    - many_to_many
+    - record_meta
+    - FileSelector -> bytea
+
     - Further customizations on controllers
     - Create a page to manage users
     - Create a page for user's settings

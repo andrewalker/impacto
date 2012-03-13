@@ -346,11 +346,15 @@ CREATE TABLE product (
     minimum_price money,
     price money NOT NULL,
     weight double precision,
-    image bytea,
-    custom_fields text
+    image bytea
 );
 
-
+CREATE TABLE product_meta (
+    id integer NOT NULL,
+    product integer NOT NULL,
+    name text NOT NULL,
+    value text NOT NULL
+);
 --
 -- Name: product_category; Type: TABLE; Schema: product; Owner: -; Tablespace: 
 --
@@ -707,6 +711,9 @@ ALTER TABLE ONLY product_category
 ALTER TABLE ONLY product
     ADD CONSTRAINT product_pkey PRIMARY KEY (id);
 
+ALTER TABLE ONLY product_meta
+    ADD CONSTRAINT product_meta_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: product_stock_pkey; Type: CONSTRAINT; Schema: product; Owner: -; Tablespace: 
@@ -883,6 +890,9 @@ ALTER TABLE ONLY supplier
 
 
 SET search_path = product, pg_catalog;
+
+ALTER TABLE ONLY product_meta
+    ADD CONSTRAINT product_meta_product_fkey FOREIGN KEY (product) REFERENCES product(id);
 
 --
 -- Name: consignation_representant_fkey; Type: FK CONSTRAINT; Schema: product; Owner: -

@@ -85,11 +85,6 @@ __PACKAGE__->table("product.product");
   data_type: 'bytea'
   is_nullable: 1
 
-=head2 custom_fields
-
-  data_type: 'text'
-  is_nullable: 1
-
 =cut
 
 __PACKAGE__->add_columns(
@@ -114,8 +109,6 @@ __PACKAGE__->add_columns(
   { data_type => "double precision", is_nullable => 1 },
   "image",
   { data_type => "bytea", is_nullable => 1 },
-  "custom_fields",
-  { data_type => "text", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -158,6 +151,21 @@ Related object: L<Impacto::Schema::Result::ProductProductCategory>
 __PACKAGE__->has_many(
   "product_categories",
   "Impacto::Schema::Result::ProductProductCategory",
+  { "foreign.product" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 product_metas
+
+Type: has_many
+
+Related object: L<Impacto::Schema::Result::ProductProductMeta>
+
+=cut
+
+__PACKAGE__->has_many(
+  "product_metas",
+  "Impacto::Schema::Result::ProductProductMeta",
   { "foreign.product" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -238,8 +246,8 @@ Composing rels: L</product_categories> -> category
 __PACKAGE__->many_to_many("categories", "product_categories", "category");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-18 03:08:01
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:SRLy+Gglf+vZn1ONcslPLA
+# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-03-13 00:13:07
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:chR2XlkrkxxbXx1Huqe5WQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

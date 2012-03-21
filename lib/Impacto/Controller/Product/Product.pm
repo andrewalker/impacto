@@ -12,7 +12,7 @@ sub _build_form_columns {
 sub _build_form_columns_extra_params {
     {
         supplier => { fk => 1, option_label => 'person', option_value => 'person' },
-        image    => { field_class => 'FileSelector' },
+        image    => { is_file_bytea => 1 },
     }
 }
 

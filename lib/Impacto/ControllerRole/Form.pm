@@ -4,6 +4,7 @@ use Form::Sensible;
 use Form::Sensible::Renderer::HTML;
 use Form::Sensible::DelegateConnection;
 use Form::SensibleX::Field::Select::DBIC;
+use Form::SensibleX::Field::FileSelector::CatalystByteA;
 use Impacto::Form::Sensible::Reflector::DBIC;
 use Moose::Role;
 use namespace::autoclean;
@@ -92,6 +93,12 @@ sub build_form_sensible_object {
             delete $fd_field->{field_type};
         }
 
+        if (delete $field_params{is_file_bytea}) {
+            delete $fd_field->{field_type};
+
+            $fd_field->{field_class} = '+Form::SensibleX::Field::FileSelector::CatalystByteA';
+        }
+
         if (delete $field_params{fk}) {
             delete $fd_field->{field_type};
 
@@ -136,13 +143,6 @@ sub submit_form {
     for (keys %$values) {
         if (defined $values->{$_} && $values->{$_} eq '') {
             delete $values->{$_};
-        }
-    }
-
-    # this sucks big time
-    foreach my $field ($form->get_fields) {
-        if ($field->field_type eq 'fileselector') {
-            $values->{ $field->name } = $field->{file_ref}->slurp;
         }
     }
 

@@ -168,11 +168,8 @@ sub make_form_action {
     if ($c->req->method eq 'POST') {
         my $values = $c->req->body_params;
 
-# TODO: check ::Role::Form L 142
-        foreach my $field ($form->get_fields) {
-            if ($field->field_type eq 'fileselector') {
-                $field->{file_ref} = $c->req->upload( $field->name );
-            }
+        for my $field ($c->req->upload) {
+            $values->{$field} = $c->req->upload( $field );
         }
 
         $form->set_values( $values );

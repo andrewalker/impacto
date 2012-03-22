@@ -1,6 +1,6 @@
 package Impacto::ControllerRole::Form;
 use utf8;
-use Form::SensibleX::FormFactory;
+use Impacto::FormFactory;
 use Form::Sensible::Renderer::HTML;
 use Form::Sensible::DelegateConnection;
 use Moose::Role;
@@ -45,11 +45,12 @@ sub get_all_columns {
 sub build_form_factory {
     my ( $self, $c ) = @_;
 
-    return Form::SensibleX::FormFactory->new(
-        columns      => $self->form_columns,
-        extra_params => $self->form_columns_extra_params,
-        request_args => { req => $c->req },
-        model_args   => {
+    return Impacto::FormFactory->new(
+        controller_name => ref $self,
+        columns         => $self->form_columns,
+        extra_params    => $self->form_columns_extra_params,
+        request_args    => { req => $c->req },
+        model_args      => {
             resultset => $self->crud_model_instance,
             row       => $c->stash->{row},
         },

@@ -2,7 +2,6 @@ package Impacto::ControllerBase::CRUD;
 use utf8;
 use Moose;
 use namespace::autoclean;
-use Data::Dumper;
 use JSON;
 
 BEGIN { extends 'Impacto::ControllerBase::Base' }
@@ -135,7 +134,7 @@ sub list_json_data : Chained('crud_base') PathPart Args(0) {
 sub delete : Chained('crud_base') PathPart Args(0) {
     my ( $self, $c ) = @_;
 
-    my $response = '';
+    my $count = 0;
 
     foreach my $id (values $c->req->body_params) {
         my $pks = $c->model('Search')->get_pks(
@@ -151,9 +150,9 @@ sub delete : Chained('crud_base') PathPart Args(0) {
             id    => $id
         );
 
-        $response .= "Registro $id removido";
+        $count++;
     }
-    $c->res->body($response);
+    $c->res->body("$count registros removidos");
 }
 
 ### -- Helper Methods -- ###
@@ -161,42 +160,27 @@ sub delete : Chained('crud_base') PathPart Args(0) {
 sub make_form_action {
     my ($self, $c, $action) = @_;
 
-    my $form = $self->build_form_sensible_object;
-    my $row = $c->stash->{row} ||
-        $self->crud_model_instance->new_result({});
+    my $form_factory = $self->build_form_factory( $c );
 
-    if ($c->req->method eq 'POST') {
-        my $values = $c->req->body_params;
+    # $action = create or update
+    # as in: insert new record in the db
+    #   or update an existing row
+    if ( $form_factory->execute($action) ) {
+        # TODO: this is kinda ugly
+        $c->model('Search')->index_data(
+            $self->elastic_search_pseudo_table,
+            $self->get_elastic_search_insert_data( $form_factory->get_row ),
+            $c->stash->{id},
+        );
 
-        for my $field ($c->req->upload) {
-            $values->{$field} = $c->req->upload( $field );
-        }
-
-        $form->set_values( $values );
-
-        # TODO
-        # this 'if' is wrong
-        # if something goes wrong, it should display an error message
-        if ( $self->submit_form( $form, $row, $action ) ) {
-            $c->model('Search')->index_data(
-                $self->elastic_search_pseudo_table,
-                $self->get_elastic_search_insert_data( $row ),
-                $c->stash->{id},
-            );
-
-            return $c->res->redirect( $c->uri_for( $self->action_for( 'list' ) ) );
-        }
-
-    }
-    elsif ($row) {
-        $form->set_values({ $row->get_columns() })
+        return $c->res->redirect( $c->uri_for( $self->action_for( 'list' ) ) );
     }
 
     my $template = $c->view('TT')->get_first_existing_template($c->action, $action);
 
     $c->stash(
-        form      => $form,
-        form_html => $self->render_form( $form ),
+        form      => $form_factory->form,
+        form_html => $self->render_form( $form_factory->form ),
         template  => $template,
     );
 }

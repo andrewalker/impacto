@@ -1,40 +1,18 @@
 package Impacto::ControllerRole::Form;
 use utf8;
-use Form::Sensible;
+use Form::SensibleX::FormFactory;
 use Form::Sensible::Renderer::HTML;
 use Form::Sensible::DelegateConnection;
-use Form::SensibleX::Field::Select::DBIC;
-use Form::SensibleX::Field::FileSelector::CatalystByteA;
-use Impacto::Form::Sensible::Reflector::DBIC;
 use Moose::Role;
 use namespace::autoclean;
 
 requires 'crud_model_instance', 'i18n';
-
-has form_columns => (
-    isa        => 'ArrayRef',
-    is         => 'ro',
-    lazy_build => 1,
-);
-
-has form_columns_extra_params => (
-    isa        => 'HashRef',
-    is         => 'ro',
-    lazy_build => 1,
-);
 
 has form_templates_paths => (
     isa        => 'ArrayRef[Str]',
     is         => 'ro',
     lazy_build => 1,
 );
-
-has form_sensible_flattened => (
-    isa        => 'HashRef|Undef',
-    is         => 'rw',
-    required   => 0,
-);
-
 
 sub _build_form_templates_paths {
     my $self = shift;
@@ -43,17 +21,17 @@ sub _build_form_templates_paths {
 }
 
 # in the controller it would be like:
-# sub _build_form_columns {
+# sub form_columns {
 #   return [ qw/ name date long_text_field foreign_key_field / ]
 # }
-# sub _build_form_columns_extra_params {
+# sub form_columns_extra_params {
 #   return {
 #       long_text_field   => { field_class => 'TextArea' },
 #       foreign_key_field => { fk => 1, label => 'customer.company', value => 'id', order_by => 'id', filter => { name => 'filtered' } },
 #   }
 # }
-sub _build_form_columns { shift->get_all_columns(@_) }
-sub _build_form_columns_extra_params { +{} }
+sub form_columns { shift->get_all_columns(@_) }
+sub form_columns_extra_params { +{} }
 
 # just to be sure it exists when needed
 sub get_all_columns {
@@ -63,56 +41,19 @@ sub get_all_columns {
     return [];
 }
 
-sub build_form_sensible_object {
-    my $self = shift;
+# very easy to override
+sub build_form_factory {
+    my ( $self, $c ) = @_;
 
-    # FIXME: use some sort of cache? CHI?
-    if (defined $self->form_sensible_flattened) {
-        return Form::Sensible->create_form($self->form_sensible_flattened);
-    }
-
-    my $resultset = $self->crud_model_instance;
-    my $source    = $resultset->result_source;
-    my $reflector = Impacto::Form::Sensible::Reflector::DBIC->new();
-
-    my $form_options = {
-        form             => { name => $source->from },
-        with_trigger     => 1,
-        fieldname_filter => sub { @{ $self->form_columns } },
-    };
-
-    my $form_definition = $reflector->reflect_from($resultset, $form_options)->flatten;
-
-    my %extra_params = %{ $self->form_columns_extra_params };
-
-    foreach my $field (keys %extra_params) {
-        my $fd_field = $form_definition->{fields}{$field};
-        my %field_params = %{ $extra_params{$field} };
-
-        if ($field_params{field_class}) {
-            delete $fd_field->{field_type};
-        }
-
-        if (delete $field_params{is_file_bytea}) {
-            delete $fd_field->{field_type};
-
-            $fd_field->{field_class} = '+Form::SensibleX::Field::FileSelector::CatalystByteA';
-        }
-
-        if (delete $field_params{fk}) {
-            delete $fd_field->{field_type};
-
-            $fd_field->{field_class} = '+Form::SensibleX::Field::Select::DBIC';
-            $fd_field->{resultset}   = $source->related_source( $field )->resultset;
-        }
-
-        $fd_field->{$_} = $field_params{$_} for (keys %field_params);
-    }
-
-    $self->form_sensible_flattened( $form_definition );
-
-    # it's cool to be recursive sometimes :)
-    return $self->build_form_sensible_object;
+    return Form::SensibleX::FormFactory->new(
+        columns      => $self->form_columns,
+        extra_params => $self->form_columns_extra_params,
+        request_args => { req => $c->req },
+        model_args   => {
+            resultset => $self->crud_model_instance,
+            row       => $c->stash->{row},
+        },
+    );
 }
 
 sub render_form {
@@ -128,44 +69,6 @@ sub render_form {
     );
 
     return $rendered_form->complete;
-}
-
-sub submit_form {
-    my ($self, $form, $row, $action) = @_;
-
-    my $result = $form->validate();
-
-    return 0 if (! $result->is_valid);
-
-    my $values = $form->get_all_values();
-    delete $values->{submit};
-
-    for (keys %$values) {
-        if (defined $values->{$_} && $values->{$_} eq '') {
-            delete $values->{$_};
-        }
-    }
-
-    my $submit_form_action = "submit_form_$action";
-
-    return $self->$submit_form_action($row, $values);
-}
-
-sub submit_form_create {
-    my ( $self, $row, $values ) = @_;
-
-    $row->set_columns( $values );
-    $row->insert;
-
-    return 1;
-}
-
-sub submit_form_update {
-    my ( $self, $row, $values ) = @_;
-
-    $row->update( $values );
-
-    return 1;
 }
 
 sub _translate_form_field {
@@ -190,10 +93,6 @@ Builds an HTML form to insert or update rows from the database.
 
 =head1 METHODS
 
-=head2 build_form_sensible_object
-
-Builds a Form::Sensible object based on the DBIx::Class resultset.
-
 =head2 get_all_columns
 
 Makes sure that either this method is overridden by the consumer class, or
@@ -202,19 +101,6 @@ it is just not needed (because datagrid_columns don't need it's default value).
 =head2 render_form
 
 Renders the Form::Sensible object in HTML.
-
-=head2 submit_form
-
-Prepares the form data to insert a new row into the database, or to update an
-existing one.
-
-=head2 submit_form_create
-
-Actually inserts the new row.
-
-=head2 submit_form_update
-
-Actually updates the row.
 
 =head1 AUTHOR
 

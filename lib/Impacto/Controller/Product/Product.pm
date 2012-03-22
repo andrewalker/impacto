@@ -4,12 +4,12 @@ use namespace::autoclean;
 
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
-sub _build_form_columns {
+sub form_columns {
     [qw/
         name supplier cost minimum_price price weight image
     /]
 }
-sub _build_form_columns_extra_params {
+sub form_columns_extra_params {
     {
         supplier => { fk => 1, option_label => 'person', option_value => 'person' },
         image    => { is_file_bytea => 1 },

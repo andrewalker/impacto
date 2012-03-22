@@ -6,7 +6,7 @@ BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
 has '+crud_model_name' => ( default => 'DB::FinanceLedger' );
 
-sub _build_form_columns_extra_params {
+sub form_columns_extra_params {
     {
         ledger_type    => { fk => 1, option_label => 'name', option_value => 'slug', },
         stock_movement => { fk => 1, option_label => [ 'datetime', 'product.name', 'place' ], option_value => 'id' },

@@ -15,10 +15,10 @@ sub _build_datagrid_columns_extra_params {
         product => { fk => 'product.name' }
     }
 }
-sub _build_form_columns {
+sub form_columns {
     [ qw/ datetime amount type place product / ]
 }
-sub _build_form_columns_extra_params {
+sub form_columns_extra_params {
     my $self = shift;
     {
         type => { field_class => 'Select', options_delegate => FSConnector($self, 'get_stock_movement_types') },

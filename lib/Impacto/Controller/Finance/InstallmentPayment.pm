@@ -5,7 +5,7 @@ use namespace::autoclean;
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
 has '+crud_model_name' => ( default => 'DB::FinanceInstallmentPayment' );
-sub _build_form_columns_extra_params {
+sub form_columns_extra_params {
     {
         account => { fk => 1, option_label => 'name', },
         comments => { field_class => 'LongText' },

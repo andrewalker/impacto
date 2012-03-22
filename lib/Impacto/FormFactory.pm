@@ -1,8 +1,8 @@
 package Impacto::FormFactory;
 use Moose;
-use namespace::autoclean;
 use Catalyst::Utils;
 use Class::Load qw/ load_optional_class /;
+use namespace::autoclean;
 
 extends 'Form::SensibleX::FormFactory';
 
@@ -37,3 +37,7 @@ sub get_class_name {
     $controller_name =~ s/^$prefix//;
     return __PACKAGE__ . "::${what}::" . $controller_name;
 }
+
+__PACKAGE__->meta->make_immutable;
+
+1;

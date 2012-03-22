@@ -11,7 +11,7 @@ sub form_columns {
 }
 sub form_columns_extra_params {
     {
-        supplier => { fk => 1, option_label => 'person', option_value => 'person' },
+        supplier => { x_field_class => "ForeignKey::DBIC", option_label => 'person', option_value => 'person' },
         image    => { x_field_class => 'FileSelector::CatalystByteA' },
     }
 }

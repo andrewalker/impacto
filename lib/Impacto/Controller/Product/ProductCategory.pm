@@ -7,8 +7,8 @@ BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 has '+crud_model_name' => ( default => 'DB::ProductProductCategory' );
 sub form_columns_extra_params {
     {
-        category => { fk => 1, option_label => 'name', option_value => 'slug' },
-        product  => { fk => 1, option_label => 'name', option_value => 'id'   },
+        category => { x_field_class => "ForeignKey::DBIC", option_label => 'name', option_value => 'slug' },
+        product  => { x_field_class => "ForeignKey::DBIC", option_label => 'name', option_value => 'id'   },
     }
 }
 

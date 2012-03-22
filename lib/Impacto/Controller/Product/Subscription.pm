@@ -7,8 +7,8 @@ BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 has '+crud_model_name' => ( default => 'DB::ProductSubscription' );
 sub form_columns_extra_params {
     {
-        client => { fk => 1, option_label => 'person.name', option_value => 'person' },
-        product => { fk => 1, option_label => 'name', option_value => 'id' },
+        client => { x_field_class => "ForeignKey::DBIC", option_label => 'person.name', option_value => 'person' },
+        product => { x_field_class => "ForeignKey::DBIC", option_label => 'name', option_value => 'id' },
     }
 }
 

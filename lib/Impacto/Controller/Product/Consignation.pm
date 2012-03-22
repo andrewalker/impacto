@@ -7,9 +7,9 @@ BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 has '+crud_model_name' => ( default => 'DB::ProductConsignation' );
 sub form_columns_extra_params {
     {
-        representant => { fk => 1, option_label => 'person.name', option_value => 'person' },
-        stock_movement => { fk => 1, option_value => 'id' },
-        product => { fk => 1, option_label => 'name', option_value => 'id' },
+        representant => { x_field_class => "ForeignKey::DBIC", option_label => 'person.name', option_value => 'person' },
+        stock_movement => { x_field_class => "ForeignKey::DBIC", option_value => 'id' },
+        product => { x_field_class => "ForeignKey::DBIC", option_label => 'name', option_value => 'id' },
     }
 }
 

@@ -3,6 +3,7 @@ use Moose;
 use Form::Sensible;
 use Form::SensibleX::Field::FileSelector::CatalystByteA;
 use Form::SensibleX::Field::Select::DBIC;
+use Class::Load qw/load_class/;
 use namespace::autoclean;
 
 has columns => (
@@ -49,11 +50,8 @@ around BUILDARGS => sub {
                       : __PACKAGE__ . '::Request::' . $request
                       ;
 
-    require $model_class;
-    $model_class->import;
-
-    require $request_class;
-    $request_class->import;
+    load_class( $model_class   );
+    load_class( $request_class );
 
 # I'm only interested in the instance here
     $args->{model}   = $model_class->new(   delete $args->{model_args}   );

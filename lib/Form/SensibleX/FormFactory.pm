@@ -1,7 +1,6 @@
 package Form::SensibleX::FormFactory;
 use Moose;
 use Form::Sensible;
-use Impacto::Form::Sensible::Reflector;
 use Form::SensibleX::Field::FileSelector::CatalystByteA;
 use Form::SensibleX::Field::Select::DBIC;
 use namespace::autoclean;
@@ -36,13 +35,25 @@ around BUILDARGS => sub {
     my $orig = shift;
     my $self = shift;
 
-    my $args = {@_};
+    my $args = ref $_[0] && ref $_[0] eq 'HASH' ? $_[0] : {@_};
 
     my $model   = $args->{model}   || 'DBIC';
     my $request = $args->{request} || 'Catalyst::Request';
 
-    my $model_class   = __PACKAGE__ . '::Model::'   . $model;
-    my $request_class = __PACKAGE__ . '::Request::' . $request;
+    my $model_class   = $model =~ /^\+/
+                      ? ( $model =~ s/^\+// )
+                      : __PACKAGE__ . '::Model::'   . $model
+                      ;
+    my $request_class = $request =~ /^\+/
+                      ? ( $request =~ s/^\+// )
+                      : __PACKAGE__ . '::Request::' . $request
+                      ;
+
+    require $model_class;
+    $model_class->import;
+
+    require $request_class;
+    $request_class->import;
 
 # I'm only interested in the instance here
     $args->{model}   = $model_class->new(   delete $args->{model_args}   );
@@ -67,17 +78,17 @@ sub _build_form {
         my $field_definition   = $form_definition->{fields}{$field};
         my %field_extra_params = %{ $self->extra_params->{$field} };
 
-        if ($field_params{field_class}) {
+        if ($field_extra_params{field_class}) {
             delete $field_definition->{field_type};
         }
 
-        if (delete $field_params{is_file_bytea}) {
+        if (delete $field_extra_params{is_file_bytea}) {
             delete $field_definition->{field_type};
 
             $field_definition->{field_class} = '+Form::SensibleX::Field::FileSelector::CatalystByteA';
         }
 
-        if (delete $field_params{fk}) {
+        if (delete $field_extra_params{fk}) {
             delete $field_definition->{field_type};
 
             $field_definition->{field_class} = '+Form::SensibleX::Field::Select::DBIC';

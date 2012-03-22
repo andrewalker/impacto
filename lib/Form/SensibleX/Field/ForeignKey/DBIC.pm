@@ -1,4 +1,4 @@
-package Form::SensibleX::Field::Select::DBIC;
+package Form::SensibleX::Field::ForeignKey::DBIC;
 
 use Moose;
 use namespace::autoclean;
@@ -74,6 +74,8 @@ has resultset => (
     required => 1,
 );
 
+sub x_field_dependencies { [ 'model' ] }
+
 sub _default_field_type { 'select' }
 
 sub _build_option_sort { shift->option_label }
@@ -104,6 +106,8 @@ around BUILDARGS => sub {
     $args{option_value} = _fix_array_ref(
         $args{option_value} || $args{option_label}
     );
+    $args{resultset} = $args{model}->related_resultset( $args{name} );
+    delete $args{model};
 
     return $class->$orig(%args);
 };

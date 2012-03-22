@@ -2,7 +2,7 @@ package Form::SensibleX::FormFactory;
 use Moose;
 use Form::Sensible;
 use Form::SensibleX::Field::FileSelector::CatalystByteA;
-use Form::SensibleX::Field::Select::DBIC;
+use Form::SensibleX::Field::ForeignKey::DBIC;
 use Class::Load qw/load_class/;
 use namespace::autoclean;
 
@@ -80,17 +80,21 @@ sub _build_form {
             delete $field_definition->{field_type};
         }
 
-        if (delete $field_extra_params{is_file_bytea}) {
+        if ($field_extra_params{x_field_class}) {
             delete $field_definition->{field_type};
 
-            $field_definition->{field_class} = '+Form::SensibleX::Field::FileSelector::CatalystByteA';
-        }
+            my $x_field_class = delete $field_extra_params{x_field_class};
+            my $field_class   = 'Form::SensibleX::Field::' . $x_field_class;
+            $field_definition->{field_class} = '+' . $field_class;
 
-        if (delete $field_extra_params{fk}) {
-            delete $field_definition->{field_type};
+            load_class $field_class;
 
-            $field_definition->{field_class} = '+Form::SensibleX::Field::Select::DBIC';
-            $field_definition->{resultset}   = $self->model->related_resultset( $field );
+            # not so cool. maybe bread::board could help
+            if ($field_class->can('x_field_dependencies')) {
+                for (@{ $field_class->x_field_dependencies }) {
+                    $field_definition->{$_} = $self->$_;
+                }
+            }
         }
 
         # merge extra params with definition

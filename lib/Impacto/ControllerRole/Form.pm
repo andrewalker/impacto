@@ -9,8 +9,8 @@ use namespace::autoclean;
 requires 'crud_model_instance', 'i18n';
 
 has form_factory_class => (
-    isa => 'Impacto::FormFactory',
-    is => 'ro',
+    isa        => 'Str',
+    is         => 'ro',
     lazy_build => 1,
 );
 

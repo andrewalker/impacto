@@ -1,6 +1,7 @@
 package Form::SensibleX::FormFactory::Model::DBIC;
 use Moose;
 use Impacto::Form::Sensible::Reflector::DBIC;
+use Hash::Merge qw(merge);
 use namespace::autoclean;
 
 has _factory => (
@@ -46,7 +47,7 @@ sub reflect {
 sub set_values_from_row {
     my ( $self, $form ) = @_;
 
-    $form->set_values({ $self->row->get_columns() });
+    $form->set_values({ $self->get_db_values_from_row( $form ) });
 
 }
 
@@ -62,7 +63,7 @@ sub execute {
 
     return 0 if (! $validation->is_valid);
 
-    my ($values, $field_factories) = $self->get_db_values_and_factories($form);
+    my ($values, $field_factories) = $self->get_db_values_and_factories_from_form($form);
 
     my $execute_action = "execute_$action";
 
@@ -94,7 +95,46 @@ sub execute_update {
     return 1;
 }
 
-sub get_db_values_and_factories {
+sub get_db_values_from_row {
+    my ($self, $form) = @_;
+
+    my $values    = {};
+    my $factories = {};
+
+    for my $fieldname ( $form->fieldnames ) {
+        my $field   = $form->field($fieldname);
+        my $factory = $field->{from_factory};
+
+        next if $field->field_type eq 'trigger';
+
+        if (defined $factory) {
+            $factories->{$factory} ||= [];
+            push @{ $factories->{$factory} }, $fieldname;
+        }
+        else {
+            $values->{$fieldname} = $self->row->get_column($fieldname);
+        }
+    }
+
+    return merge( $values, $self->_get_db_factory_values_from_row($factories) );
+}
+
+sub _get_db_factory_values_from_row {
+    my ($self, $factories) = @_;
+
+    my @values;
+
+    for my $factory (keys %$factories) {
+        my $ff = $self->_factory->get_field_factory($factory);
+        push @values, %{
+            $ff->get_values_from_row( $factories->{$factory} )
+        };
+    }
+
+    return { @values };
+}
+
+sub get_db_values_and_factories_from_form {
     my ($self, $form) = @_;
 
     my $values    = {};
@@ -109,11 +149,11 @@ sub get_db_values_and_factories {
         next if $field->field_type eq 'trigger';
 
         if (defined $factory) {
-            $values->{$fieldname} = $value;
-        }
-        else {
             $factories->{$factory} ||= {};
             $factories->{$factory}{$fieldname} = $value;
+        }
+        else {
+            $values->{$fieldname} = $value;
         }
     }
 

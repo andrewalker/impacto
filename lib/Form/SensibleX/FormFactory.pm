@@ -122,7 +122,7 @@ sub _build_form {
 
             load_class( $field_factory_class );
 
-            my $field_factory = $field_factory_class->new($field_definition)
+            my $field_factory = $field_factory_class->new( $field_definition );
 
             # FIXME: it's ugly, but it's just an idea
             for my $f ( $field_factory->build_fields ) {

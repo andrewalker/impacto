@@ -1,10 +1,12 @@
-package Form::SensibleX::Field::Select::DBIC::ManyToMany;
+package Form::SensibleX::FieldFactory::DBIC::ManyToMany;
 
 use Moose;
 use namespace::autoclean;
 use Form::Sensible::DelegateConnection;
 
 extends 'Form::Sensible::Field::Select';
+
+sub is_factory { 1 }
 
 # form extra params:
 # categories => { many_to_many => 1, option_label => 'name', option_value => 'id' }

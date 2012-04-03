@@ -41,12 +41,12 @@ around BUILDARGS => sub {
     my $model   = $args->{model}   || 'DBIC';
     my $request = $args->{request} || 'Catalyst::Request';
 
-    my $model_class   = $model =~ /^\+/
-                      ? ( $model =~ s/^\+// )
+    my $model_class   = $model =~ m[^\+]
+                      ? ( $model =~ s[^\+][] )
                       : __PACKAGE__ . '::Model::'   . $model
                       ;
-    my $request_class = $request =~ /^\+/
-                      ? ( $request =~ s/^\+// )
+    my $request_class = $request =~ m[^\+]
+                      ? ( $request =~ s[^\+][] )
                       : __PACKAGE__ . '::Request::' . $request
                       ;
 

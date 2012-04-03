@@ -48,8 +48,7 @@ sub reflect {
 sub set_values_from_row {
     my ( $self, $form ) = @_;
 
-    $form->set_values({ $self->get_db_values_from_row( $form ) });
-
+    $form->set_values( $self->get_db_values_from_row( $form ) );
 }
 
 sub related_resultset {

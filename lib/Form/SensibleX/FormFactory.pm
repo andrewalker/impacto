@@ -121,10 +121,7 @@ sub _build_form {
 
             my $field_factory = $field_factory_class->new( $field_definition );
 
-            # FIXME: it's ugly, but it's just an idea
-            for my $f ( $field_factory->build_fields ) {
-                $form_definition->{fields}->{shift @$f} = {@$f};
-            }
+            $form_definition->{fields} = merge( $form_definition->{fields}, $field_factory->build_fields );
 
             $self->set_field_factory($field_factory_class, $field_factory);
 

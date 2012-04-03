@@ -35,7 +35,7 @@ sub get_class_name {
     my ($controller_name, $what) = @_;
     my $prefix = Catalyst::Utils::class2classprefix($controller_name);
     $controller_name =~ s/^$prefix//;
-    return __PACKAGE__ . "::${what}::" . $controller_name;
+    return __PACKAGE__ . "::${what}" . $controller_name;
 }
 
 __PACKAGE__->meta->make_immutable;

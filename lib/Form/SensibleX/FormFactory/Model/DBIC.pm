@@ -3,6 +3,11 @@ use Moose;
 use Impacto::Form::Sensible::Reflector::DBIC;
 use namespace::autoclean;
 
+has _factory => (
+    isa => 'Form::SensibleX::FormFactory',
+    is  => 'ro',
+);
+
 has row => (
     isa => 'DBIx::Class::Row',
     is  => 'ro',
@@ -42,6 +47,7 @@ sub set_values_from_row {
     my ( $self, $form ) = @_;
 
     $form->set_values({ $self->row->get_columns() });
+
 }
 
 sub related_resultset {
@@ -52,22 +58,23 @@ sub related_resultset {
 sub execute {
     my ($self, $form, $action) = @_;
 
-    my $result = $form->validate();
+    my $validation = $form->validate();
 
-    return 0 if (! $result->is_valid);
+    return 0 if (! $validation->is_valid);
 
-    my $values = $form->get_all_values();
-    delete $values->{submit};
-
-    for (keys %$values) {
-        if (defined $values->{$_} && $values->{$_} eq '') {
-            delete $values->{$_};
-        }
-    }
+    my ($values, $field_factories) = $self->get_db_values_and_factories($form);
 
     my $execute_action = "execute_$action";
 
-    return $self->$execute_action($values);
+    my $result = $self->$execute_action($values);
+
+    for my $field_factory_class (keys %$field_factories) {
+        return 0 if !$result;
+        my $obj = $self->_factory->get_field_factory($field_factory_class);
+        $result = $obj->execute($field_factories->{$field_factory_class});
+    }
+
+    return $result;
 }
 
 sub execute_create {
@@ -85,6 +92,32 @@ sub execute_update {
     $self->row->update( $values );
 
     return 1;
+}
+
+sub get_db_values_and_factories {
+    my ($self, $form) = @_;
+
+    my $values    = {};
+    my $factories = {};
+
+    for my $fieldname ( $form->fieldnames ) {
+        my $field   = $form->field($fieldname);
+        my $value   = $field->value();
+        my $factory = $field->{from_factory};
+
+        next if defined $value && $value eq '';
+        next if $field->field_type eq 'trigger';
+
+        if (defined $factory) {
+            $values->{$fieldname} = $value;
+        }
+        else {
+            $factories->{$factory} ||= {};
+            $factories->{$factory}{$fieldname} = $value;
+        }
+    }
+
+    return ($values, $factories);
 }
 
 __PACKAGE__->meta->make_immutable;

@@ -4,6 +4,17 @@ use Form::Sensible;
 use Class::Load qw/load_class/;
 use namespace::autoclean;
 
+has field_factories => (
+    isa        => 'HashRef',
+    is         => 'ro',
+    default    => sub { +{} },
+    traits     => ['Hash'],
+    handles => {
+        set_field_factory => 'set',
+        get_field_factory => 'get',
+    }
+);
+
 has columns => (
     isa        => 'ArrayRef',
     is         => 'ro',
@@ -58,6 +69,16 @@ around BUILDARGS => sub {
     return $self->$orig($args);
 };
 
+around BUILD => sub {
+    my $orig = shift;
+    my $self = shift;
+
+    my $obj  = $self->$orig(@_);
+
+    $obj->model->_factory(   $self );
+    $obj->request->_factory( $self );
+};
+
 sub _build_form {
     my $self = shift;
 
@@ -107,6 +128,8 @@ sub _build_form {
             for my $f ( $field_factory->build_fields ) {
                 $form_definition->{fields}->{shift @$f} = {@$f};
             }
+
+            $self->set_field_factory($field_factory_class, $field_factory);
 
             delete $form_definition->{fields}{$field};
         }

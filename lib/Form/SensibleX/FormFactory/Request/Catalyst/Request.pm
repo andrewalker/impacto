@@ -2,6 +2,11 @@ package Form::SensibleX::FormFactory::Request::Catalyst::Request;
 use Moose;
 use namespace::autoclean;
 
+has factory => (
+    isa => 'Form::SensibleX::FormFactory',
+    is  => 'ro',
+);
+
 has req => (
     isa => 'Catalyst::Request',
     is  => 'ro',

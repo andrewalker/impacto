@@ -5,8 +5,9 @@ use Hash::Merge qw(merge);
 use namespace::autoclean;
 
 has _factory => (
-    isa => 'Form::SensibleX::FormFactory',
-    is  => 'ro',
+    isa      => 'Form::SensibleX::FormFactory',
+    is       => 'rw',
+    weak_ref => 1,
 );
 
 has row => (

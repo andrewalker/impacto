@@ -3,33 +3,21 @@ use utf8;
 use Moose::Role;
 use namespace::autoclean;
 
-has datagrid_columns => (
-    isa        => 'ArrayRef',
-    is         => 'ro',
-    lazy_build => 1,
-);
-
-has datagrid_columns_extra_params => (
-    isa        => 'HashRef',
-    is         => 'ro',
-    lazy_build => 1,
-);
-
 requires 'crud_model_instance', 'i18n';
 
 # in the controller it would be like:
-# sub _build_datagrid_columns {
+# sub datagrid_columns {
 #   return [ qw/ name date special_date_time customer_name custom_width_column / ]
 # }
-# sub _build_datagrid_columns_extra_params {
+# sub datagrid_columns_extra_params {
 #    return {
 #       special_date_time   => { format => '%d - %m - %Y' },
 #       customer_name       => { fk => 'customer.name' },
 #       custom_width_column => { width => '40%' },
 #    }
 # }
-sub _build_datagrid_columns { shift->get_all_columns(@_) }
-sub _build_datagrid_columns_extra_params { +{} }
+sub datagrid_columns { shift->get_all_columns(@_) }
+sub datagrid_columns_extra_params { +{} }
 
 # just to be sure it exists when needed
 sub get_all_columns {

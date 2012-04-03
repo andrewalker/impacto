@@ -16,7 +16,7 @@ sub form_columns_extra_params {
     }
 }
 
-sub _build_datagrid_columns {
+sub datagrid_columns {
     [qw/
         name supplier cost minimum_price price weight
     /]

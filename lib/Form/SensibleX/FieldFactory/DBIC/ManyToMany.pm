@@ -6,8 +6,6 @@ use Form::Sensible::DelegateConnection;
 
 extends 'Form::Sensible::Field::Select';
 
-sub is_factory { 1 }
-
 # maybe a request and model class too?
 
 # form extra params:

@@ -1,6 +1,5 @@
 package Form::SensibleX::FormFactory::Model::DBIC;
 use Moose;
-use Form::Sensible;
 use Impacto::Form::Sensible::Reflector::DBIC;
 use namespace::autoclean;
 

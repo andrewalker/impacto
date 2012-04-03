@@ -8,6 +8,8 @@ extends 'Form::Sensible::Field::Select';
 
 sub is_factory { 1 }
 
+# maybe a request and model class too?
+
 # form extra params:
 # categories => { many_to_many => 1, option_label => 'name', option_value => 'id' }
 

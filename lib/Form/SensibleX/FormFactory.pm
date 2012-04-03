@@ -1,8 +1,6 @@
 package Form::SensibleX::FormFactory;
 use Moose;
 use Form::Sensible;
-use Form::SensibleX::Field::FileSelector::CatalystByteA;
-use Form::SensibleX::Field::ForeignKey::DBIC;
 use Class::Load qw/load_class/;
 use namespace::autoclean;
 
@@ -87,9 +85,9 @@ sub _build_form {
             my $field_class   = 'Form::SensibleX::Field::' . $x_field_class;
             $field_definition->{field_class} = '+' . $field_class;
 
-            load_class $field_class;
+            load_class( $field_class );
 
-            # not so cool. maybe bread::board could help
+            # FIXME: not so cool. maybe bread::board could help
             if ($field_class->can('x_field_dependencies')) {
                 for (@{ $field_class->x_field_dependencies }) {
                     $field_definition->{$_} = $self->$_;
@@ -97,8 +95,25 @@ sub _build_form {
             }
         }
 
-        # merge extra params with definition
-        $field_definition->{$_} = $field_extra_params{$_} for (keys %field_extra_params);
+        if ($field_extra_params{x_field_factory}) {
+            my $x_field_factory     = delete $field_extra_params{x_field_factory};
+            my $field_factory_class = 'Form::SensibleX::FieldFactory::' . $x_field_factory;
+
+            load_class( $field_factory_class );
+
+            my $field_factory = $field_factory_class->new($field_definition)
+
+            # FIXME: it's ugly, but it's just an idea
+            for my $f ( $field_factory->build_fields ) {
+                $form_definition->{fields}->{shift @$f} = {@$f};
+            }
+
+            delete $form_definition->{fields}{$field};
+        }
+        else {
+            # merge extra params with definition
+            $field_definition->{$_} = $field_extra_params{$_} for (keys %field_extra_params);
+        }
     }
 
     return Form::Sensible->create_form($form_definition);

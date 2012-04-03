@@ -1,12 +1,18 @@
 package Impacto::ControllerRole::Form;
 use utf8;
-use Impacto::FormFactory;
 use Form::Sensible::Renderer::HTML;
 use Form::Sensible::DelegateConnection;
 use Moose::Role;
+use Class::Load qw(load_first_existing_class);
 use namespace::autoclean;
 
 requires 'crud_model_instance', 'i18n';
+
+has form_factory_class => (
+    isa => 'Impacto::FormFactory',
+    is => 'ro',
+    lazy_build => 1,
+);
 
 has form_templates_paths => (
     isa        => 'ArrayRef[Str]',
@@ -41,11 +47,25 @@ sub get_all_columns {
     return [];
 }
 
+sub _build_form_factory_class {
+    my $self = shift;
+
+    my $this_class_name = ref $self;
+    $this_class_name    =~ s,^Impacto::Controller,,;
+
+    my $default = 'Impacto::FormFactory';
+    my $custom  = $default . $this_class_name;
+
+    my $form_factory = load_first_existing_class($custom, $default);
+
+    return $form_factory;
+}
+
 # very easy to override
 sub build_form_factory {
     my ( $self, $c ) = @_;
 
-    return Impacto::FormFactory->new(
+    return $self->form_factory_class->new(
         controller_name => ref $self,
         columns         => $self->form_columns,
         extra_params    => $self->form_columns_extra_params,

@@ -69,15 +69,12 @@ around BUILDARGS => sub {
     return $self->$orig($args);
 };
 
-around BUILD => sub {
-    my $orig = shift;
+sub BUILD {
     my $self = shift;
 
-    my $obj  = $self->$orig(@_);
-
-    $obj->model->_factory(   $self );
-    $obj->request->_factory( $self );
-};
+    $self->model->_factory(   $self );
+    $self->request->_factory( $self );
+}
 
 sub _build_form {
     my $self = shift;

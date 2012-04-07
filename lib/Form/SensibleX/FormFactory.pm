@@ -119,6 +119,9 @@ sub _build_form {
 
             load_class( $field_factory_class );
 
+            $field_definition->{model}   = $self->model;
+            $field_definition->{request} = $self->request;
+
             my $field_factory = $field_factory_class->new( $field_definition );
 
             $form_definition->{fields} = merge( $form_definition->{fields}, $field_factory->build_fields );

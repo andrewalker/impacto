@@ -5,7 +5,16 @@ use namespace::autoclean;
 use Form::Sensible::DelegateConnection;
 use Form::SensibleX::Field::DBIC::ManyToMany;
 
-has field => ( is => 'ro', isa => 'Form::SensibleX::Field::DBIC::ManyToMany' );
+has fields => (
+    is      => 'ro',
+    isa     => 'ArrayRef[Form::SensibleX::Field::DBIC::ManyToMany]',
+    default => sub { [] },
+    traits  => ['Array'],
+    handles => {
+        push_field => 'push',
+        field_count => 'count',
+    }
+);
 
 around BUILDARGS => sub {
     my $orig  = shift;
@@ -18,11 +27,21 @@ around BUILDARGS => sub {
     delete $field_args{model};
     delete $field_args{request};
 
-    $args{field} = Form::SensibleX::Field::DBIC::ManyToMany->new(%field_args);
-    $args{field}{from_factory} = __PACKAGE__;
+    $args{fields} = [ Form::SensibleX::Field::DBIC::ManyToMany->new(%field_args) ];
+    $args{fields}->[0]->{from_factory} = __PACKAGE__;
 
     return $class->$orig(%args);
 };
+
+sub add_field {
+    my ( $self, $args ) = @_;
+
+    my $field = Form::SensibleX::Field::DBIC::ManyToMany->new($args)
+    $field->{from_factory} = __PACKAGE__;
+    $self->push_field($field);
+
+    return 1;
+}
 
 # form extra params:
 # categories => { x_field_factory => 'DBIC::ManyToMany', option_label => 'name', option_value => 'id' }
@@ -31,39 +50,38 @@ sub prepare_execute { 1 }
 
 sub execute {
     my ( $self, $row, $fields ) = @_;
+    my $i = 0;
 
-    die "multiple fields are not supported in this factory"
-        if keys %$fields > 1;
+    foreach my $keys (values %$fields) {
+        my $name    = $self->fields->[$i]->name;
+        my $setter  = "set_${name}";
+        my $rs      = $self->fields->[$i]->get_rs;
 
-    my $keys    = (values %$fields)[0];
+        my @records = map { $rs->find($_) } @$keys;
 
-    my $name    = $self->field->name;
-    my $setter  = "set_${name}";
-    my $rs      = $self->field->get_rs;
+        $row->$setter(\@records);
+        $i++;
+    }
 
-    my @records = map { $rs->find($_) } @$keys;
-
-    $row->$setter(\@records);
-
-    return 1;
+    return $i > 0;
 }
+
 
 sub get_values_from_row {
     my ( $self, $row, $fields ) = @_;
 
-    die "multiple fields are not supported in this factory"
-        if scalar @$fields > 1;
+# FIXME:
+# i'm ignoring $fields
 
-    my $field    = shift @$fields;
-    return { $field => $self->field->get_values_from_row($row) };
+    return {
+        map { $self->fields->[$_]->name => $self->fields->[$_]->get_values_from_row($row) } 0..($self->field_count-1)
+    };
 }
 
 sub build_fields {
     my $self = shift;
 
-    return (
-        [ $self->field, $self->field->name ]
-    );
+    return map { [ $self->fields->[$_], $self->fields->[$_]->name ] } 0..($self->field_count-1);
 }
 
 __PACKAGE__->meta->make_immutable;

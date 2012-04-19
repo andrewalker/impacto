@@ -12,21 +12,6 @@ has '+options_delegate' => (
     default => sub { FSConnector( \&options_delegate_get_from_db ) },
 );
 
-sub x_field_dependencies { [ 'model' ] }
-
-around BUILDARGS => sub {
-    my $orig  = shift;
-    my $class = shift;
-
-    my %args  = @_;
-
-    $args{resultset} = $args{model}->related_resultset( $args{name} )
-        if $args{model} && !$args{resultset};
-    delete $args{model};
-
-    return $class->$orig(%args);
-};
-
 sub get_records_from_db {
     my $self = shift;
 
@@ -61,6 +46,8 @@ sub options_delegate_get_from_db {
 sub _encode_value {
     my ($row, $value) = @_;
 
+    return if !$row; # value is empty
+
     return $row->get_column( $value->[0] )
         if scalar @$value == 1;
 
@@ -74,13 +61,9 @@ sub get_values_from_row {
     my ( $self, $row ) = @_;
 
     my $value   = $self->option_value;
+    my $name    = $self->name;
 
-    if (@$value == 1) {
-        return $row->get_column(shift @$value);
-    }
-    else {
-        return _encode_value( $row, $value );
-    }
+    return _encode_value( $row->$name, $value );
 }
 
 around value => sub {
@@ -109,7 +92,7 @@ around value => sub {
 sub get_multi_value {
     my ($self, $raw_value) = @_;
     my %values;
-    my $decoded_values = decode_json( decode_base64url($raw_value) );
+    my $decoded_values = decode_json( decode_base64url($raw_value)  || '[]' );
 
     for (@{ $self->option_value }) {
         $values{$_} = shift @$decoded_values;

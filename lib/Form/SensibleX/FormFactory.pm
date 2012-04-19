@@ -89,7 +89,7 @@ sub _build_form {
 
     my $form_definition = $self->model->reflect( $self->columns )->flatten;
     delete $form_definition->{field_order};
-    my @factory_fields;
+    my @factories;
 
     foreach my $field (keys %{ $self->extra_params }) {
         $form_definition->{fields}{$field} ||= {};
@@ -111,20 +111,30 @@ sub _build_form {
         }
 
         if ($field_extra_params{x_field_factory}) {
+            delete $field_definition->{field_type};
+            delete $field_definition->{field_class};
+            delete $field_definition->{integer_only};
+
             my $x_field_factory     = delete $field_extra_params{x_field_factory};
             my $field_factory_class = 'Form::SensibleX::FieldFactory::' . $x_field_factory;
+            my $field_factory       = $self->get_field_factory($field_factory_class);
+            my $definition          = merge( $field_definition, \%field_extra_params );
 
-            load_class( $field_factory_class );
+            if ($field_factory) {
+                $definition->{name} = $field;
+                $field_factory->add_field($definition);
+            }
+            else {
+                load_class( $field_factory_class );
 
-            $field_definition->{model}   = $self->model;
-            $field_definition->{request} = $self->request;
-            $field_definition->{name}    = $field;
+                $definition->{model}   = $self->model;
+                $definition->{request} = $self->request;
+                $definition->{name}    = $field;
 
-            my $field_factory = $field_factory_class->new( merge( $field_definition, \%field_extra_params ) );
-
-            push @factory_fields, $field_factory->build_fields;
-
-            $self->set_field_factory($field_factory_class, $field_factory);
+                $field_factory = $field_factory_class->new( $definition );
+                $self->set_field_factory($field_factory_class, $field_factory);
+                push @factories, $field_factory;
+            }
 
             delete $form_definition->{fields}{$field};
         }
@@ -136,12 +146,16 @@ sub _build_form {
 
     my $form = Form::Sensible->create_form($form_definition);
 
-    my $i = 0;
-    my %index = map { $_ => $i++ } @{ $self->columns };
 
-    foreach my $factory_field (@factory_fields) {
-        my ($def, $name) = @$factory_field;
-        $form->add_field( $def, $name );
+    #my $i = 0;
+    #my %index = map { $_ => $i++ } @{ $self->columns };
+
+    foreach my $factory (@factories) {
+        my @factory_fields = $factory->build_fields;
+        foreach my $factory_field (@factory_fields) {
+            my ($def, $name) = @$factory_field;
+            $form->add_field( $def, $name );
+        }
     }
 
     my @columns = @{ $self->columns };

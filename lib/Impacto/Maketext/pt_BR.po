@@ -478,6 +478,9 @@ msgstr "Forma de pagamento"
 msgid "crud.finance.installment_payment.comments"
 msgstr "Comentários"
 
+msgid "crud.finance.installment_payment.installment"
+msgstr "Parcela"
+
 msgid "crud.finance.installment_payment.submit"
 msgstr "Gravar"
 

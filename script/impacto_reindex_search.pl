@@ -73,8 +73,8 @@ sub reindex_db {
                         type => $type,
                     },
                     untouched => {
-                        type => $type,
-                        index => 'not_analyzed',
+                        type           => $type,
+                        index          => 'not_analyzed',
                         include_in_all => 0,
                     },
                 }

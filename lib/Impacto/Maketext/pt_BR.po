@@ -363,8 +363,8 @@ msgstr "Peso"
 msgid "crud.product.product.image"
 msgstr "Imagem"
 
-msgid "crud.product.product.custom_fields"
-msgstr "Campos customizados"
+msgid "crud.product.product.categories"
+msgstr "Categorias"
 
 msgid "crud.product.product.submit"
 msgstr "Gravar"

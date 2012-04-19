@@ -7,7 +7,7 @@ BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 has '+crud_model_name' => ( default => 'DB::FinanceInstallmentPayment' );
 sub form_columns_extra_params {
     {
-        account => { x_field_class => "ForeignKey::DBIC", option_label => 'name', },
+        account => { x_field_class => "DBIC::BelongsTo", option_label => 'name', },
         comments => { field_class => 'LongText' },
     }
 }

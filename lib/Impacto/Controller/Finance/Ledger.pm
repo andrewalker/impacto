@@ -8,8 +8,8 @@ has '+crud_model_name' => ( default => 'DB::FinanceLedger' );
 
 sub form_columns_extra_params {
     {
-        ledger_type    => { x_field_class => "ForeignKey::DBIC", option_label => 'name', option_value => 'slug', },
-        stock_movement => { x_field_class => "ForeignKey::DBIC", option_label => [ 'datetime', 'product.name', 'place' ], option_value => 'id' },
+        ledger_type    => { x_field_class => "DBIC::BelongsTo", option_label => 'name', option_value => 'slug', },
+        stock_movement => { x_field_class => "DBIC::BelongsTo", option_label => [ 'datetime', 'product.name', 'place' ], option_value => 'id' },
         comment        => { field_class => 'LongText' },
     }
 }

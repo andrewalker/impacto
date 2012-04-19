@@ -33,7 +33,7 @@ sub _build_form_templates_paths {
 # sub form_columns_extra_params {
 #   return {
 #       long_text_field   => { field_class => 'TextArea' },
-#       foreign_key_field => { x_field_class => "ForeignKey::DBIC", label => 'customer.company', value => 'id', order_by => 'id', filter => { name => 'filtered' } },
+#       foreign_key_field => { x_field_class => "DBIC::BelongsTo", label => 'customer.company', value => 'id', order_by => 'id', filter => { name => 'filtered' } },
 #   }
 # }
 sub form_columns { shift->get_all_columns(@_) }

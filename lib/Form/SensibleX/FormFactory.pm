@@ -3,6 +3,7 @@ use Moose;
 use Form::Sensible;
 use Class::Load qw/load_class/;
 use namespace::autoclean;
+use Hash::Merge 'merge';
 
 has field_factories => (
     isa        => 'HashRef',
@@ -87,6 +88,7 @@ sub _build_form {
     # }
 
     my $form_definition = $self->model->reflect( $self->columns )->flatten;
+    my @factory_fields;
 
     foreach my $field (keys %{ $self->extra_params }) {
         my $field_definition   = $form_definition->{fields}{$field};
@@ -121,10 +123,11 @@ sub _build_form {
 
             $field_definition->{model}   = $self->model;
             $field_definition->{request} = $self->request;
+            $field_definition->{name}    = $field;
 
-            my $field_factory = $field_factory_class->new( $field_definition );
+            my $field_factory = $field_factory_class->new( merge( $field_definition, \%field_extra_params ) );
 
-            $form_definition->{fields} = merge( $form_definition->{fields}, $field_factory->build_fields );
+            push @factory_fields, $field_factory->build_fields;
 
             $self->set_field_factory($field_factory_class, $field_factory);
 
@@ -136,7 +139,17 @@ sub _build_form {
         }
     }
 
-    return Form::Sensible->create_form($form_definition);
+    my $form = Form::Sensible->create_form($form_definition);
+
+    my $i = 0;
+    my %index = map { $_ => $i++ } @{ $self->columns };
+
+    foreach my $factory_field (@factory_fields) {
+        my ($def, $name) = @$factory_field;
+        $form->add_field($def, $name, $index{$name});
+    }
+
+    return $form;
 }
 
 sub get_row {

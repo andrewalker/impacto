@@ -76,7 +76,7 @@ sub get_values_from_row {
     my ( $self, $row ) = @_;
 
     my $value   = $self->option_value;
-    my $records = $self->execute_search_db;
+    my $records = $self->execute_search_db($row);
 
     return [ map { _encode_value( $_, $value ) } @$records ];
 }

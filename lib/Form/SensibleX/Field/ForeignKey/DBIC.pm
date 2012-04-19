@@ -3,8 +3,8 @@ package Form::SensibleX::Field::ForeignKey::DBIC;
 use Moose;
 use namespace::autoclean;
 use Form::Sensible::DelegateConnection;
-#use MIME::Base64 qw/encode_base64url/;
-#use JSON;
+use MIME::Base64 qw/encode_base64url/;
+use JSON;
 
 extends 'Form::SensibleX::Field::Base::DBICSelect';
 
@@ -65,10 +65,40 @@ sub _encode_value {
         if scalar @$value == 1;
 
 # ok, ok. this is madness.
-#    return encode_base64url(
-#        encode_json([ map { $row->get_column($_) } @$value ])
-#    );
+    return encode_base64url(
+        encode_json([ map { $row->get_column($_) } @$value ])
+    );
 }
+
+around value => sub {
+    my $orig  = shift;
+    my $self  = shift;
+    my $value = shift;
+
+    if ($value) {
+        if (ref $value && ref $value eq 'ARRAY') {
+            $value = encode_base64url(
+                encode_json($value)
+            );
+        }
+
+        return $self->$orig( $value );
+    }
+
+    my $raw_value = $self->$orig;
+
+    if (@{ $self->option_value } == 1) {
+        return $raw_value;
+    }
+
+    my %values;
+    my $decoded_values = decode_json( decode_base64url($raw_value) );
+    for (@{ $self->option_value }) {
+        $values{$_} = shift @$decoded_values;
+    }
+
+    return \%values;
+};
 
 __PACKAGE__->meta->make_immutable;
 

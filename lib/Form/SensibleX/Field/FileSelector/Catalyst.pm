@@ -11,12 +11,20 @@ has 'file_ref' => (
     required => 0,
 );
 
+has 'tempname' => (
+    is       => 'rw',
+    isa      => 'Str',
+    default  => '',
+);
+
 sub field_type { 'fileselector' }
 
-before value => sub {
-    my ( $self, $value ) = @_;
+around value => sub {
+    my $orig = shift;
+    my $self = shift;
+    my ( $value ) = @_;
 
-    return unless (
+    return $self->$orig(@_) unless (
         $value &&
         ref $value &&
         eval { $value->isa('Catalyst::Request::Upload') }
@@ -25,7 +33,9 @@ before value => sub {
     $self->file_ref($value->fh);
     $self->filename($value->basename);
     $self->full_path($value->tempname);
-    $self->value($value->tempname);
+    $self->tempname($value->tempname);
+
+    $self->$orig($value->tempname);
 };
 
 __PACKAGE__->meta->make_immutable;

@@ -7,9 +7,9 @@ BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 has '+crud_model_name' => ( default => 'DB::ProductReturn' );
 sub form_columns_extra_params {
     {
-        consignation   => { x_field_class => "DBIC::BelongsTo", option_value => 'id' },
-        stock_movement => { x_field_class => "DBIC::BelongsTo", option_value => 'id' },
-        ledger         => { x_field_class => "DBIC::BelongsTo", option_value => 'id' },
+        consignation   => { x_field_factory => "DBIC::BelongsTo", option_value => 'id' },
+        stock_movement => { x_field_factory => "DBIC::BelongsTo", option_value => 'id' },
+        ledger         => { x_field_factory => "DBIC::BelongsTo", option_value => 'id' },
     }
 }
 

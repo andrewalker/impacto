@@ -69,7 +69,15 @@ sub execute {
 
     my $execute_action = "execute_$action";
 
-    my $result = $self->$execute_action($values);
+    my $result = 1;
+
+    for my $field_factory_class (keys %$field_factories) {
+        return 0 if !$result;
+        my $obj = $self->_factory->get_field_factory($field_factory_class);
+        $result = $obj->prepare_execute($self->row, $field_factories->{$field_factory_class});
+    }
+
+    $result = $self->$execute_action($values);
 
     for my $field_factory_class (keys %$field_factories) {
         return 0 if !$result;

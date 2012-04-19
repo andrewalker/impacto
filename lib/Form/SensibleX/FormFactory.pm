@@ -88,9 +88,11 @@ sub _build_form {
     # }
 
     my $form_definition = $self->model->reflect( $self->columns )->flatten;
+    delete $form_definition->{field_order};
     my @factory_fields;
 
     foreach my $field (keys %{ $self->extra_params }) {
+        $form_definition->{fields}{$field} ||= {};
         my $field_definition   = $form_definition->{fields}{$field};
         my %field_extra_params = %{ $self->extra_params->{$field} };
 
@@ -106,13 +108,6 @@ sub _build_form {
             $field_definition->{field_class} = '+' . $field_class;
 
             load_class( $field_class );
-
-            # FIXME: not so cool. maybe bread::board could help
-            if ($field_class->can('x_field_dependencies')) {
-                for (@{ $field_class->x_field_dependencies }) {
-                    $field_definition->{$_} = $self->$_;
-                }
-            }
         }
 
         if ($field_extra_params{x_field_factory}) {
@@ -146,8 +141,12 @@ sub _build_form {
 
     foreach my $factory_field (@factory_fields) {
         my ($def, $name) = @$factory_field;
-        $form->add_field($def, $name, $index{$name});
+        $form->add_field( $def, $name );
     }
+
+    my @columns = @{ $self->columns };
+    push @columns, 'submit';
+    $form->field_order(\@columns);
 
     return $form;
 }

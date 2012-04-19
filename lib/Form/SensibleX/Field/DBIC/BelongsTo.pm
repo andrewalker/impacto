@@ -70,6 +70,19 @@ sub _encode_value {
     );
 }
 
+sub get_values_from_row {
+    my ( $self, $row ) = @_;
+
+    my $value   = $self->option_value;
+
+    if (@$value == 1) {
+        return $row->get_column(shift @$value);
+    }
+    else {
+        return _encode_value( $row, $value );
+    }
+}
+
 around value => sub {
     my $orig  = shift;
     my $self  = shift;
@@ -87,18 +100,23 @@ around value => sub {
 
     my $raw_value = $self->$orig;
 
-    if (@{ $self->option_value } == 1) {
-        return $raw_value;
-    }
+    return @{ $self->option_value } == 1
+        ? $raw_value
+        : $self->get_multi_value($raw_value)
+        ;
+};
 
+sub get_multi_value {
+    my ($self, $raw_value) = @_;
     my %values;
     my $decoded_values = decode_json( decode_base64url($raw_value) );
+
     for (@{ $self->option_value }) {
         $values{$_} = shift @$decoded_values;
     }
 
     return \%values;
-};
+}
 
 __PACKAGE__->meta->make_immutable;
 

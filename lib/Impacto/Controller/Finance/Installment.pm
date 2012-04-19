@@ -7,7 +7,7 @@ BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 has '+crud_model_name' => ( default => 'DB::FinanceInstallment' );
 sub form_columns_extra_params {
     {
-        ledger => { x_field_class => "DBIC::BelongsTo", option_label => 'id', },
+        ledger => { x_field_factory => "DBIC::BelongsTo", option_label => 'id', },
     }
 }
 

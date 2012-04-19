@@ -6,7 +6,7 @@ use Form::Sensible::DelegateConnection;
 #use MIME::Base64 qw/encode_base64url/;
 #use JSON;
 
-extends 'Form::Sensible::Field::Base::DBICSelect';
+extends 'Form::SensibleX::Field::Base::DBICSelect';
 
 has '+options_delegate' => (
     default => sub { FSConnector( \&options_delegate_get_from_db ) },

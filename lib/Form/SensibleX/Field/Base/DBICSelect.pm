@@ -1,4 +1,4 @@
-package Form::SensibleX::Field::Base::SelectDBIC;
+package Form::SensibleX::Field::Base::DBICSelect;
 
 use Moose;
 use namespace::autoclean;
@@ -90,7 +90,6 @@ around BUILDARGS => sub {
     my $class = shift;
 
     my %args = ref $_[0] && ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
-
 
     $args{option_label} = _fix_array_ref(
         $args{option_label} || $args{option_value}

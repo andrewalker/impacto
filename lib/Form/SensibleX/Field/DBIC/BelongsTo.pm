@@ -1,4 +1,4 @@
-package Form::SensibleX::Field::ForeignKey::DBIC;
+package Form::SensibleX::Field::DBIC::BelongsTo;
 
 use Moose;
 use namespace::autoclean;

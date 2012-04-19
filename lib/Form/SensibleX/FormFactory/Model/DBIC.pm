@@ -35,11 +35,13 @@ sub reflect {
 
     my $source    = $self->resultset->result_source;
     my $reflector = Impacto::Form::Sensible::Reflector::DBIC->new();
+    my %db_columns = map { $_ => 1 } $source->columns;
+    my @db_columns = grep { $db_columns{$_} } @$columns;
 
     my $form_options = {
         form             => { name => $source->from },
         with_trigger     => 1,
-        fieldname_filter => sub { @{ $columns } },
+        fieldname_filter => sub { @db_columns },
     };
 
     return $reflector->reflect_from($self->resultset, $form_options);
@@ -72,7 +74,7 @@ sub execute {
     for my $field_factory_class (keys %$field_factories) {
         return 0 if !$result;
         my $obj = $self->_factory->get_field_factory($field_factory_class);
-        $result = $obj->execute($field_factories->{$field_factory_class});
+        $result = $obj->execute($self->row, $field_factories->{$field_factory_class});
     }
 
     return $result;
@@ -127,7 +129,7 @@ sub _get_db_factory_values_from_row {
     for my $factory (keys %$factories) {
         my $ff = $self->_factory->get_field_factory($factory);
         push @values, %{
-            $ff->get_values_from_row( $factories->{$factory} )
+            $ff->get_values_from_row( $self->row, $factories->{$factory} )
         };
     }
 

@@ -3,7 +3,7 @@ package Form::SensibleX::Field::DBIC::BelongsTo;
 use Moose;
 use namespace::autoclean;
 use Form::Sensible::DelegateConnection;
-use MIME::Base64 qw/encode_base64url/;
+use MIME::Base64 qw/encode_base64url decode_base64url/;
 use JSON;
 
 extends 'Form::SensibleX::Field::Base::DBICSelect';

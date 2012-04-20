@@ -146,7 +146,6 @@ sub _build_form {
 
     my $form = Form::Sensible->create_form($form_definition);
 
-
     #my $i = 0;
     #my %index = map { $_ => $i++ } @{ $self->columns };
 

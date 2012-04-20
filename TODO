@@ -2,6 +2,7 @@
         - write tests!
 
     - ** test the form factory **
+    - bread board it :)
 
     - subclass FileSelector -> bytea -> display image when editing
     - test many_to_many

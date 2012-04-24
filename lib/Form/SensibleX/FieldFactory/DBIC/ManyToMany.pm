@@ -2,19 +2,9 @@ package Form::SensibleX::FieldFactory::DBIC::ManyToMany;
 
 use Moose;
 use namespace::autoclean;
-use Form::Sensible::DelegateConnection;
 use Form::SensibleX::Field::DBIC::ManyToMany;
 
-has fields => (
-    is      => 'ro',
-    isa     => 'ArrayRef[Form::SensibleX::Field::DBIC::ManyToMany]',
-    default => sub { [] },
-    traits  => ['Array'],
-    handles => {
-        push_field => 'push',
-        field_count => 'count',
-    }
-);
+extends 'Form::SensibleX::FieldFactory::DBIC::Base';
 
 around BUILDARGS => sub {
     my $orig  = shift;
@@ -27,8 +17,10 @@ around BUILDARGS => sub {
     delete $field_args{model};
     delete $field_args{request};
 
+    $args{names}  = [ $field_args{name} ];
     $args{fields} = [ Form::SensibleX::Field::DBIC::ManyToMany->new(%field_args) ];
     $args{fields}->[0]->{from_factory} = __PACKAGE__;
+    $args{fields}->[0]->{_fname}       = $field_args{name};
 
     return $class->$orig(%args);
 };
@@ -38,15 +30,15 @@ sub add_field {
 
     my $field = Form::SensibleX::Field::DBIC::ManyToMany->new($args);
     $field->{from_factory} = __PACKAGE__;
+    $field->{_fname}       = $args->{name};
     $self->push_field($field);
+    $self->add_name($args->{name});
 
     return 1;
 }
 
 # form extra params:
 # categories => { x_field_factory => 'DBIC::ManyToMany', option_label => 'name', option_value => 'id' }
-
-sub prepare_execute { 1 }
 
 sub execute {
     my ( $self, $row, $fields ) = @_;
@@ -64,24 +56,6 @@ sub execute {
     }
 
     return $i > 0;
-}
-
-
-sub get_values_from_row {
-    my ( $self, $row, $fields ) = @_;
-
-# FIXME:
-# i'm ignoring $fields
-
-    return {
-        map { $self->fields->[$_]->name => $self->fields->[$_]->get_values_from_row($row) } 0..($self->field_count-1)
-    };
-}
-
-sub build_fields {
-    my $self = shift;
-
-    return map { [ $self->fields->[$_], $self->fields->[$_]->name ] } 0..($self->field_count-1);
 }
 
 __PACKAGE__->meta->make_immutable;

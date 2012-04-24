@@ -18,7 +18,7 @@ has field_factories => (
 
 has columns => (
     isa        => 'ArrayRef',
-    is         => 'ro',
+    is         => 'rw',
     lazy_build => 1,
 );
 
@@ -145,23 +145,48 @@ sub _build_form {
     }
 
     my $form = Form::Sensible->create_form($form_definition);
+    $self->add_factories( $form, @factories );
+    return $form;
+}
 
-    #my $i = 0;
-    #my %index = map { $_ => $i++ } @{ $self->columns };
+sub add_factories {
+    my ($self, $form, @factories) = @_;
 
-    foreach my $factory (@factories) {
-        my @factory_fields = $factory->build_fields;
-        foreach my $factory_field (@factory_fields) {
-            my ($def, $name) = @$factory_field;
-            $form->add_field( $def, $name );
+    for my $factory (@factories) {
+        for my $factory_name (@{ $factory->names }) {
+            $self->add_to_form(
+                $form,
+                $factory_name,
+                $factory->build_fields($factory_name),
+            );
         }
     }
 
-    my @columns = @{ $self->columns };
-    push @columns, 'submit';
-    $form->field_order(\@columns);
+    $form->field_order([ @{ $self->columns }, 'submit' ]);
+}
 
-    return $form;
+sub add_to_form {
+    my ($self, $form, $factory, $factory_fields) = @_;
+    my @fact_field_names;
+
+    foreach my $factory_field (@$factory_fields) {
+        my ($definition, $name) = @$factory_field;
+        push @fact_field_names, $name;
+        $form->add_field( $definition, $name );
+    }
+
+    $self->replace_fields($factory, \@fact_field_names);
+}
+
+sub replace_fields {
+    my ($self, $needle, $to_insert) = @_;
+
+    my $columns = $self->columns;
+
+    for my $i ( 0 .. scalar @$columns - 1 ) {
+        return splice @$columns, $i, 1, @$to_insert
+            if $columns->[$i] eq $needle;
+    }
 }
 
 sub get_row {

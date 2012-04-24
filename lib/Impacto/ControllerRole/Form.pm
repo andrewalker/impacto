@@ -95,11 +95,9 @@ sub render_form {
 sub _translate_form_field {
     my ($self, $caller, $display_name, $origin_object) = @_;
 
-    return $display_name if $display_name;
-
     my $str = 'crud.' . $caller->form->name . '.' . $origin_object->name;
 
-    return $self->i18n->maketext( $str ) || $str;
+    return $self->i18n->maketext( $str ) || $display_name;
 }
 
 1;

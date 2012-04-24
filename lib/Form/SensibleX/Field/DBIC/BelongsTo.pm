@@ -46,7 +46,7 @@ sub options_delegate_get_from_db {
 sub _encode_value {
     my ($row, $value) = @_;
 
-    return if !$row; # value is empty
+    return '' if !$row; # value is empty
 
     return $row->get_column( $value->[0] )
         if scalar @$value == 1;

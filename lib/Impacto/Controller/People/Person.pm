@@ -5,6 +5,11 @@ use namespace::autoclean;
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
 has '+crud_model_name' => ( default => 'DB::PeoplePerson' );
+
+sub form_columns {
+    [ qw/ slug name phone email site comments / ]
+}
+
 sub form_columns_extra_params {
     {
         comments => { field_class => 'LongText' },

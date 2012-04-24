@@ -36,7 +36,7 @@ around BUILDARGS => sub {
 sub add_field {
     my ( $self, $args ) = @_;
 
-    my $field = Form::SensibleX::Field::DBIC::ManyToMany->new($args)
+    my $field = Form::SensibleX::Field::DBIC::ManyToMany->new($args);
     $field->{from_factory} = __PACKAGE__;
     $self->push_field($field);
 

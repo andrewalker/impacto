@@ -48,3 +48,28 @@ sub BUILD {
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+
+=head1 NAME
+
+Form::SensibleX::FormFactory::Request::Catalyst::Request - Handle Catalyst requests
+
+=head1 DESCRIPTION
+
+Checks whether the form has been submitted, if there are files to upload, and sets the values on the form fields.
+
+=head1 METHODS
+
+=head2 BUILD
+
+Builds the Bread::Board container.
+
+=head1 AUTHOR
+
+André Walker <andre@andrewalker.net>
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify
+it under the same terms as Perl itself.

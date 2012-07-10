@@ -262,3 +262,32 @@ sub execute {
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+
+=head1 NAME
+
+Form::SensibleX::FormFactory::Model::DBIC - Save form data in DBIC
+
+=head1 DESCRIPTION
+
+Handles all the communication with the database, like filling the form, updating the row, or creating a new row.
+
+=head1 METHODS
+
+=head2 BUILD
+
+Builds the Bread::Board container.
+
+=head2 execute
+
+Saves the record in the database. Either updates an existing row, or creates a new one.
+
+=head1 AUTHOR
+
+André Walker <andre@andrewalker.net>
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify
+it under the same terms as Perl itself.

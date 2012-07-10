@@ -5,6 +5,10 @@ root/static/lib/dojo/
 root/static/lib/dojox/
 root/static/lib/dijit/
 
+# ctags-exuberant can be manually generated
+# so it doesn't need to be in the vcs
+tags
+
 # we don't care about local config
 impacto_local.*
 

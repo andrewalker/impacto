@@ -16,18 +16,18 @@ sub BUILD {
     my $self = shift;
 
     container $self => as {
-        service req    => {
+        service req    => (
             block => sub { $self->req },
-        };
-        service submit => {
+        );
+        service submit => (
             dependencies => {
                 form => depends_on('/form'),
                 req  => depends_on('req'),
             },
             block => sub {
                 my $s = shift;
-                my $req  = $self->param('req');
-                my $form = $self->param('form');
+                my $req  = $s->param('req');
+                my $form = $s->param('form');
 
                 return 0 if ($req->method ne 'POST');
 
@@ -41,7 +41,7 @@ sub BUILD {
 
                 return 1;
             },
-        };
+        );
     };
 }
 

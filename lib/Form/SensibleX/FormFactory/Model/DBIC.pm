@@ -5,6 +5,10 @@ use Bread::Board;
 # FIXME: get this as a parameter
 use Impacto::Form::Sensible::Reflector::DBIC;
 
+# make sure all FS symbols are loaded
+# even though we don't need it directly
+use Form::Sensible;
+
 use Hash::Merge qw(merge);
 use namespace::autoclean;
 
@@ -37,6 +41,15 @@ sub BUILD {
             },
             dependencies => [ depends_on('resultset') ],
             lifecycle => 'Singleton',
+        );
+
+        service related_resultset => (
+            dependencies => [ depends_on('result_source') ],
+            parameters   => { field => { is => 'ro', isa => 'Str' } },
+            block => sub {
+                my $self = shift;
+                return $self->param('result_source')->related_source( $self->param('field') )->resultset;
+            },
         );
 
         service reflect => (
@@ -109,6 +122,7 @@ sub BUILD {
         service get_db_values_from_row => (
             dependencies => [
                 vf   => depends_on('prepare_get_db_values_from_row'),
+                # FIXME: really dumb!
                 root => depends_on('/form_factory'),
                 row  => depends_on('row'),
             ],
@@ -129,18 +143,9 @@ sub BUILD {
             }
         );
 
-        service related_resultset => (
-            dependencies => [ depends_on('result_source') ],
-            parameters   => { field => ( is => 'ro', isa => 'Str' ) },
-            block => sub {
-                my $self = shift;
-                return $self->param('result_source')->related_source( $self->param('field') )->resultset;
-            },
-        );
-
         service get_db_values_and_factories_from_form => (
             lifecycle => 'Singleton',
-            dependencies => [ depends_on('form') ],
+            dependencies => [ depends_on('/form') ],
             block => sub {
                 my $self = shift;
                 my $form = $self->param('form');
@@ -170,7 +175,7 @@ sub BUILD {
         );
 
         service validate_form => (
-            dependencies => [ depends_on('form') ],
+            dependencies => [ depends_on('/form') ],
             block        => sub { shift->param('form')->validate()->is_valid },
             lifecycle    => 'Singleton', # as long as this doesn't persist through requests
         );
@@ -228,6 +233,7 @@ sub BUILD {
 
         service post_execute => (
             dependencies => {
+                # FIXME: really dumb!
                 root => depends_on('/form_factory'),
                 row  => depends_on('row'),
                 vf   => depends_on('get_db_values_and_factories_from_form'),
@@ -242,7 +248,10 @@ sub BUILD {
 
                 for my $field_factory_class (keys %$field_factories) {
                     return 0 if !$result;
+
+                    # this probably means it should be in the root container
                     my $obj = $root->get_field_factory($field_factory_class);
+
                     $result = $obj->execute($row, $field_factories->{$field_factory_class});
                 }
 

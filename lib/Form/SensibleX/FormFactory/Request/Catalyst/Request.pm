@@ -1,33 +1,48 @@
 package Form::SensibleX::FormFactory::Request::Catalyst::Request;
 use Moose;
+use Bread::Board;
 use namespace::autoclean;
 
-has _factory => (
-    isa      => 'Form::SensibleX::FormFactory',
-    is       => 'rw',
-    weak_ref => 1,
-);
+extends 'Bread::Board::Container';
+
+has '+name' => ( default => 'Request' );
 
 has req => (
     isa => 'Catalyst::Request',
     is  => 'ro',
 );
 
-sub submit {
-    my ( $self, $form ) = @_;
-    my $req  = $self->req;
+sub BUILD {
+    my $self = shift;
 
-    return 0 if ($req->method ne 'POST');
+    container $self => as {
+        service req    => {
+            block => sub { $self->req },
+        };
+        service submit => {
+            dependencies => {
+                form => depends_on('/form'),
+                req  => depends_on('req'),
+            },
+            block => sub {
+                my $s = shift;
+                my $req  = $self->param('req');
+                my $form = $self->param('form');
 
-    my $values = $req->body_params;
+                return 0 if ($req->method ne 'POST');
 
-    for my $field ($req->upload) {
-        $values->{$field} = $req->upload( $field );
-    }
+                my $values = $req->body_params;
 
-    $form->set_values( $values );
+                for my $field ($req->upload) {
+                    $values->{$field} = $req->upload( $field );
+                }
 
-    return 1;
+                $form->set_values( $values );
+
+                return 1;
+            },
+        };
+    };
 }
 
 __PACKAGE__->meta->make_immutable;

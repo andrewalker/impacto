@@ -1,173 +1,262 @@
 package Form::SensibleX::FormFactory::Model::DBIC;
 use Moose;
+use Bread::Board;
+
+# FIXME: get this as a parameter
 use Impacto::Form::Sensible::Reflector::DBIC;
+
 use Hash::Merge qw(merge);
 use namespace::autoclean;
 
-has _factory => (
-    isa      => 'Form::SensibleX::FormFactory',
-    is       => 'rw',
-    weak_ref => 1,
-);
+extends 'Bread::Board::Container';
 
-has row => (
-    isa => 'DBIx::Class::Row',
-    is  => 'ro',
-);
+has '+name' => ( default => 'Model' );
 
 has resultset => (
     isa => 'DBIx::Class::ResultSet',
     is  => 'ro',
 );
 
-around BUILDARGS => sub {
-    my $orig = shift;
+has row => (
+#    isa     => 'DBIx::Class::Row|Undef',
+    is      => 'ro',
+    lazy    => 1,
+    default => sub { shift->resultset->new_result({}) },
+);
+
+sub BUILD {
     my $self = shift;
 
-    my $args = ref $_[0] && ref $_[0] eq 'HASH' ? $_[0] : {@_};
-    $args->{row} ||= $args->{resultset}->new_result({});
+    container $self => as {
+        service resultset     => $self->resultset;
+        service row           => $self->row;
+        service result_source => (
+            block => sub {
+                my $self = shift;
+                $self->param('resultset')->result_source;
+            },
+            dependencies => [ depends_on('resultset') ],
+            lifecycle => 'Singleton',
+        );
 
-    return $self->$orig($args);
-};
+        service reflect => (
+            dependencies => {
+                columns       => depends_on('/column_order'),
+                result_source => depends_on('result_source'),
+                resultset     => depends_on('resultset'),
+            },
+            block => sub {
+                my $self      = shift;
+                my $columns   = $self->param('columns');
+                my $source    = $self->param('result_source');
+                my $reflector = Impacto::Form::Sensible::Reflector::DBIC->new();
+                my %db_columns = map { $_ => 1 } $source->columns;
+                my @db_columns = grep { $db_columns{$_} } @$columns;
 
-sub reflect {
-    my ( $self, $columns ) = @_;
+                my $form_options = {
+                    form             => { name => $source->from },
+                    with_trigger     => 1,
+                    fieldname_filter => sub { @db_columns },
+                };
 
-    my $source    = $self->resultset->result_source;
-    my $reflector = Impacto::Form::Sensible::Reflector::DBIC->new();
-    my %db_columns = map { $_ => 1 } $source->columns;
-    my @db_columns = grep { $db_columns{$_} } @$columns;
+                return $reflector->reflect_from( $self->param('resultset'), $form_options );
+            },
+        );
 
-    my $form_options = {
-        form             => { name => $source->from },
-        with_trigger     => 1,
-        fieldname_filter => sub { @db_columns },
+        service flattened_reflection => (
+            dependencies => [ depends_on('reflect') ],
+            block        => sub { shift->param('reflect')->flatten },
+            lifecycle    => 'Singleton',
+        );
+
+        service set_values_from_row => (
+            dependencies => [ depends_on('/form'), depends_on('get_db_values_from_row') ],
+            block        => sub {
+                my $self = shift;
+                $self->param('form')->set_values( $self->param('get_db_values_from_row') );
+            },
+        );
+
+        service prepare_get_db_values_from_row => (
+            dependencies => [ depends_on('/form'), depends_on('row') ],
+            block        => sub {
+                my $self = shift;
+                my $form = $self->param('form');
+                my $row  = $self->param('row');
+
+                my $values    = {};
+                my $factories = {};
+
+                for my $fieldname ( $form->fieldnames ) {
+                    my $field   = $form->field($fieldname);
+                    my $factory = $field->{from_factory};
+
+                    next if $field->field_type eq 'trigger';
+
+                    if (defined $factory) {
+                        $factories->{$factory} ||= [];
+                        push @{ $factories->{$factory} }, $fieldname;
+                    }
+                    else {
+                        $values->{$fieldname} = $row->get_column($fieldname);
+                    }
+                }
+
+                return ( $values, $factories );
+            },
+        );
+
+        service get_db_values_from_row => (
+            dependencies => [
+                vf   => depends_on('prepare_get_db_values_from_row'),
+                root => depends_on('/form_factory'),
+                row  => depends_on('row'),
+            ],
+            block => sub {
+                my $self = shift;
+                my ($values, $factories) = $self->param('vf');
+
+                my @values;
+
+                for my $factory (keys %$factories) {
+                    my $ff = $self->param('root')->get_field_factory($factory);
+                    push @values, %{
+                        $ff->get_values_from_row( $self->param('row'), $factories->{$factory} )
+                    };
+                }
+
+                return merge( $values, { @values } );
+            }
+        );
+
+        service related_resultset => (
+            dependencies => [ depends_on('result_source') ],
+            parameters   => { field => ( is => 'ro', isa => 'Str' ) },
+            block => sub {
+                my $self = shift;
+                return $self->param('result_source')->related_source( $self->param('field') )->resultset;
+            },
+        );
+
+        service get_db_values_and_factories_from_form => (
+            lifecycle => 'Singleton',
+            dependencies => [ depends_on('form') ],
+            block => sub {
+                my $self = shift;
+                my $form = $self->param('form');
+
+                my $values    = {};
+                my $factories = {};
+
+                for my $fieldname ( $form->fieldnames ) {
+                    my $field   = $form->field($fieldname);
+                    my $value   = $field->value();
+                    my $factory = $field->{from_factory};
+
+                    next if defined $value && $value eq '';
+                    next if $field->field_type eq 'trigger';
+
+                    if (defined $factory) {
+                        $factories->{$factory} ||= {};
+                        $factories->{$factory}{$fieldname} = $value;
+                    }
+                    else {
+                        $values->{$fieldname} = $value;
+                    }
+                }
+
+                return ($values, $factories);
+            }
+        );
+
+        service validate_form => (
+            dependencies => [ depends_on('form') ],
+            block        => sub { shift->param('form')->validate()->is_valid },
+            lifecycle    => 'Singleton', # as long as this doesn't persist through requests
+        );
+
+        service execute_create => (
+            dependencies => [ depends_on('row'), depends_on('pre_execute'), depends_on('get_db_values_and_factories_from_form') ],
+            block        => sub {
+                my $self = shift;
+                return 0 if !$self->param('pre_execute');
+                my ($values, $field_factories) = $self->param('get_db_values_and_factories_from_form');
+                my $row = $self->param('row');
+                $row->set_columns( $values );
+                $row->insert;
+                return 1;
+            },
+        );
+
+        service execute_update => (
+            dependencies => [ depends_on('row'), depends_on('pre_execute'), depends_on('get_db_values_and_factories_from_form') ],
+            block        => sub {
+                my $self = shift;
+                return 0 if !$self->param('pre_execute');
+                my ($values, $field_factories) = $self->param('get_db_values_and_factories_from_form');
+                my $row = $self->param('row');
+                $row->update( $values );
+                return 1;
+            },
+        );
+
+        service pre_execute => (
+            dependencies => {
+                root     => depends_on('/form_factory'),
+                row      => depends_on('row'),
+                validate => depends_on('validate_form'),
+                vf       => depends_on('get_db_values_and_factories_from_form'),
+            },
+            block        => sub {
+                my $self = shift;
+                return 0 if !$self->param('validate');
+                my ($values, $field_factories) = $self->param('vf');
+                my $row = $self->param('row');
+                my $root = $self->param('/form_factory');
+
+                my $result = 1;
+
+                for my $field_factory_class (keys %$field_factories) {
+                    return 0 if !$result;
+                    my $obj = $root->get_field_factory($field_factory_class);
+                    $result = $obj->prepare_execute($row, $field_factories->{$field_factory_class});
+                }
+
+                return $result;
+            },
+        );
+
+        service post_execute => (
+            dependencies => {
+                root => depends_on('/form_factory'),
+                row  => depends_on('row'),
+                vf   => depends_on('get_db_values_and_factories_from_form'),
+            },
+            block        => sub {
+                my $self = shift;
+                my ($values, $field_factories) = $self->param('vf');
+                my $row = $self->param('row');
+                my $root = $self->param('root');
+
+                my $result = 1;
+
+                for my $field_factory_class (keys %$field_factories) {
+                    return 0 if !$result;
+                    my $obj = $root->get_field_factory($field_factory_class);
+                    $result = $obj->execute($row, $field_factories->{$field_factory_class});
+                }
+
+                return $result;
+            },
+        );
     };
-
-    return $reflector->reflect_from($self->resultset, $form_options);
-}
-
-sub set_values_from_row {
-    my ( $self, $form ) = @_;
-
-    $form->set_values( $self->get_db_values_from_row( $form ) );
-}
-
-sub related_resultset {
-    my ( $self, $field ) = @_;
-    return $self->resultset->result_source->related_source( $field )->resultset;
 }
 
 sub execute {
-    my ($self, $form, $action) = @_;
+    my ($self, $action) = @_;
 
-    my $validation = $form->validate();
-
-    return 0 if (! $validation->is_valid);
-
-    my ($values, $field_factories) = $self->get_db_values_and_factories_from_form($form);
-
-    my $execute_action = "execute_$action";
-
-    my $result = 1;
-
-    for my $field_factory_class (keys %$field_factories) {
-        return 0 if !$result;
-        my $obj = $self->_factory->get_field_factory($field_factory_class);
-        $result = $obj->prepare_execute($self->row, $field_factories->{$field_factory_class});
-    }
-
-    $result = $self->$execute_action($values);
-
-    for my $field_factory_class (keys %$field_factories) {
-        return 0 if !$result;
-        my $obj = $self->_factory->get_field_factory($field_factory_class);
-        $result = $obj->execute($self->row, $field_factories->{$field_factory_class});
-    }
-
-    return $result;
-}
-
-sub execute_create {
-    my ( $self, $values ) = @_;
-
-    $self->row->set_columns( $values );
-    $self->row->insert;
-
-    return 1;
-}
-
-sub execute_update {
-    my ( $self, $values ) = @_;
-
-    $self->row->update( $values );
-
-    return 1;
-}
-
-sub get_db_values_from_row {
-    my ($self, $form) = @_;
-
-    my $values    = {};
-    my $factories = {};
-
-    for my $fieldname ( $form->fieldnames ) {
-        my $field   = $form->field($fieldname);
-        my $factory = $field->{from_factory};
-
-        next if $field->field_type eq 'trigger';
-
-        if (defined $factory) {
-            $factories->{$factory} ||= [];
-            push @{ $factories->{$factory} }, $fieldname;
-        }
-        else {
-            $values->{$fieldname} = $self->row->get_column($fieldname);
-        }
-    }
-
-    return merge( $values, $self->_get_db_factory_values_from_row($factories) );
-}
-
-sub _get_db_factory_values_from_row {
-    my ($self, $factories) = @_;
-
-    my @values;
-
-    for my $factory (keys %$factories) {
-        my $ff = $self->_factory->get_field_factory($factory);
-        push @values, %{
-            $ff->get_values_from_row( $self->row, $factories->{$factory} )
-        };
-    }
-
-    return { @values };
-}
-
-sub get_db_values_and_factories_from_form {
-    my ($self, $form) = @_;
-
-    my $values    = {};
-    my $factories = {};
-
-    for my $fieldname ( $form->fieldnames ) {
-        my $field   = $form->field($fieldname);
-        my $value   = $field->value();
-        my $factory = $field->{from_factory};
-
-        next if defined $value && $value eq '';
-        next if $field->field_type eq 'trigger';
-
-        if (defined $factory) {
-            $factories->{$factory} ||= {};
-            $factories->{$factory}{$fieldname} = $value;
-        }
-        else {
-            $values->{$fieldname} = $value;
-        }
-    }
-
-    return ($values, $factories);
+    return $self->resolve(service => "execute_$action") &&
+           $self->resolve(service => "post_execute");
 }
 
 __PACKAGE__->meta->make_immutable;

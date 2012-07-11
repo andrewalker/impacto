@@ -5,10 +5,10 @@ use utf8;
 use Test::More;
 use Bread::Board;
 use FindBin '$Bin';
-use Schema;
-use Form::SensibleX::FormFactory::Model::DBIC;
 
 use lib "$Bin/../../lib";
+use Schema;
+use Form::SensibleX::FormFactory::Model::DBIC;
 
 my $person_rs = Schema->connect("dbi:SQLite:$Bin/../../db/test.db")->resultset(
     'Product'

@@ -72,7 +72,7 @@ sub build_form_factory {
         request_args    => { req => $c->req },
         model_args      => {
             resultset => $self->crud_model_instance,
-            row       => $c->stash->{row},
+            row       => $c->stash->{row} || $self->crud_model_instance,
         },
     );
 }

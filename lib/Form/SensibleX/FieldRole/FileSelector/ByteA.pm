@@ -19,3 +19,24 @@ around value => sub {
 };
 
 1;
+
+__END__
+
+=head1 NAME
+
+Form::SensibleX::FieldRole::FileSelector::ByteA - Load files as byte arrays
+
+=head1 DESCRIPTION
+
+Moose::Role to be applied to FileSelector fields in a Form::Sensible form, so
+that instead of saving the filename in the database, the file contents are
+saved as byte_a (byte array).
+
+=head1 AUTHOR
+
+André Walker <andre@andrewalker.net>
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify it under
+the same terms as Perl itself.

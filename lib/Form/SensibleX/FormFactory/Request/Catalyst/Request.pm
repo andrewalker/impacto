@@ -51,6 +51,8 @@ __PACKAGE__->meta->make_immutable;
 
 __END__
 
+=encoding utf8
+
 =head1 NAME
 
 Form::SensibleX::FormFactory::Request::Catalyst::Request - Handle Catalyst requests

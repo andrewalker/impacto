@@ -112,6 +112,8 @@ __PACKAGE__->meta->make_immutable;
 
 __END__
 
+=encoding utf8
+
 =head1 NAME
 
 Form::SensibleX::FormFactory::FieldDefinition - Builds the definition for a

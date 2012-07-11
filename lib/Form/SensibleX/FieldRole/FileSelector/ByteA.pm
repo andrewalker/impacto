@@ -22,6 +22,8 @@ around value => sub {
 
 __END__
 
+=encoding utf8
+
 =head1 NAME
 
 Form::SensibleX::FieldRole::FileSelector::ByteA - Load files as byte arrays

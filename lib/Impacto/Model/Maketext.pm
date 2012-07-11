@@ -7,6 +7,10 @@ use parent qw(CatalystX::I18N::Model::Maketext);
 
 1;
 
+__END__
+
+=encoding utf8
+
 =head1 NAME
 
 Impacto::Model::Maketext - Maketext Catalyst model component
@@ -27,7 +31,3 @@ André Walker
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
-
-=cut
-
-1;

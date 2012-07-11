@@ -19,6 +19,12 @@ sub get_first_existing_template {
     }
 }
 
+1;
+
+__END__
+
+=encoding utf8
+
 =head1 NAME
 
 Impacto::View::TT - TT View for Impacto
@@ -39,7 +45,3 @@ André Walker
 
 This library is free software. You can redistribute it and/or modify
 it under the same terms as Perl itself.
-
-=cut
-
-1;

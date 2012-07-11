@@ -10,22 +10,6 @@ BEGIN { extends 'Impacto::ControllerBase::Base' }
 #
 __PACKAGE__->config(namespace => '');
 
-=head1 NAME
-
-Impacto::Controller::Root - Root Controller for Impacto
-
-=head1 DESCRIPTION
-
-[enter your description here]
-
-=head1 METHODS
-
-=head2 index
-
-The root page (/)
-
-=cut
-
 sub index :Path Args(0) {
     my ( $self, $c ) = @_;
 
@@ -33,25 +17,45 @@ sub index :Path Args(0) {
     $c->detach('/login/login') if (!$c->user);
 }
 
-=head2 default
-
-Standard 404 error page
-
-=cut
-
 sub default :Path {
     my ( $self, $c ) = @_;
     $c->response->body( 'Page not found' );
     $c->response->status(404);
 }
 
+sub end : ActionClass('RenderView') {}
+
+__PACKAGE__->meta->make_immutable;
+
+1;
+
+__END__
+
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+Impacto::Controller::Root - Root Controller for Impacto
+
+=head1 DESCRIPTION
+
+Root controller.
+
+=head1 METHODS
+
+=head2 index
+
+The root page (/)
+
+=head2 default
+
+Standard 404 error page
+
 =head2 end
 
 Attempt to render a view, if needed.
-
-=cut
-
-sub end : ActionClass('RenderView') {}
 
 =head1 AUTHOR
 
@@ -61,9 +65,3 @@ André Walker <andre@andrewalker.net>
 
 This library is free software. You can redistribute it and/or modify
 it under the same terms as Perl itself.
-
-=cut
-
-__PACKAGE__->meta->make_immutable;
-
-1;

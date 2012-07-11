@@ -9,6 +9,12 @@ __PACKAGE__->config(
     expose_stash => [ qw/list_json_structure items identifier numRows/ ],
 );
 
+1;
+
+__END__
+
+=encoding utf8
+
 =head1 NAME
 
 Impacto::View::JSON - Catalyst JSON View
@@ -29,7 +35,3 @@ André Walker
 
 This library is free software, you can redistribute it and/or modify
 it under the same terms as Perl itself.
-
-=cut
-
-1;

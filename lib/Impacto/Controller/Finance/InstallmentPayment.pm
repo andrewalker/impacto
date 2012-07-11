@@ -18,6 +18,14 @@ sub form_columns_extra_params {
     }
 }
 
+__PACKAGE__->meta->make_immutable;
+
+1;
+
+__END__
+
+=encoding utf8
+
 =head1 NAME
 
 Impacto::Controller::Finance::InstallmentPayment - Catalyst Controller
@@ -28,9 +36,6 @@ Catalyst Controller.
 
 =head1 METHODS
 
-=cut
-
-
 =head1 AUTHOR
 
 André Walker
@@ -39,9 +44,3 @@ André Walker
 
 This library is free software. You can redistribute it and/or modify
 it under the same terms as Perl itself.
-
-=cut
-
-__PACKAGE__->meta->make_immutable;
-
-1;

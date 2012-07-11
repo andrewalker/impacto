@@ -61,6 +61,8 @@ sub get_elastic_search_insert_data {
 
 __END__
 
+=encoding utf8
+
 =head1 NAME
 
 Impacto::ControllerRole::DataGrid

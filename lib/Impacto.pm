@@ -83,6 +83,11 @@ __PACKAGE__->config(
 # Start the application
 __PACKAGE__->setup();
 
+1;
+
+__END__
+
+=encoding utf8
 
 =head1 NAME
 
@@ -108,7 +113,3 @@ André Walker <andre@andrewalker.net>
 
 This library is free software. You can redistribute it and/or modify
 it under the same terms as Perl itself.
-
-=cut
-
-1;

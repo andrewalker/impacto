@@ -104,6 +104,8 @@ sub _translate_form_field {
 
 __END__
 
+=encoding utf8
+
 =head1 NAME
 
 Impacto::ControllerRole::Form

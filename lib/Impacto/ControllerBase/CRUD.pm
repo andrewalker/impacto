@@ -191,6 +191,8 @@ __PACKAGE__->meta->make_immutable;
 
 __END__
 
+=encoding utf8
+
 =head1 NAME
 
 Impacto::ControllerBase::CRUD - Base controller for CRUD classes

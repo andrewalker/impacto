@@ -158,3 +158,110 @@ sub _fix_array_ref {
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+
+=encoding utf8
+
+=head1 NAME
+
+Form::SensibleX::Field::Base::DBICSelect - Base class for Select fields
+
+=head1 DESCRIPTION
+
+Creates a basic structure for filling in a Select field with rows from the
+database.
+
+=head1 ATTRIBUTES
+
+=head2 option_label
+
+The column, or columns, to be fetched from the database for the text inside the
+<option> tags.
+
+Example:
+
+    option_label => [ 'name', 'customer.age' ]
+
+Will result in
+
+    <option>$row->name - $row->customer->age</option>
+
+Or even:
+
+    option_label => 'name'
+
+Will result in
+
+    <option>$row->name</option>
+
+=head2 option_label_as
+
+=head2 option_label_separator
+
+When multiple columns are chosen for option_label, they can be concatenated
+with this separator. The default is " - ".
+
+=head2 option_value
+
+The column that will represent the value.
+
+Example:
+
+    option_value => 'id'
+
+Will result in
+
+    <option value="$row->id">...</option>
+
+=head2 option_sort
+
+The column in the database that will be used for sorting the option's.
+
+=head2 option_filter
+
+The terms to search the database, using DBIC's search function.
+
+=head2 first_empty_option
+
+When the field can be NULL, it's first option might be an empty one, like:
+
+    <option> -- </option>
+
+=head2 dbic_columns
+
+Which columns will be used in the search. We try to optimize this so that only
+columns that are needed are fetched.
+
+=head2 resultset
+
+Which resultset will be searched.
+
+=head1 METHODS
+
+=head2 get_first_empty_option
+
+See the first_empty_option attribute. This returns the attribute only if the
+field is really optional.
+
+=head2 get_options_to_search
+
+Not to be confused with HTML options. This returns a hashref to search DBIC to
+be given to C<< $dbh->search() >>.
+
+=head2 _fix_array_ref
+
+=head2 _default_field_type
+
+=head2 _build_option_sort
+
+=head2 _build_dbic_columns
+
+=head1 AUTHOR
+
+André Walker <andre@andrewalker.net>
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify it under
+the same terms as Perl itself.

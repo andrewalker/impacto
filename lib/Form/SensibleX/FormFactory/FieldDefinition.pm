@@ -58,6 +58,7 @@ sub merge_definition {
 
 sub check_field_factory {
     my $self = shift;
+    my $definition = $self->definition;
 
     if (!$self->extra_params->{x_field_factory}) {
         return;

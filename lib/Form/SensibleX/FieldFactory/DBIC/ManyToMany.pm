@@ -61,3 +61,26 @@ sub execute {
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+
+=head1 NAME
+
+Form::SensibleX::FieldFactory::DBIC::ManyToMany - Many to Many relationships in forms
+
+=head1 DESCRIPTION
+
+=head1 METHODS
+
+=head2 execute
+
+=head2 add_field
+
+=head1 AUTHOR
+
+André Walker <andre@andrewalker.net>
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify it under
+the same terms as Perl itself.

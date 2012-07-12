@@ -23,6 +23,13 @@ CREATE TABLE product (
     FOREIGN KEY (supplier) REFERENCES supplier(person)
 );
 
+CREATE TABLE product_tag (
+    product integer NOT NULL,
+    tag     text NOT NULL,
+    FOREIGN KEY (product) REFERENCES product(id),
+    PRIMARY KEY (product, tag)
+);
+
 INSERT INTO person (slug, name, birthday, phone, email) VALUES ('person1', 'André Walker',     '01/05/1991', '1234-5678', 'me1@andrewalker.net');
 INSERT INTO person (slug, name, birthday, phone, email) VALUES ('person2', 'Mr. Walker',       '02/05/1991', '2234-5678', 'me2@andrewalker.net');
 INSERT INTO person (slug, name, birthday, phone, email) VALUES ('person3', 'Mr. André',        '03/05/1991', '3234-5678', 'me3@andrewalker.net');
@@ -34,3 +41,6 @@ INSERT INTO supplier (person) VALUES ('person4');
 INSERT INTO product (id, name, supplier, cost, price) VALUES (1, 'Product 1', 'person1', 25, 50);
 INSERT INTO product (id, name, supplier, cost, price) VALUES (2, 'Product 2', 'person1', 25, 50);
 INSERT INTO product (id, name, supplier, cost, price) VALUES (3, 'Product 3', 'person4', 25, 50);
+
+INSERT INTO product_tag (product, tag) VALUES (3, 'beautiful');
+INSERT INTO product_tag (product, tag) VALUES (3, 'cheap');

@@ -41,3 +41,36 @@ sub get_class_name {
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+
+=encoding utf8
+
+=head1 NAME
+
+Impacto::FormFactory
+
+=head1 DESCRIPTION
+
+Loads a custom model or request class for you FormFactory, if they exist.
+Extends L<Form::SensibleX::FormFactory>.
+
+=head1 METHODS
+
+=head2 get_class_name
+
+Returns the class name for the hypothetical request or model class, to check
+its existence.
+
+=head1 SEE ALSO
+
+L<Impacto>, L<Form::SensibleX::FormFactory>.
+
+=head1 AUTHOR
+
+André Walker
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify
+it under the same terms as Perl itself.

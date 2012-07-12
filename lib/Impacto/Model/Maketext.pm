@@ -21,7 +21,12 @@ See L<Impacto>.
 
 =head1 DESCRIPTION
 
-Maketext Catalyst model component.
+Maketext Catalyst model component. Empty class, inherits from
+CatalystX::I18N::Model::Maketext.
+
+=head1 SEE ALSO
+
+L<CatalystX::I18N::Model::Maketext>
 
 =head1 AUTHOR
 

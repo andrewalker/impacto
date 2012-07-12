@@ -18,3 +18,30 @@ __PACKAGE__->load_namespaces;
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
+
+__END__
+
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+Impacto::Schema - Impacto DBIC Schema
+
+=head1 DESCRIPTION
+
+Inherits from L<DBIx::Class::Schema> and loads namespaces.
+
+=head1 SEE ALSO
+
+L<DBIx::Class::Schema>.
+
+=head1 AUTHOR
+
+André Walker <andre@andrewalker.net>
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify
+it under the same terms as Perl itself.

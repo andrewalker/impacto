@@ -33,6 +33,13 @@ Impacto::View::TT - TT View for Impacto
 
 TT View for Impacto.
 
+=head1 METHODS
+
+=head2 get_first_existing_template
+
+Given a list of template names (without the TEMPLATE_EXTENSION), returns the
+first one which exists in the filesystem (with the TEMPLATE_EXTENSION).
+
 =head1 SEE ALSO
 
 L<Impacto>

@@ -21,13 +21,13 @@ sub form_columns {
 sub form_columns_extra_params {
     my $self = shift;
     {
-        type => { field_class => 'Select', options_delegate => FSConnector($self, 'get_stock_movement_types') },
-        place => { x_field_factory => "DBIC::BelongsTo", option_label => 'place' },
+        type    => { field_class => 'Select', options_delegate => FSConnector(\&_get_stock_movement_types) },
+        place   => { x_field_factory => "DBIC::BelongsTo", option_label => 'place' },
         product => { x_field_factory => "DBIC::BelongsTo", option_label => 'name', option_value => 'id' },
     }
 }
 
-sub get_stock_movement_types {
+sub _get_stock_movement_types {
     my ($self, $field, $args) = @_;
     return [
         { value => 'sell',         name => 'Venda' },
@@ -54,8 +54,6 @@ Impacto::Controller::Product::StockMovement - Catalyst Controller
 =head1 DESCRIPTION
 
 Catalyst Controller.
-
-=head1 METHODS
 
 =head1 AUTHOR
 

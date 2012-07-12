@@ -14,3 +14,28 @@ sub BUILD {
 }
 
 1;
+
+__END__
+
+=encoding utf8
+
+=head1 NAME
+
+Impacto::Form::Sensible::Reflector::DBIC
+
+=head1 DESCRIPTION
+
+L<Form::Sensible::Reflector::DBIC> with my defaults.
+
+=head1 SEE ALSO
+
+L<Impacto>, L<Form::Sensible::Reflector::DBIC>.
+
+=head1 AUTHOR
+
+André Walker
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify
+it under the same terms as Perl itself.

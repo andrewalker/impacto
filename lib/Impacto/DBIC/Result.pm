@@ -61,3 +61,38 @@ sub _is_date {
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+
+=encoding utf8
+
+=head1 NAME
+
+Impacto::DBIC::Result - DBIC Result base classes
+
+=head1 DESCRIPTION
+
+All result classes in the Schema extend from this class.
+
+=head1 METHODS
+
+=head2 get_elastic_search_insert_data
+
+Returns a hashref for inserting this row into ElasticSearch.
+
+=head2 concat_columns
+
+Concatenates given columns using a given separator.
+
+=head1 SEE ALSO
+
+L<Impacto>, L<DBIx::Class::Core>
+
+=head1 AUTHOR
+
+André Walker
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify
+it under the same terms as Perl itself.

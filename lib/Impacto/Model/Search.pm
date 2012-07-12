@@ -96,3 +96,52 @@ sub _get_sort_array {
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+
+=encoding utf8
+
+=head1 NAME
+
+Impacto::Model::Search - Catalyst Search using ElasticSearch
+
+=head1 SYNOPSIS
+
+See L<Impacto>.
+
+=head1 DESCRIPTION
+
+Impacto's Model for searching. Also used for setting up the datagrid, even when
+there is no search.
+
+=head1 METHODS
+
+=head2 browse_data
+
+Searches ElasticSearch, and returns the data, sorted and paginated.
+
+=head2 get_pks
+
+Returns a special field in the Elastic search row, which is a hashref with the
+real primary keys in the RDBMS.
+
+=head2 get_item
+
+Fetches the row from ElasticSearch.
+
+=head2 index_data
+
+Indexes the row in ElasticSearch.
+
+=head1 SEE ALSO
+
+L<Catalyst::Model::Search::ElasticSearch>
+
+=head1 AUTHOR
+
+André Walker
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify it under
+the same terms as Perl itself.

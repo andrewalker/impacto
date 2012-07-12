@@ -3,7 +3,6 @@ package Form::SensibleX::Field::DBIC::ManyToMany;
 use Moose;
 use namespace::autoclean;
 use Form::Sensible::DelegateConnection;
-use List::Util qw(first);
 
 extends 'Form::SensibleX::Field::Base::DBICSelect';
 

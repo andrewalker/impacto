@@ -19,3 +19,30 @@ __PACKAGE__->config(
 );
 
 1;
+
+__END__
+
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+Impacto::Controller::Login - Login Controller for Impacto
+
+=head1 DESCRIPTION
+
+Login controller. Inherits from CatalystX::SimpleLogin::Controller::Login.
+
+=head1 SEE ALSO
+
+L<CatalystX::SimpleLogin::Controller::Login>.
+
+=head1 AUTHOR
+
+André Walker <andre@andrewalker.net>
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify
+it under the same terms as Perl itself.

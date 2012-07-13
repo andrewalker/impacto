@@ -22,7 +22,7 @@ around BUILDARGS => sub {
         $class->_field_factory_buildargs(
             field_args   => \%field_args,
             factory_args => {},
-        );
+        )
     );
 };
 

@@ -4,6 +4,7 @@ use Moose;
 use namespace::autoclean;
 use Form::Sensible::DelegateConnection;
 use MIME::Base64 qw/encode_base64url decode_base64url/;
+use Carp;
 use JSON;
 
 extends 'Form::SensibleX::Field::Base::DBICSelect';
@@ -48,8 +49,12 @@ sub _encode_value {
 
     return '' if !$row; # value is empty
 
-    return $row->get_column( $value->[0] )
-        if scalar @$value == 1;
+    if (@$value == 1) {
+        croak 'why would you get a foreign key as a value?'
+            if $value->[0] =~ /\./;
+
+        return $row->get_column( $value->[0] );
+    }
 
 # ok, ok. this is madness.
     return encode_base64url(

@@ -73,6 +73,7 @@ sub execute { 1 }
 # or nothing to prepare
 sub prepare_execute { 1 }
 
+# TODO: untested
 sub get_values_from_row {
     my ( $self, $row, $fields ) = @_;
 
@@ -84,6 +85,7 @@ sub get_values_from_row {
     };
 }
 
+# TODO: untested
 sub build_fields {
     my ($self, $name) = @_;
 

@@ -33,19 +33,16 @@ around BUILDARGS => sub {
     );
 };
 
-sub add_field {
-    my ( $self, $args ) = @_;
+around add_field => sub {
+    my ( $orig, $self, $args ) = @_;
 
     $args->{resultset} = $self->model->resolve(
         service    => 'related_resultset',
         parameters => { field => $args->{name} },
     );
 
-    my $field = $self->create_field($args);
-    $self->_add_field($field);
-
-    return 1;
-}
+    return $self->$orig($args);
+};
 
 sub prepare_execute {
     my ( $self, $row, $fields ) = @_;
@@ -84,8 +81,6 @@ Form::SensibleX::FieldFactory::DBIC::BelongsTo - Foreign keys in the form
 =head1 METHODS
 
 =head2 prepare_execute
-
-=head2 add_field
 
 =head1 AUTHOR
 

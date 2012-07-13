@@ -26,15 +26,6 @@ around BUILDARGS => sub {
     );
 };
 
-sub add_field {
-    my ( $self, $args ) = @_;
-
-    my $field = $self->create_field($args);
-    $self->_add_field($field);
-
-    return 1;
-}
-
 # form extra params:
 # categories => { x_field_factory => 'DBIC::ManyToMany', option_label => 'name', option_value => 'id' }
 

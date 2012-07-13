@@ -2,6 +2,7 @@ package Form::SensibleX::FieldFactory::DBIC::Base;
 
 use Moose;
 use namespace::autoclean;
+use Carp;
 
 has fields => (
     is      => 'ro',
@@ -47,15 +48,24 @@ sub names {
 sub create_field {
     my ($self, $args) = @_;
 
-    my $field = $self->field_class->new($args);
+    croak "_field_class is not defined for " . (ref $self || $self)
+        unless $self->_field_class;
+
+    my $field = $self->_field_class->new($args);
     $field->{from_factory} = ref $self || $self;
     $field->{_fname}       = $args->{name};
 
     return $field;
 }
 
-# didn't add anything
-sub add_field { 0 }
+sub add_field {
+    my ( $self, $args ) = @_;
+
+    my $field = $self->create_field($args);
+    $self->_add_field($field);
+
+    return 1;
+}
 
 # maybe there's nothing to execute
 sub execute { 1 }

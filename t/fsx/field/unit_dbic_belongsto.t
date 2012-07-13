@@ -10,7 +10,9 @@ use FindBin '$Bin';
 use lib "$Bin/../../lib";
 use Schema;
 
-my $supplier_rs = Schema->connect("dbi:SQLite:$Bin/../../db/test.db", '', '', { sqlite_unicode => 1 })->resultset(
+my $db = Schema->connect("dbi:SQLite:$Bin/../../db/test.db", '', '', { sqlite_unicode => 1 });
+
+my $supplier_rs = $db->resultset(
     'Supplier'
 );
 
@@ -52,9 +54,11 @@ my $expected = [
 ok(my $result = $field->options_delegate_get_from_db, 'options delegate gets records');
 is_deeply($result, $expected, 'and the results are expected');
 
+my $product = $db->resultset('Product')->find(3);
+is($field->get_values_from_row($product), 'person4', 'get_values_from_row');
 
 # now it gets beautiful
-my $tags_rs = Schema->connect("dbi:SQLite:$Bin/../../db/test.db", '', '', { sqlite_unicode => 1 })->resultset(
+my $tags_rs = $db->resultset(
     'ProductTag'
 );
 

@@ -95,6 +95,21 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
+=head2 product_categories
+
+Type: has_many
+
+Related object: L<Schema::Result::ProductCategory>
+
+=cut
+
+__PACKAGE__->has_many(
+  "product_categories",
+  "Schema::Result::ProductCategory",
+  { "foreign.product" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 product_tags
 
 Type: has_many
@@ -130,9 +145,19 @@ __PACKAGE__->belongs_to(
   },
 );
 
+=head2 categories
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-13 00:57:57
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:K6SKaeqiwm2Q51153/3ggg
+Type: many_to_many
+
+Composing rels: L</product_categories> -> category
+
+=cut
+
+__PACKAGE__->many_to_many("categories", "product_categories", "category");
+
+
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-13 01:40:29
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:8czafEJU2HVda36qIaIEXQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -23,6 +23,20 @@ CREATE TABLE product (
     FOREIGN KEY (supplier) REFERENCES supplier(person)
 );
 
+CREATE TABLE category (
+    slug text NOT NULL,
+    name text NOT NULL,
+    PRIMARY KEY (slug)
+);
+
+CREATE TABLE product_category (
+    product integer NOT NULL,
+    category text NOT NULL,
+    FOREIGN KEY (product)  REFERENCES product(id),
+    FOREIGN KEY (category) REFERENCES category(slug),
+    PRIMARY KEY (product, category)
+);
+
 CREATE TABLE product_tag (
     product integer NOT NULL,
     tag     text NOT NULL,
@@ -41,6 +55,17 @@ INSERT INTO supplier (person) VALUES ('person4');
 INSERT INTO product (id, name, supplier, cost, price) VALUES (1, 'Product 1', 'person1', 25, 50);
 INSERT INTO product (id, name, supplier, cost, price) VALUES (2, 'Product 2', 'person1', 25, 50);
 INSERT INTO product (id, name, supplier, cost, price) VALUES (3, 'Product 3', 'person4', 25, 50);
+
+INSERT INTO category (slug, name) VALUES ('books', 'Books');
+INSERT INTO category (slug, name) VALUES ('small', 'Small books');
+INSERT INTO category (slug, name) VALUES ('big',   'Big books');
+INSERT INTO category (slug, name) VALUES ('mag',   'Magazines');
+
+INSERT INTO product_category (product, category) VALUES (1, 'books');
+INSERT INTO product_category (product, category) VALUES (1, 'small');
+INSERT INTO product_category (product, category) VALUES (2, 'books');
+INSERT INTO product_category (product, category) VALUES (2, 'big');
+INSERT INTO product_category (product, category) VALUES (3, 'mag');
 
 INSERT INTO product_tag (product, tag) VALUES (3, 'beautiful');
 INSERT INTO product_tag (product, tag) VALUES (3, 'cheap');

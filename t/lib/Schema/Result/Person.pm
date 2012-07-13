@@ -98,6 +98,21 @@ __PACKAGE__->set_primary_key("slug");
 
 =head1 RELATIONS
 
+=head2 client
+
+Type: might_have
+
+Related object: L<Schema::Result::Client>
+
+=cut
+
+__PACKAGE__->might_have(
+  "client",
+  "Schema::Result::Client",
+  { "foreign.person" => "self.slug" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 supplier
 
 Type: might_have
@@ -114,8 +129,8 @@ __PACKAGE__->might_have(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-13 00:57:57
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZSnuC1WB0NYaKQsUYoyH9w
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-13 17:33:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:AKFKCnvOXt7L7oX5SwV6dw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

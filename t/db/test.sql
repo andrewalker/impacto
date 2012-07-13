@@ -7,6 +7,12 @@ CREATE TABLE person (
     PRIMARY KEY(slug)
 );
 
+CREATE TABLE client (
+    person text NOT NULL,
+    PRIMARY KEY (person),
+    FOREIGN KEY (person) REFERENCES person(slug)
+);
+
 CREATE TABLE supplier (
     person text NOT NULL,
     PRIMARY KEY (person),
@@ -37,6 +43,19 @@ CREATE TABLE product_category (
     PRIMARY KEY (product, category)
 );
 
+/*
+ * this obviously makes no sense and is absurd
+ * but it's here to allow tests for complex relationships
+ * in Form::SensibleX::FieldFactory::BelongsTo
+ */
+CREATE TABLE product_category_comments (
+    product integer NOT NULL,
+    category text NOT NULL,
+    comments text NOT NULL,
+    FOREIGN KEY (product, category)  REFERENCES product_category(product, category),
+    PRIMARY KEY (product, category)
+);
+
 CREATE TABLE product_tag (
     product integer NOT NULL,
     tag     text NOT NULL,
@@ -51,6 +70,9 @@ INSERT INTO person (slug, name, birthday, phone, email) VALUES ('person4', 'Sir 
 
 INSERT INTO supplier (person) VALUES ('person1');
 INSERT INTO supplier (person) VALUES ('person4');
+
+INSERT INTO client (person) VALUES ('person2');
+INSERT INTO client (person) VALUES ('person3');
 
 INSERT INTO product (id, name, supplier, cost, price) VALUES (1, 'Product 1', 'person1', 25, 50);
 INSERT INTO product (id, name, supplier, cost, price) VALUES (2, 'Product 2', 'person1', 25, 50);

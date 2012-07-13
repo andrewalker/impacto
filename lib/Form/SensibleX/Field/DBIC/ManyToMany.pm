@@ -3,6 +3,7 @@ package Form::SensibleX::Field::DBIC::ManyToMany;
 use Moose;
 use namespace::autoclean;
 use Form::Sensible::DelegateConnection;
+use Carp;
 
 extends 'Form::SensibleX::Field::Base::DBICSelect';
 
@@ -59,13 +60,13 @@ sub get_option_hash_from_records {
 
     my $sep     = $self->option_label_separator;
     my $name    = $self->option_label_as;
-    my $value   = $self->option_value;
+    my $value   = $self->option_value->[0];
 
     return [
         map {
             {
                 name  => $_->concat_columns( $name,  $sep ),
-                value => _encode_value( $_, $value ),
+                value => $_->get_column( $value ),
             }
         } @$records
     ];
@@ -74,18 +75,23 @@ sub get_option_hash_from_records {
 sub get_values_from_row {
     my ( $self, $row ) = @_;
 
-    my $value   = $self->option_value;
+    my $value   = $self->option_value->[0];
     my $records = $self->get_records_from_db($row);
 
-    return [ map { _encode_value( $_, $value ) } @$records ];
+    return [ map { $_->get_column( $value ) } @$records ];
 }
 
-sub _encode_value {
-    my ($row, $value) = @_;
+around option_value => sub {
+    my $orig = shift;
+    my $self = shift;
 
-    return $row->get_column( $value->[0] )
-        if scalar @$value == 1;
-}
+    my $value = $self->$orig(@_);
+
+    croak "multiple values for ManyToMany fields are currently not supported"
+        unless @$value == 1;
+
+    return $value;
+};
 
 __PACKAGE__->meta->make_immutable;
 
@@ -129,10 +135,6 @@ Sub-routine handed to Form::Sensible to get the options for the select.
 
 Returns the value for a given row. Useful when there are many columns in the
 value.
-
-=head2 _encode_value
-
-Encodes multiple columns for a value.
 
 =head1 AUTHOR
 

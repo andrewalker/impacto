@@ -3,15 +3,7 @@ package Form::SensibleX::FieldFactory::DBIC::Base;
 use Moose;
 use namespace::autoclean;
 
-has names => (
-    is      => 'ro',
-    isa     => 'ArrayRef[Str]',
-    default => sub { [] },
-    traits  => ['Array'],
-    handles => {
-        add_name => 'push',
-    }
-);
+sub _field_class {}
 
 has fields => (
     is      => 'ro',
@@ -23,6 +15,22 @@ has fields => (
         field_count => 'count',
     }
 );
+
+sub names {
+    my $self = shift;
+
+    return [ map { $_->{_fname} } @{ $self->fields } ];
+}
+
+sub create_field {
+    my ($self, $args) = @_;
+
+    my $field = $self->field_class->new($args);
+    $field->{from_factory} = ref $self || $self;
+    $field->{_fname}       = $args->{name};
+
+    return $field;
+}
 
 # didn't add anything
 sub add_field { 0 }

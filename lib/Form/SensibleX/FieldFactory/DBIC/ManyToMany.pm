@@ -6,6 +6,10 @@ use Form::SensibleX::Field::DBIC::ManyToMany;
 
 extends 'Form::SensibleX::FieldFactory::DBIC::Base';
 
+sub field_class {
+    'Form::SensibleX::Field::DBIC::ManyToMany'
+}
+
 around BUILDARGS => sub {
     my $orig  = shift;
     my $class = shift;
@@ -13,14 +17,12 @@ around BUILDARGS => sub {
     my %field_args = ref $_[0] && ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
     my %args;
 
-    $field_args{resultset} = $field_args{model}->resultset if $field_args{model};
+    $field_args{resultset} = $field_args{model}->resolve(service => 'resultset') if $field_args{model};
     delete $field_args{model};
     delete $field_args{request};
 
-    $args{names}  = [ $field_args{name} ];
-    $args{fields} = [ Form::SensibleX::Field::DBIC::ManyToMany->new(%field_args) ];
-    $args{fields}->[0]->{from_factory} = __PACKAGE__;
-    $args{fields}->[0]->{_fname}       = $field_args{name};
+    my $field = $class->create_field(\%field_args);
+    $args{fields} = [ $field ];
 
     return $class->$orig(%args);
 };
@@ -28,11 +30,8 @@ around BUILDARGS => sub {
 sub add_field {
     my ( $self, $args ) = @_;
 
-    my $field = Form::SensibleX::Field::DBIC::ManyToMany->new($args);
-    $field->{from_factory} = __PACKAGE__;
-    $field->{_fname}       = $args->{name};
-    $self->push_field($field);
-    $self->add_name($args->{name});
+    my $field = $self->create_field($args);
+    $self->_add_field($field);
 
     return 1;
 }

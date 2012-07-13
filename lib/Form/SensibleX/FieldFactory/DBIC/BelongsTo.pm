@@ -8,6 +8,10 @@ extends 'Form::SensibleX::FieldFactory::DBIC::Base';
 
 has model => ( is => 'ro' );
 
+sub field_class {
+    'Form::SensibleX::Field::DBIC::BelongsTo'
+}
+
 around BUILDARGS => sub {
     my $orig  = shift;
     my $class = shift;
@@ -15,15 +19,16 @@ around BUILDARGS => sub {
     my %field_args = ref $_[0] && ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
     my %args;
 
-    $field_args{resultset} = $field_args{model}->related_resultset( $field_args{name} );
+    $field_args{resultset} = $field_args{model}->resolve(
+        service    => 'related_resultset',
+        parameters => { field => $field_args{name} },
+    );
     $args{model} = $field_args{model};
     delete $field_args{model};
     delete $field_args{request};
 
-    $args{names}  = [ $field_args{name} ];
-    $args{fields} = [ Form::SensibleX::Field::DBIC::BelongsTo->new(%field_args) ];
-    $args{fields}->[0]->{from_factory} = __PACKAGE__;
-    $args{fields}->[0]->{_fname}       = $field_args{name};
+    my $field = $class->create_field(\%field_args);
+    $args{fields} = [ $field ];
 
     return $class->$orig(%args);
 };
@@ -31,12 +36,13 @@ around BUILDARGS => sub {
 sub add_field {
     my ( $self, $args ) = @_;
 
-    $args->{resultset} = $self->model->related_resultset( $args->{name} );
-    my $field = Form::SensibleX::Field::DBIC::BelongsTo->new($args);
-    $field->{from_factory} = __PACKAGE__;
-    $field->{_fname}       = $args->{name};
+    $args->{resultset} = $self->model->resolve(
+        service    => 'related_resultset',
+        parameters => { field => $args->{name} },
+    );
+
+    my $field = $self->create_field($args);
     $self->_add_field($field);
-    $self->add_name($args->{name});
 
     return 1;
 }

@@ -1,12 +1,12 @@
 use utf8;
-package Schema::Result::Supplier;
+package Schema::Result::ProductTag;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-Schema::Result::Supplier
+Schema::Result::ProductTag
 
 =cut
 
@@ -31,74 +31,68 @@ use base 'Impacto::DBIC::Result';
 
 __PACKAGE__->load_components("InflateColumn::DateTime");
 
-=head1 TABLE: C<supplier>
+=head1 TABLE: C<product_tag>
 
 =cut
 
-__PACKAGE__->table("supplier");
+__PACKAGE__->table("product_tag");
 
 =head1 ACCESSORS
 
-=head2 person
+=head2 product
+
+  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0
+
+=head2 tag
 
   data_type: 'text'
-  is_foreign_key: 1
   is_nullable: 0
 
 =cut
 
 __PACKAGE__->add_columns(
-  "person",
-  { data_type => "text", is_foreign_key => 1, is_nullable => 0 },
+  "product",
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  "tag",
+  { data_type => "text", is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
 
 =over 4
 
-=item * L</person>
+=item * L</product>
+
+=item * L</tag>
 
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("person");
+__PACKAGE__->set_primary_key("product", "tag");
 
 =head1 RELATIONS
 
-=head2 person
+=head2 product
 
 Type: belongs_to
-
-Related object: L<Schema::Result::Person>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "person",
-  "Schema::Result::Person",
-  { slug => "person" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
-
-=head2 products
-
-Type: has_many
 
 Related object: L<Schema::Result::Product>
 
 =cut
 
-__PACKAGE__->has_many(
-  "products",
+__PACKAGE__->belongs_to(
+  "product",
   "Schema::Result::Product",
-  { "foreign.supplier" => "self.person" },
-  { cascade_copy => 0, cascade_delete => 0 },
+  { id => "product" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
 # Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-13 00:57:57
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:a0U2GyBUqUK6VSO6iza58A
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EdwUCZyw+l/nKIk1+Pohlw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

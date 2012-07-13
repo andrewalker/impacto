@@ -95,6 +95,21 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
+=head2 product_tags
+
+Type: has_many
+
+Related object: L<Schema::Result::ProductTag>
+
+=cut
+
+__PACKAGE__->has_many(
+  "product_tags",
+  "Schema::Result::ProductTag",
+  { "foreign.product" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 supplier
 
 Type: belongs_to
@@ -116,8 +131,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-15 21:30:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:kp+wIMgfX+QCtdT8KtLP2Q
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-13 00:57:57
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:K6SKaeqiwm2Q51153/3ggg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

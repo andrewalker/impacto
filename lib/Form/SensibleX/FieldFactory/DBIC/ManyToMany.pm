@@ -6,7 +6,7 @@ use Form::SensibleX::Field::DBIC::ManyToMany;
 
 extends 'Form::SensibleX::FieldFactory::DBIC::Base';
 
-sub field_class {
+sub _field_class {
     'Form::SensibleX::Field::DBIC::ManyToMany'
 }
 

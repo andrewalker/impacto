@@ -8,7 +8,7 @@ extends 'Form::SensibleX::FieldFactory::DBIC::Base';
 
 has model => ( is => 'ro' );
 
-sub field_class {
+sub _field_class {
     'Form::SensibleX::Field::DBIC::BelongsTo'
 }
 

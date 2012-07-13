@@ -14,17 +14,16 @@ around BUILDARGS => sub {
     my $orig  = shift;
     my $class = shift;
 
-    my %field_args = ref $_[0] && ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
-    my %args;
+    my %field_args = $class->_get_buildargs_args(@_);
 
     $field_args{resultset} = $field_args{model}->resolve(service => 'resultset') if $field_args{model};
-    delete $field_args{model};
-    delete $field_args{request};
 
-    my $field = $class->create_field(\%field_args);
-    $args{fields} = [ $field ];
-
-    return $class->$orig(%args);
+    return $class->$orig(
+        $class->_field_factory_buildargs(
+            field_args   => \%field_args,
+            factory_args => {},
+        );
+    );
 };
 
 sub add_field {

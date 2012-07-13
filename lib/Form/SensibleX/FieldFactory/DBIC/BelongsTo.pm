@@ -16,7 +16,7 @@ around BUILDARGS => sub {
     my $orig  = shift;
     my $class = shift;
 
-    my %field_args = ref $_[0] && ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
+    my %field_args = $class->_get_buildargs_args(@_);
     my %args;
 
     $field_args{resultset} = $field_args{model}->resolve(
@@ -24,13 +24,13 @@ around BUILDARGS => sub {
         parameters => { field => $field_args{name} },
     );
     $args{model} = $field_args{model};
-    delete $field_args{model};
-    delete $field_args{request};
 
-    my $field = $class->create_field(\%field_args);
-    $args{fields} = [ $field ];
-
-    return $class->$orig(%args);
+    return $class->$orig(
+        $class->_field_factory_buildargs(
+            field_args   => \%field_args,
+            factory_args => \%args,
+        );
+    );
 };
 
 sub add_field {

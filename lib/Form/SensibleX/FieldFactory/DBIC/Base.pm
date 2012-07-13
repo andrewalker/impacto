@@ -3,8 +3,6 @@ package Form::SensibleX::FieldFactory::DBIC::Base;
 use Moose;
 use namespace::autoclean;
 
-sub _field_class {}
-
 has fields => (
     is      => 'ro',
     isa     => 'ArrayRef[Form::Sensible::Field]',
@@ -15,6 +13,30 @@ has fields => (
         field_count => 'count',
     }
 );
+
+sub _field_class {}
+
+sub _field_factory_buildargs {
+    my $class = shift;
+    my %args  = @_;
+
+    my $field_args   = $args{field_args};
+    my $factory_args = $args{factory_args};
+
+    delete $field_args->{model};
+    delete $field_args->{request};
+
+    $factory_args->{fields} = [
+        $class->create_field($field_args)
+    ];
+
+    return $factory_args;
+}
+
+sub _get_buildargs_args {
+    my $class = shift;
+    return ref $_[0] && ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
+}
 
 sub names {
     my $self = shift;

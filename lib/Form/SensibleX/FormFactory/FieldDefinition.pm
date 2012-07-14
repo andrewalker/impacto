@@ -4,8 +4,8 @@ use Class::Load qw/load_class/;
 use Hash::Merge 'merge';
 use namespace::autoclean;
 
-has _factory => (
-    is => 'ro',
+has field_factories => (
+    is       => 'ro',
     weak_ref => 1,
 );
 
@@ -60,38 +60,11 @@ sub check_field_factory {
     my $self = shift;
     my $definition = $self->definition;
 
-    if (!$self->extra_params->{x_field_factory}) {
-        return;
-    }
-
-    delete $self->definition->{field_type};
-    delete $self->definition->{field_class};
-    delete $self->definition->{integer_only};
-
-    my $x_field_factory     = delete $self->extra_params->{x_field_factory};
-    my $field_factory_class = 'Form::SensibleX::FieldFactory::' . $x_field_factory;
-
-    # FIXME: ->_factory should not exist. fix using Bread::Board
-    my $field_factory       = $self->_factory->get_field_factory($field_factory_class);
-
-    if ($field_factory) {
+    if ($definition->{x_field_factory}) {
         $definition->{name} = $self->name;
-        $field_factory->add_field($definition);
+        $self->field_factories->add_to_factory($definition);
+        $self->delete_definition(1);
     }
-    else {
-        load_class( $field_factory_class );
-
-        $definition->{model}   = $self->_factory->model;
-        $definition->{request} = $self->_factory->request;
-        $definition->{name}    = $self->name;
-
-        $field_factory = $field_factory_class->new( $definition );
-
-        # FIXME: ->_factory should not exist. fix using Bread::Board
-        $self->_factory->set_field_factory($field_factory_class, $field_factory);
-    }
-
-    $self->delete_definition(1);
 }
 
 sub get_definition {

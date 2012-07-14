@@ -1,25 +1,23 @@
 package Form::SensibleX::FormFactory;
+use Bread::Board;
 use Moose;
 use Form::Sensible;
 use Class::Load qw/load_class/;
+use Form::SensibleX::FormFactory::FieldDefinition;
 use namespace::autoclean;
-use Hash::Merge 'merge';
 
-has field_factories => (
-    isa        => 'HashRef',
-    is         => 'ro',
-    default    => sub { +{} },
-    traits     => ['Hash'],
-    handles => {
-        set_field_factory => 'set',
-        get_field_factory => 'get',
-    }
+has container => (
+    isa => 'Bread::Board::Container',
+    is  => 'ro',
+    lazy => 1,
+    default => sub {
+        Bread::Board::Container->new( name => 'FormFactory' )
+    },
 );
 
 has columns => (
     isa        => 'ArrayRef',
-    is         => 'rw',
-    lazy_build => 1,
+    is         => 'ro',
 );
 
 has extra_params => (
@@ -73,136 +71,113 @@ around BUILDARGS => sub {
 sub BUILD {
     my $self = shift;
 
-    $self->model->_factory(   $self );
-    $self->request->_factory( $self );
-}
+    my $container = $self->container;
 
-sub _build_form {
-    my $self = shift;
+    $container->add_sub_container( $self->model   );
+    $container->add_sub_container( $self->request );
 
-    # FIXME: use some sort of cache? CHI?
-    # for now, lets comment it to save memory
-    # it's too early to worry about it anyway
-    # if (defined $self->form_sensible_flattened) {
-    #    return Form::Sensible->create_form($self->form_sensible_flattened);
-    # }
+    # circular dependecies!! untested!
+    $container->add_service(
+        Bread::Board::ConstructorInjection->new(
+            name         => 'field_factory_manager',
+            class        => 'Form::SensibleX::FieldFactory::Manager',
+            dependencies => {
+                form         => depends_on('plain_form'),
+                column_order => depends_on('column_order'),
+                model        => depends_on('/Model'),
+                request      => depends_on('/Request')
+            },
+            lifecycle => 'Singleton',
+        )
+    );
+    $container->add_service(
+        Bread::Board::Literal->new(
+            name  => 'column_order',
+            value => $self->columns,
+        )
+    );
+    $container->add_service(
+        Bread::Board::Literal->new(
+            name  => 'extra_params',
+            value => $self->extra_params,
+        )
+    );
+    $container->add_service(
+        Bread::Board::BlockInjection->new(
+            name         => 'form_definition',
+            lifecycle    => 'Singleton',
+            dependencies => {
+                reflection      => depends_on('/Model/flattened_reflection'),
+                extra_params    => depends_on('extra_params'),
+                field_factories => depends_on('field_factory_manager'),
+            },
+            block        => sub {
+                my $s = shift;
+                my $form_definition = $s->param('reflection');
+                my %extra_params    = %{ $s->param('extra_params') };
+                my $field_factories = $s->param('field_factories');
 
-    my $form_definition = $self->model->reflect( $self->columns )->flatten;
-    delete $form_definition->{field_order};
-    my @factories;
+                foreach my $field (keys %extra_params) {
+                    my $flat_field       = delete $form_definition->{fields}{$field} || +{};
 
-    foreach my $field (keys %{ $self->extra_params }) {
-        $form_definition->{fields}{$field} ||= {};
-        my $field_definition   = $form_definition->{fields}{$field};
-        my %field_extra_params = %{ $self->extra_params->{$field} };
+                    my $field_definition = Form::SensibleX::FormFactory::FieldDefinition->new(
+                        definition      => $flat_field,
+                        extra_params    => $extra_params{$field},
+                        name            => $field,
+                        field_factories => $field_factories,
+                    );
 
-        if ($field_extra_params{field_class}) {
-            delete $field_definition->{field_type};
-        }
+                    if (my $result = $field_definition->get_definition) {
+                        $form_definition->{fields}{$field} = $result;
+                    }
+                }
 
-        if ($field_extra_params{x_field_class}) {
-            delete $field_definition->{field_type};
+                return $form_definition;
+            },
+        )
+    );
+    $container->add_service(
+        Bread::Board::BlockInjection->new(
+            name         => 'plain_form',
+            lifecycle    => 'Singleton',
+            dependencies => [
+                depends_on('form_definition'),
+            ],
+            block        => sub {
+                return Form::Sensible->create_form( shift->param('form_definition') );
+            },
+        )
+    );
 
-            my $x_field_class = delete $field_extra_params{x_field_class};
-            my $field_class   = 'Form::SensibleX::Field::' . $x_field_class;
-            $field_definition->{field_class} = '+' . $field_class;
-
-            load_class( $field_class );
-        }
-
-        if ($field_extra_params{x_field_factory}) {
-            delete $field_definition->{field_type};
-            delete $field_definition->{field_class};
-            delete $field_definition->{integer_only};
-
-            my $x_field_factory     = delete $field_extra_params{x_field_factory};
-            my $field_factory_class = 'Form::SensibleX::FieldFactory::' . $x_field_factory;
-            my $field_factory       = $self->get_field_factory($field_factory_class);
-            my $definition          = merge( $field_definition, \%field_extra_params );
-
-            if ($field_factory) {
-                $definition->{name} = $field;
-                $field_factory->add_field($definition);
-            }
-            else {
-                load_class( $field_factory_class );
-
-                $definition->{model}   = $self->model;
-                $definition->{request} = $self->request;
-                $definition->{name}    = $field;
-
-                $field_factory = $field_factory_class->new( $definition );
-                $self->set_field_factory($field_factory_class, $field_factory);
-                push @factories, $field_factory;
-            }
-
-            delete $form_definition->{fields}{$field};
-        }
-        else {
-            # merge extra params with definition
-            $field_definition->{$_} = $field_extra_params{$_} for (keys %field_extra_params);
-        }
-    }
-
-    my $form = Form::Sensible->create_form($form_definition);
-    $self->add_factories( $form, @factories );
-    return $form;
-}
-
-sub add_factories {
-    my ($self, $form, @factories) = @_;
-
-    for my $factory (@factories) {
-        for my $factory_name (@{ $factory->names }) {
-            $self->add_to_form(
-                $form,
-                $factory_name,
-                $factory->build_fields($factory_name),
-            );
-        }
-    }
-
-    $form->field_order([ @{ $self->columns }, 'submit' ]);
-}
-
-sub add_to_form {
-    my ($self, $form, $factory, $factory_fields) = @_;
-    my @fact_field_names;
-
-    foreach my $factory_field (@$factory_fields) {
-        my ($definition, $name) = @$factory_field;
-        push @fact_field_names, $name;
-        $form->add_field( $definition, $name );
-    }
-
-    $self->replace_fields($factory, \@fact_field_names);
-}
-
-sub replace_fields {
-    my ($self, $needle, $to_insert) = @_;
-
-    my $columns = $self->columns;
-
-    for my $i ( 0 .. scalar @$columns - 1 ) {
-        return splice @$columns, $i, 1, @$to_insert
-            if $columns->[$i] eq $needle;
-    }
+    $container->add_service(
+        Bread::Board::BlockInjection->new(
+            name         => 'form',
+            lifecycle    => 'Singleton',
+            dependencies => [
+                depends_on('field_factory_manager'),
+            ],
+            block        => sub {
+                my $s = shift;
+                $s->param('field_factory_manager')->add_factories_to_form();
+            },
+        )
+    );
 }
 
 sub get_row {
     my $self = shift;
-    return $self->model->row;
+    return $self->container->resolve(service => '/Model/row');
 }
 
 sub execute {
     my ( $self, $action ) = @_;
 
     # sets the value to the form too, using the request params
-    if ( $self->request->submit( $self->form ) ) {
-        return $self->model->execute( $self->form, $action );
+    if ( $self->container->resolve(service => '/Request/submit') ) {
+        return $self->container->get_sub_container('Model')->execute( $action );
     }
 
-    $self->model->set_values_from_row( $self->form );
+    $self->container->resolve(service => '/Model/set_values_from_row');
 
     return 0;
 }
@@ -210,3 +185,41 @@ sub execute {
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+
+=encoding utf8
+
+=head1 NAME
+
+Form::SensibleX::FormFactory - Create Form::Sensible forms
+
+=head1 DESCRIPTION
+
+A smart way to handle form creation, complex fields, and saving them to the
+database.
+
+=head1 METHODS
+
+=head2 BUILD
+
+Builds the Bread::Board container.
+
+=head2 get_row
+
+Shortcut to get the row from Bread::Board.
+
+=head2 execute
+
+If the form has been submitted (according to the Request sub-container), save
+to the database (using the Model sub-container). Else, load the values into the
+form.
+
+=head1 AUTHOR
+
+André Walker <andre@andrewalker.net>
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify
+it under the same terms as Perl itself.

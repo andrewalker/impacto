@@ -4,23 +4,37 @@ use strict;
 use utf8;
 use Test::More;
 use Bread::Board;
+use Form::Sensible;
 use FindBin '$Bin';
 
 use lib "$Bin/../../lib";
 use Schema;
 use Form::SensibleX::FormFactory::Model::DBIC;
 
-my $person_rs = Schema->connect("dbi:SQLite:$Bin/../../db/test.db")->resultset(
+my $product_rs = Schema->connect("dbi:SQLite:$Bin/../../db/test.db")->resultset(
     'Product'
 );
 
+my $form = Form::Sensible->create_form({
+    name => 'test',
+    fields => [
+        { name => 'id',    field_class => 'Number' },
+        { name => 'name',  field_class => 'Text'   },
+        { name => 'cost',  field_class => 'Number' },
+        { name => 'price', field_class => 'Number' },
+    ],
+});
+
 my $container = container FormFactory => as {
     service column_order => [ qw/id name supplier cost price/ ];
+    service form         => (
+        block => sub { $form }
+    );
 };
 
 $container->add_sub_container(
     Form::SensibleX::FormFactory::Model::DBIC->new(
-        resultset => $person_rs
+        resultset => $product_rs
     )
 );
 
@@ -50,12 +64,17 @@ ok($flattened, "the flattened form is ok");
 my $columns = $container->resolve( service => 'column_order' );
 push @$columns, 'submit';
 
-is_deeply($flattened->{field_order}, $columns, 'field order is right');
 is($flattened->{name}, 'product', 'name is correct');
 
 my %got      = map { $_ => 1 } keys %{ $flattened->{fields} };
 my %expected = map { $_ => 1 } @$columns;
 
 is_deeply(\%got, \%expected, 'all the fields are there');
+
+
+# set_values_from_row
+# prepare_get_db_values_from_row
+# get_db_values_and_factories_from_form
+# validate_form
 
 done_testing();

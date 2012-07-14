@@ -78,7 +78,11 @@ sub BUILD {
 
         service flattened_reflection => (
             dependencies => [ depends_on('reflect') ],
-            block        => sub { shift->param('reflect')->flatten },
+            block        => sub {
+                my $r = shift->param('reflect')->flatten;
+                delete $r->{field_order};
+                return $r;
+            },
             lifecycle    => 'Singleton',
         );
 

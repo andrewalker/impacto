@@ -53,6 +53,7 @@ sub BUILD {
         );
 
         service reflect => (
+            lifecycle    => 'Singleton',
             dependencies => {
                 columns       => depends_on('/column_order'),
                 result_source => depends_on('result_source'),
@@ -87,6 +88,7 @@ sub BUILD {
         );
 
         service set_values_from_row => (
+            lifecycle    => 'Singleton',
             dependencies => [ depends_on('/form'), depends_on('get_db_values_from_row') ],
             block        => sub {
                 my $self = shift;
@@ -96,6 +98,7 @@ sub BUILD {
 
         service prepare_get_db_values_from_row => (
             dependencies => [ depends_on('/form'), depends_on('row') ],
+            lifecycle    => 'Singleton', # as this class lasts only for one request
             block        => sub {
                 my $self = shift;
                 my $form = $self->param('form');
@@ -119,25 +122,46 @@ sub BUILD {
                     }
                 }
 
-                return ( $values, $factories );
+                return {
+                    plain_values    => $values,
+                    field_factories => $factories,
+                };
+            },
+        );
+
+        service values_from_plain_fields_from_row => (
+            dependencies => [ depends_on('prepare_get_db_values_from_row') ],
+            lifecycle => 'Singleton',
+            block => sub {
+                return shift->param('prepare_get_db_values_from_row')->{plain_values};
+            },
+        );
+
+        service field_factories_from_row => (
+            dependencies => [ depends_on('prepare_get_db_values_from_row') ],
+            lifecycle => 'Singleton',
+            block => sub {
+                return shift->param('prepare_get_db_values_from_row')->{field_factories};
             },
         );
 
         service get_db_values_from_row => (
-            dependencies => [
-                vf   => depends_on('prepare_get_db_values_from_row'),
-                # FIXME: really dumb!
-                root => depends_on('/form_factory'),
-                row  => depends_on('row'),
-            ],
+            dependencies => {
+                values => depends_on('values_from_plain_fields_from_row'),
+                facts  => depends_on('field_factories_from_row'),
+                mgr    => depends_on('/field_factory_manager'),
+                row    => depends_on('row'),
+            },
             block => sub {
-                my $self = shift;
-                my ($values, $factories) = $self->param('vf');
+                my $self      = shift;
+                my $values    = $self->param('values');
+                my $factories = $self->param('facts');
+                my $mgr       = $self->param('mgr');
 
                 my @values;
 
                 for my $factory (keys %$factories) {
-                    my $ff = $self->param('root')->get_field_factory($factory);
+                    my $ff = $mgr->get_factory($factory);
                     push @values, %{
                         $ff->get_values_from_row( $self->param('row'), $factories->{$factory} )
                     };
@@ -174,8 +198,27 @@ sub BUILD {
                     }
                 }
 
-                return ($values, $factories);
+                return {
+                    plain_values    => $values,
+                    field_factories => $factories,
+                };
             }
+        );
+
+        service values_from_plain_fields_from_form => (
+            dependencies => [ depends_on('get_db_values_and_factories_from_form') ],
+            lifecycle => 'Singleton',
+            block => sub {
+                return shift->param('get_db_values_and_factories_from_form')->{plain_values};
+            },
+        );
+
+        service field_factories_from_form => (
+            dependencies => [ depends_on('get_db_values_and_factories_from_form') ],
+            lifecycle => 'Singleton',
+            block => sub {
+                return shift->param('get_db_values_and_factories_from_form')->{field_factories};
+            },
         );
 
         service validate_form => (
@@ -185,11 +228,11 @@ sub BUILD {
         );
 
         service execute_create => (
-            dependencies => [ depends_on('row'), depends_on('pre_execute'), depends_on('get_db_values_and_factories_from_form') ],
+            dependencies => [ depends_on('row'), depends_on('pre_execute'), depends_on('values_from_plain_fields_from_form') ],
             block        => sub {
                 my $self = shift;
                 return 0 if !$self->param('pre_execute');
-                my ($values, $field_factories) = $self->param('get_db_values_and_factories_from_form');
+                my $values = $self->param('values_from_plain_fields_from_form');
                 my $row = $self->param('row');
                 $row->set_columns( $values );
                 $row->insert;
@@ -198,11 +241,11 @@ sub BUILD {
         );
 
         service execute_update => (
-            dependencies => [ depends_on('row'), depends_on('pre_execute'), depends_on('get_db_values_and_factories_from_form') ],
+            dependencies => [ depends_on('row'), depends_on('pre_execute'), depends_on('values_from_plain_fields_from_form') ],
             block        => sub {
                 my $self = shift;
                 return 0 if !$self->param('pre_execute');
-                my ($values, $field_factories) = $self->param('get_db_values_and_factories_from_form');
+                my $values = $self->param('values_from_plain_fields_from_form');
                 my $row = $self->param('row');
                 $row->update( $values );
                 return 1;
@@ -211,23 +254,23 @@ sub BUILD {
 
         service pre_execute => (
             dependencies => {
-                root     => depends_on('/form_factory'),
+                mgr      => depends_on('/field_factory_manager'),
                 row      => depends_on('row'),
                 validate => depends_on('validate_form'),
-                vf       => depends_on('get_db_values_and_factories_from_form'),
+                ff       => depends_on('field_factories_from_form'),
             },
             block        => sub {
                 my $self = shift;
                 return 0 if !$self->param('validate');
-                my ($values, $field_factories) = $self->param('vf');
+                my $field_factories = $self->param('ff');
                 my $row = $self->param('row');
-                my $root = $self->param('/form_factory');
+                my $mgr = $self->param('mgr');
 
                 my $result = 1;
 
                 for my $field_factory_class (keys %$field_factories) {
                     return 0 if !$result;
-                    my $obj = $root->get_field_factory($field_factory_class);
+                    my $obj = $mgr->get_factory($field_factory_class);
                     $result = $obj->prepare_execute($row, $field_factories->{$field_factory_class});
                 }
 
@@ -237,24 +280,22 @@ sub BUILD {
 
         service post_execute => (
             dependencies => {
-                # FIXME: really dumb!
-                root => depends_on('/form_factory'),
+                mgr  => depends_on('/field_factory_manager'),
                 row  => depends_on('row'),
-                vf   => depends_on('get_db_values_and_factories_from_form'),
+                ff   => depends_on('field_factories_from_form'),
             },
             block        => sub {
                 my $self = shift;
-                my ($values, $field_factories) = $self->param('vf');
+                my $field_factories = $self->param('ff');
                 my $row = $self->param('row');
-                my $root = $self->param('root');
+                my $mgr = $self->param('mgr');
 
                 my $result = 1;
 
                 for my $field_factory_class (keys %$field_factories) {
                     return 0 if !$result;
 
-                    # this probably means it should be in the root container
-                    my $obj = $root->get_field_factory($field_factory_class);
+                    my $obj = $mgr->get_factory($field_factory_class);
 
                     $result = $obj->execute($row, $field_factories->{$field_factory_class});
                 }

@@ -179,7 +179,7 @@ sub BUILD {
     );
 }
 
-sub form {
+sub get_form {
     my $self = shift;
     return $self->container->resolve(service => 'form');
 }
@@ -214,6 +214,41 @@ __END__
 
 Form::SensibleX::FormFactory - Create Form::Sensible forms
 
+=head1 SYNOPSYS
+
+    # in MyApp::Controller::Product
+    my $form_factory = Form::SensibleX::FormFactory->new(
+        controller_name => ref $self,
+        columns         => [ qw/name supplier category size weight price description/ ],
+        extra_params    => {
+            supplier => { x_field_factory => 'DBIC::BelongsTo', option_label => 'name', option_value => 'id' },
+            category => { x_field_factory => 'DBIC::BelongsTo', option_label => 'name', option_value => 'id' },
+        },
+        request_args    => { req => $ctx->req },
+        model_args      => {
+            resultset => $ctx->model('DBIC')->resultset('Product'),
+        },
+    );
+
+    # when updating
+    if ( $form_factory->execute('update') ) {
+        return $ctx->res->redirect(
+            $ctx->uri_for( $self->action_for( 'successfuly_updated' ) )
+        );
+    }
+
+    # when inserting
+    if ( $form_factory->execute('create') ) {
+        return $ctx->res->redirect(
+            $ctx->uri_for( $self->action_for( 'successfuly_created' ) )
+        );
+    }
+
+    # or simply
+    $ctx->stash(
+        form => $form_factory->get_form,
+    );
+
 =head1 DESCRIPTION
 
 A smart way to handle form creation, complex fields, and saving them to the
@@ -229,11 +264,53 @@ Builds the Bread::Board container.
 
 Shortcut to get the row from Bread::Board.
 
+=head2 get_form
+
+Shortcut to get the form from Bread::Board.
+
 =head2 execute
 
 If the form has been submitted (according to the Request sub-container), save
 to the database (using the Model sub-container). Else, load the values into the
 form.
+
+=head1 SERVICES IN THE CONTAINER
+
+=head2 model
+
+Returns the model attribute, a class which is also a sub-container called
+"Model".
+
+=head2 request
+
+Returns the request attribute, a class which is also a sub-container called
+"Request".
+
+=head2 column_order
+
+The columns in the database in the desired order to be printed in the form.
+
+=head2 extra_params
+
+Any extra parameters to be merged with the form definition automatically
+generated using the schema.
+
+=head2 field_factory_manager
+
+A class which handles all the field factories applied to the form.
+
+=head2 form_definition
+
+The final hash which will be handed to Form::Sensible to create the form.
+
+=head2 form_without_factories
+
+The object returned by Form::Sensible->create_form, before the factories are
+applied.
+
+=head2 form
+
+The final form object, with all the bells and whistles.
 
 =head1 AUTHOR
 
@@ -241,5 +318,5 @@ André Walker <andre@andrewalker.net>
 
 =head1 LICENSE
 
-This library is free software. You can redistribute it and/or modify
-it under the same terms as Perl itself.
+This library is free software. You can redistribute it and/or modify it under
+the same terms as Perl itself.

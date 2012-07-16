@@ -177,10 +177,11 @@ sub make_form_action {
     }
 
     my $template = $c->view('TT')->get_first_existing_template($c->action, $action);
+    my $form     = $form_factory->get_form;
 
     $c->stash(
-        form      => $form_factory->form,
-        form_html => $self->render_form( $form_factory->form ),
+        form      => $form,
+        form_html => $self->render_form( $form ),
         template  => $template,
     );
 }

@@ -64,7 +64,6 @@ $req->mock( 'upload',      sub { ()           } );
     ok(my $manager = Form::SensibleX::FieldFactory::Manager->new(
         model        => $container->get_sub_container('Model'),
         request      => $container->get_sub_container('Request'),
-        form         => $container->resolve(service => 'form'),
         column_order => $container->resolve(service => 'column_order'),
     ), 'it builds');
 
@@ -76,7 +75,7 @@ $req->mock( 'upload',      sub { ()           } );
     is_deeply([ keys %{ $manager->factories } ], [ 'Form::SensibleX::FieldFactory::DBIC::BelongsTo' ], 'still only one factory class');
     is_deeply($manager->get_factory('Form::SensibleX::FieldFactory::DBIC::BelongsTo')->names, [ 'product', 'category' ], 'both names were added');
 
-    ok($manager->add_factories_to_form(), 'added to form ok');
+    ok($manager->add_factories_to_form( $container->resolve(service => 'form') ), 'added to form ok');
     is_deeply([ $container->resolve(service => 'form')->fieldnames ], [ 'product', 'category', 'submit' ], 'the names are right');
 }
 

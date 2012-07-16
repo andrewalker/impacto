@@ -22,7 +22,7 @@ has resultset => (
 );
 
 has row => (
-#    isa     => 'DBIx::Class::Row|Undef',
+    isa     => 'DBIx::Class::Row',
     is      => 'ro',
     lazy    => 1,
     default => sub { shift->resultset->new_result({}) },

@@ -65,6 +65,9 @@ sub _build_form_factory_class {
 sub build_form_factory {
     my ( $self, $c ) = @_;
 
+    my @row_or_nothing = ( row => $c->stash->{row} )
+        if $c->stash->{row};
+
     return $self->form_factory_class->new(
         controller_name => ref $self,
         columns         => $self->form_columns,
@@ -72,7 +75,7 @@ sub build_form_factory {
         request_args    => { req => $c->req },
         model_args      => {
             resultset => $self->crud_model_instance,
-            row       => $c->stash->{row} || $self->crud_model_instance,
+            @row_or_nothing,
         },
     );
 }

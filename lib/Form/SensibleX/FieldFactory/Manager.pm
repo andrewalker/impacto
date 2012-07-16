@@ -76,7 +76,7 @@ sub add_to_factory {
 }
 
 sub add_factories_to_form {
-    my ($self, $form) = shift;
+    my ($self, $form) = @_;
 
     $self->_set_form($form)
         if $form;

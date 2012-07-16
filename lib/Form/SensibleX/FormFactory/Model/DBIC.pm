@@ -337,7 +337,95 @@ Builds the Bread::Board container.
 
 =head2 execute
 
-Saves the record in the database. Either updates an existing row, or creates a new one.
+Saves the record in the database. Either updates an existing row, or creates a
+new one.
+
+=head1 SERVICES
+
+=head2 resultset
+
+The resultset from DBIx::Class.
+
+=head2 row
+
+The row being updated, or a C<new_result({})> if it's a new row.
+
+=head2 result_source
+
+DBIx::Class::ResultSource object for the given resultset.
+
+=head2 related_resultset
+
+For a given field name, it fetches a relationship with the same name in the
+result source, and returns the corresponding resultset.
+
+=head2 reflect
+
+Creates L<Form::Sensible::Form> object based on the schema.
+
+=head2 flattened_reflection
+
+Flattens the form created by L</reflect>.
+
+=head2 set_values_from_row
+
+Sets all the values in the form using the L</row> service.
+
+=head2 prepare_get_db_values_from_row
+
+Fetches all the values in the row to fill the form, and gets the field
+factories to fetch any values besides the ones in the row.
+
+=head2 values_from_plain_fields_from_row
+
+Uses L</prepare_get_db_values_from_row> to get the plain values (no field
+factories).
+
+=head2 field_factories_from_row
+
+Uses L</prepare_get_db_values_from_row> to get the field factories.
+
+=head2 get_db_values_from_row
+
+Uses L</field_factories_from_row> and L</values_from_plain_fields_from_row> to
+merge all the values necessary for filling out the form. Returns the values.
+
+=head2 get_db_values_and_factories_from_form
+
+Fetches the values and field factories in the form to be inserted into the
+database.
+
+=head2 values_from_plain_fields_from_form
+
+Uses L</get_db_values_and_factories_from_form> to get the plain values to be
+inserted into the main row.
+
+=head2 field_factories_from_form
+
+Uses L</get_db_values_and_factories_from_form> to get the field factories to
+insert the rest of the data (things L</values_from_plain_fields_from_form>
+can't insert) into the database.
+
+=head2 validate_form
+
+Validates the form.
+
+=head2 execute_create
+
+Inserts a new row into the database.
+
+=head2 execute_update
+
+Updates an existing row in the database.
+
+=head2 pre_execute
+
+Prepares the execute_$action.
+
+=head2 post_execute
+
+Finalizes the execution, in case some of the factories need an existing row in
+the database to finish their job.
 
 =head1 AUTHOR
 

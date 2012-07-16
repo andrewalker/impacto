@@ -26,12 +26,6 @@ has extra_params => (
     lazy_build => 1,
 );
 
-has form => (
-    is => 'ro',
-    isa => 'Form::Sensible::Form',
-    lazy_build => 1,
-);
-
 has request => (
     is => 'ro',
 );
@@ -76,32 +70,47 @@ sub BUILD {
     $container->add_sub_container( $self->model   );
     $container->add_sub_container( $self->request );
 
-    # circular dependecies!! untested!
     $container->add_service(
         Bread::Board::ConstructorInjection->new(
             name         => 'field_factory_manager',
             class        => 'Form::SensibleX::FieldFactory::Manager',
             dependencies => {
-                form         => depends_on('plain_form'),
                 column_order => depends_on('column_order'),
-                model        => depends_on('/Model'),
-                request      => depends_on('/Request')
+                model        => depends_on('model'),
+                request      => depends_on('request'),
             },
             lifecycle => 'Singleton',
         )
     );
+
+    # XXX: kludge!
+    $container->add_service(
+        Bread::Board::Literal->new(
+            name  => 'request',
+            value => $self->request,
+        )
+    );
+    $container->add_service(
+        Bread::Board::Literal->new(
+            name  => 'model',
+            value => $self->model,
+        )
+    );
+
     $container->add_service(
         Bread::Board::Literal->new(
             name  => 'column_order',
             value => $self->columns,
         )
     );
+
     $container->add_service(
         Bread::Board::Literal->new(
             name  => 'extra_params',
             value => $self->extra_params,
         )
     );
+
     $container->add_service(
         Bread::Board::BlockInjection->new(
             name         => 'form_definition',
@@ -138,7 +147,7 @@ sub BUILD {
     );
     $container->add_service(
         Bread::Board::BlockInjection->new(
-            name         => 'plain_form',
+            name         => 'form_without_factories',
             lifecycle    => 'Singleton',
             dependencies => [
                 depends_on('form_definition'),
@@ -154,14 +163,25 @@ sub BUILD {
             name         => 'form',
             lifecycle    => 'Singleton',
             dependencies => [
+                depends_on('form_without_factories'),
                 depends_on('field_factory_manager'),
             ],
             block        => sub {
-                my $s = shift;
-                $s->param('field_factory_manager')->add_factories_to_form();
+                my $s    = shift;
+                my $mgr  = $s->param('field_factory_manager');
+                my $form = $s->param('form_without_factories');
+
+                $mgr->add_factories_to_form($form);
+
+                return $form;
             },
         )
     );
+}
+
+sub form {
+    my $self = shift;
+    return $self->container->resolve(service => 'form');
 }
 
 sub get_row {

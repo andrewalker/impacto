@@ -4,8 +4,9 @@ use Class::Load qw/load_class/;
 use namespace::autoclean;
 
 has form => (
-    isa => 'Form::Sensible::Form',
-    is  => 'ro',
+    isa    => 'Form::Sensible::Form',
+    is     => 'ro',
+    writer => '_set_form',
 );
 
 has column_order => (
@@ -75,7 +76,10 @@ sub add_to_factory {
 }
 
 sub add_factories_to_form {
-    my $self = shift;
+    my ($self, $form) = shift;
+
+    $self->_set_form($form)
+        if $form;
 
     for my $factory_class ($self->all_factories) {
         for my $factory_name (@{ $factory_class->names }) {

@@ -76,4 +76,41 @@ my $person_rs = $db->resultset(
     is($person_rs->find('person2')->count_related('supplier'), 0, 'it was saved in the db');
 }
 
+{
+    my $container = container FormFactory => as {
+        service column_order => [ qw/slug name birthday supplier/ ];
+    };
+
+    $container->add_sub_container(
+        Form::SensibleX::FormFactory::Model::DBIC->new(
+            resultset => $person_rs
+        )
+    );
+
+    ok(my $field_factory = Form::SensibleX::FieldFactory::DBIC::MightBe->new(
+        name         => 'supplier',
+        display_name => 'Supplier',
+        model        => $container->get_sub_container('Model'),
+    ), 'creates the object');
+
+    isa_ok($field_factory, 'Form::SensibleX::FieldFactory::DBIC::MightBe');
+    is($field_factory->field_count, 1, 'one field was created');
+
+    ok($field_factory->add_field({
+        name         => 'client',
+        display_name => 'Client',
+    }), 'creates the object');
+
+    is($field_factory->field_count, 2, 'both fields are there');
+
+    ok(my $supplier_field = $field_factory->fields->[0], 'get first field (supplier)');
+    ok(my $client_field   = $field_factory->fields->[1], 'get second field (client)');
+
+    isa_ok($supplier_field, 'Form::SensibleX::Field::DBIC::MightBe', 'supplier');
+    isa_ok($client_field, 'Form::SensibleX::Field::DBIC::MightBe', 'client');
+
+    is($supplier_field->name, 'supplier', "it's really the supplier");
+    is($client_field->name, 'client', "it's really the client");
+}
+
 done_testing();

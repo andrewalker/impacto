@@ -6,6 +6,10 @@ use Form::SensibleX::Field::DBIC::MightBe;
 
 extends 'Form::SensibleX::FieldFactory::DBIC::Base';
 
+has resultset => (
+    is => 'ro',
+);
+
 sub _field_class {
     'Form::SensibleX::Field::DBIC::MightBe'
 }
@@ -21,9 +25,18 @@ around BUILDARGS => sub {
     return $class->$orig(
         $class->_field_factory_buildargs(
             field_args   => \%field_args,
-            factory_args => {},
+            factory_args => {
+                resultset => $field_args{resultset},
+            },
         )
     );
+};
+
+around add_field => sub {
+    my ( $orig, $self, $args ) = @_;
+
+    $args->{resultset} = $self->resultset;
+    return $self->$orig($args);
 };
 
 # form extra params:

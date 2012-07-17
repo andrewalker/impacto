@@ -145,10 +145,32 @@ form.
 
 Add field to the list of known fields by this factory.
 
+=head2 create_field
+
+Instantiates the Form::Sensible::Field object to be added to the list of known
+fields for this factory class.
+
 =head2 get_fields_for_factory
 
 When creating the form, return the fields in memory for a given factory
 instance.
+
+=head2 field_factory_names
+
+Returns the list of known factory names for this class. They are, in a way,
+instances of the factory, though not as in OOP, not Perl instances. They are
+"groups" of fields for a database relation. Usually, a factory name will hold
+only one field, but not always.
+
+For example, suppose form to insert blog posts, that can be in one or more
+categories. The relation 'categories' could be a factory (and therefore, the
+name 'categories' would be listed by this method), but the field names could be
+different (for example 'personal_cat', 'perl_cat', etc). (Disclaimer: this is
+NOT how L<Form::SensibleX::FieldFactory::DBIC::ManyToMany> works! It's just an
+example!)
+
+Also, there could be a field factory 'author', which would be another factory
+instance, this time with only one field, with the same name.
 
 =head1 AUTHOR
 

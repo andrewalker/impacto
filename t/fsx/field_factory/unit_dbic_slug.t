@@ -15,7 +15,7 @@ use Schema;
 
 my $db = Schema->connect("dbi:SQLite:$Bin/../../db/test.db", '', '', { sqlite_unicode => 1 });
 my $cat_rs = $db->resultset(
-    'category'
+    'Category'
 );
 
 sub create_container {
@@ -35,9 +35,9 @@ sub create_container {
     my $container = create_container();
 
     ok(my $field_factory = Form::SensibleX::FieldFactory::DBIC::Slug->new(
-        name          => 'slug',
-        field_sources => [ 'name' ],
-        model         => $container->get_sub_container('Model'),
+        name         => 'slug',
+        field_source => 'name',
+        model        => $container->get_sub_container('Model'),
     ));
     my $field = $field_factory->fields->[0];
     isa_ok($field, 'Form::Sensible::Field::Text', 'slug field');
@@ -52,9 +52,9 @@ sub create_container {
     my $container = create_container();
 
     ok(my $field_factory = Form::SensibleX::FieldFactory::DBIC::Slug->new(
-        name          => 'slug',
-        field_sources => [ 'name' ],
-        model         => $container->get_sub_container('Model'),
+        name         => 'slug',
+        field_source => 'name',
+        model        => $container->get_sub_container('Model'),
     ));
     my $field = $field_factory->fields->[0];
     isa_ok($field, 'Form::Sensible::Field::Text', 'slug field');
@@ -69,9 +69,9 @@ sub create_container {
     my $container = create_container();
 
     ok(my $field_factory = Form::SensibleX::FieldFactory::DBIC::Slug->new(
-        name          => 'slug',
-        field_sources => [ 'name' ],
-        model         => $container->get_sub_container('Model'),
+        name         => 'slug',
+        field_source => 'name',
+        model        => $container->get_sub_container('Model'),
     ));
     my $field = $field_factory->fields->[0];
     isa_ok($field, 'Form::Sensible::Field::Text', 'slug field');
@@ -86,9 +86,9 @@ sub create_container {
     my $container = create_container();
 
     ok(my $field_factory = Form::SensibleX::FieldFactory::DBIC::Slug->new(
-        name          => 'slug',
-        field_sources => [ 'name' ],
-        model         => $container->get_sub_container('Model'),
+        name         => 'slug',
+        field_source => 'name',
+        model        => $container->get_sub_container('Model'),
     ));
     my $field = $field_factory->fields->[0];
     isa_ok($field, 'Form::Sensible::Field::Text', 'slug field');

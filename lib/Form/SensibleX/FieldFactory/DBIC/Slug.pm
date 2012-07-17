@@ -89,7 +89,11 @@ Form::SensibleX::FieldFactory::DBIC::Slug
 
 =head1 DESCRIPTION
 
+See L<Form::SensibleX::Field::DBIC::Slug>.
+
 =head1 METHODS
+
+=head2 prepare_execute
 
 =head1 AUTHOR
 

@@ -1,9 +1,8 @@
 package Form::SensibleX::Field::DBIC::Slug;
 
+use utf8;
 use Moose;
 use namespace::autoclean;
-use Carp;
-use utf8;
 
 extends 'Form::Sensible::Field::Text';
 
@@ -28,7 +27,7 @@ sub generate_slug {
     my $slug = lc($source);
 
     $slug =~ tr[áàäãâéèëẽêíìïĩîóòöõôúùüũûç]
-                 [aaaaaeeeeeiiiiiooooouuuuuc];
+               [aaaaaeeeeeiiiiiooooouuuuuc];
     $slug =~ s/\W/_/g;
 
     my $name = $self->name;
@@ -84,7 +83,22 @@ Form::SensibleX::Field::DBIC::Slug
 
 =head1 DESCRIPTION
 
+Field to store "slugs", that is, human readable indexes usually based on the
+item name.
+
 =head1 METHODS
+
+=head2 generate_slug
+
+Generates a slug using a source given.
+
+=head2 generate_slug_and_set_value
+
+Same as L</generate_slug> but also set's the field value.
+
+=head2 get_values_from_row
+
+Returns the slug from the row given.
 
 =head1 AUTHOR
 

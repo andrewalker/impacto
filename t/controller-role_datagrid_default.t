@@ -14,8 +14,8 @@ does_ok($dg, 'Impacto::ControllerRole::DataGrid');
 
 has_attribute_ok($dg, 'crud_model_instance');
 has_attribute_ok($dg, 'i18n');
-has_attribute_ok($dg, 'datagrid_columns');
-has_attribute_ok($dg, 'datagrid_columns_extra_params');
+can_ok($dg, 'datagrid_columns');
+can_ok($dg, 'datagrid_columns_extra_params');
 
 my $structure = [
     {

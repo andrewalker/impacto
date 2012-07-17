@@ -57,11 +57,9 @@ sub generate_slug {
 sub generate_slug_and_set_value {
     my ( $self, $source ) = @_;
 
-    $self->value(
+    return $self->value(
         $self->generate_slug( $source )
     );
-
-    return 1;
 }
 
 sub get_values_from_row {

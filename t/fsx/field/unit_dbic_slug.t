@@ -41,19 +41,19 @@ isa_ok($field, 'Form::Sensible::Field::Text');
 }
 
 {
-    is($field->generate_slug_and_set_value('Category 1'), 1, 'generate_slug_and_set_value works');
+    is($field->generate_slug_and_set_value('Category 1'), 'category_1', 'generate_slug_and_set_value works');
     is($field->value, 'category_1', 'value was set');
     $cat_rs->create({ slug => 'category_1', name => 'Category 1' });
 
-    is($field->generate_slug_and_set_value('Category 1'), 1, 'generate_slug_and_set_value works');
+    is($field->generate_slug_and_set_value('Category 1'), 'category_1[1]', 'generate_slug_and_set_value works');
     is($field->value, 'category_1[1]', 'value was set');
     $cat_rs->create({ slug => 'category_1[1]', name => 'Category 1' });
 
-    is($field->generate_slug_and_set_value('Category 2'), 1, 'generate_slug_and_set_value works');
+    is($field->generate_slug_and_set_value('Category 2'), 'category_2', 'generate_slug_and_set_value works');
     is($field->value, 'category_2', 'value was set');
     $cat_rs->create({ slug => 'category_2', name => 'Category 1' });
 
-    is($field->generate_slug_and_set_value('Category 1'), 1, 'generate_slug_and_set_value works');
+    is($field->generate_slug_and_set_value('Category 1'), 'category_1[2]', 'generate_slug_and_set_value works');
     is($field->value, 'category_1[2]', 'value was set');
     $cat_rs->create({ slug => 'category_1[2]', name => 'Category 1' });
 

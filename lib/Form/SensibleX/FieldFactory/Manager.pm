@@ -82,10 +82,10 @@ sub add_factories_to_form {
         if $form;
 
     for my $factory_class ($self->all_factories) {
-        for my $factory_name (@{ $factory_class->names }) {
+        for my $factory_name (@{ $factory_class->field_factory_names }) {
             $self->add_factory_to_form(
                 $factory_name,
-                $factory_class->build_fields($factory_name),
+                $factory_class->get_fields_for_factory($factory_name),
             );
         }
     }

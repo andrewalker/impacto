@@ -70,10 +70,10 @@ $req->mock( 'upload',      sub { ()           } );
     isa_ok($manager, 'Form::SensibleX::FieldFactory::Manager');
     ok($manager->add_to_factory({ name => 'product',  option_value => 'id', option_label => 'name', x_field_factory => 'DBIC::BelongsTo'  }), 'add_to_factory ok');
     is_deeply([ keys %{ $manager->factories } ], [ 'Form::SensibleX::FieldFactory::DBIC::BelongsTo' ], 'added');
-    is_deeply($manager->get_factory('Form::SensibleX::FieldFactory::DBIC::BelongsTo')->names, [ 'product' ], 'product added');
+    is_deeply($manager->get_factory('Form::SensibleX::FieldFactory::DBIC::BelongsTo')->field_factory_names, [ 'product' ], 'product added');
     ok($manager->add_to_factory({ name => 'category', option_value => 'slug', option_label => 'name', x_field_factory => 'DBIC::BelongsTo'  }), 'add_to_factory ok');
     is_deeply([ keys %{ $manager->factories } ], [ 'Form::SensibleX::FieldFactory::DBIC::BelongsTo' ], 'still only one factory class');
-    is_deeply($manager->get_factory('Form::SensibleX::FieldFactory::DBIC::BelongsTo')->names, [ 'product', 'category' ], 'both names were added');
+    is_deeply($manager->get_factory('Form::SensibleX::FieldFactory::DBIC::BelongsTo')->field_factory_names, [ 'product', 'category' ], 'both names were added');
 
     ok($manager->add_factories_to_form( $container->resolve(service => 'form') ), 'added to form ok');
     is_deeply([ $container->resolve(service => 'form')->fieldnames ], [ 'product', 'category', 'submit' ], 'the names are right');

@@ -126,7 +126,7 @@ $req->mock( 'upload',      sub { ()           } );
 
         isa_ok($fd, 'Form::SensibleX::FormFactory::FieldDefinition');
         ok(Form::SensibleX::FieldFactory::DBIC::BelongsTo->can('new'), 'class is loaded');
-        is_deeply($manager->get_factory('Form::SensibleX::FieldFactory::DBIC::BelongsTo')->names, [ 'product' ], 'manager got the factory');
+        is_deeply($manager->get_factory('Form::SensibleX::FieldFactory::DBIC::BelongsTo')->field_factory_names, [ 'product' ], 'manager got the factory');
     }
 }
 

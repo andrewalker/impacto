@@ -55,7 +55,7 @@ like($@, qr/_field_class is not defined for BrokenTest/, 'with expected message'
 ok(my $working = eval { BaseTest->create_field({ name => 'working' }) }, "BaseTest doesn't break");
 isa_ok($working, q/Form::Sensible::Field::Text/);
 is($working->{from_factory}, 'BaseTest', 'from_factory is correct');
-is($working->{_fname}, 'working', '_fname too');
+is($working->{_ff_name}, 'working', '_ff_name too');
 
 my %sample_args = (
     model         => 'x',
@@ -93,7 +93,7 @@ ok(my $instance = BaseTest->new({
 
 ok($instance->add_field({ name => 'atext' }), 'add_field ok');
 is($instance->field_count, 2, 'field_count is correct');
-is_deeply([ sort @{ $instance->names } ], [ qw/atext btext/ ], 'names are correct');
+is_deeply([ sort @{ $instance->field_factory_names } ], [ qw/atext btext/ ], 'names are correct');
 is($instance->execute, 1, 'base execute returns true');
 is($instance->prepare_execute, 1, 'base prepare_execute returns true');
 

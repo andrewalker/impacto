@@ -39,21 +39,31 @@ sub _get_buildargs_args {
     return ref $_[0] && ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
 }
 
-sub names {
+sub field_factory_names {
     my $self = shift;
 
-    return [ map { $_->{_fname} } @{ $self->fields } ];
+    # TODO
+    # consider using List::MoreUtils qw/distinct/
+    # when RecordMeta is done
+    # it probably will generate many fields for the same
+    # field factory object
+    return [ map { $_->{_ff_name} } @{ $self->fields } ];
 }
 
 sub create_field {
     my ($self, $args) = @_;
 
-    croak "_field_class is not defined for " . (ref $self || $self)
-        unless $self->_field_class;
+    my $field_class = $self->_field_class;
+    my $class       = ref $self || $self;
 
-    my $field = $self->_field_class->new($args);
-    $field->{from_factory} = ref $self || $self;
-    $field->{_fname}       = $args->{name};
+    croak "_field_class is not defined for $class"
+        unless $field_class;
+
+    my $ff_name = delete $args->{_ff_name};
+
+    my $field = $field_class->new($args);
+    $field->{from_factory} = $class;
+    $field->{_ff_name}     = $ff_name || $args->{name};
 
     return $field;
 }
@@ -78,7 +88,7 @@ sub get_values_from_row {
     my ( $self, $row, $fields ) = @_;
 
     my %field_table     = map  { $_ => 1                      } @$fields;
-    my @filtered_fields = grep { $field_table{ $_->{_fname} } } @{ $self->fields };
+    my @filtered_fields = grep { $field_table{ $_->{_ff_name} } } @{ $self->fields };
 
     return {
         map { $_->name => $_->get_values_from_row($row) } @filtered_fields
@@ -86,10 +96,10 @@ sub get_values_from_row {
 }
 
 # TODO: untested
-sub build_fields {
-    my ($self, $name) = @_;
+sub get_fields_for_factory {
+    my ($self, $factory) = @_;
 
-    my @filtered_fields = grep { $_->{_fname} eq $name } @{ $self->fields };
+    my @filtered_fields = grep { $_->{_ff_name} eq $factory } @{ $self->fields };
 
     return [ map { [ $_, $_->name ] } @filtered_fields ];
 }
@@ -135,9 +145,10 @@ form.
 
 Add field to the list of known fields by this factory.
 
-=head2 build_fields
+=head2 get_fields_for_factory
 
-When creating the form, return the fields in memory.
+When creating the form, return the fields in memory for a given factory
+instance.
 
 =head1 AUTHOR
 

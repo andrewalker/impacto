@@ -90,7 +90,7 @@ sub add_factories_to_form {
         }
     }
 
-    $self->form->field_order([ @{ $self->column_order }, 'submit' ]);
+    $form->field_order([ @{ $self->column_order }, 'submit' ]);
 }
 
 sub add_factory_to_form {
@@ -104,10 +104,10 @@ sub add_factory_to_form {
         $form->add_field( $definition, $name );
     }
 
-    $self->replace_fields($factory, \@fact_field_names);
+    $self->_replace_fields($factory, \@fact_field_names);
 }
 
-sub replace_fields {
+sub _replace_fields {
     my ($self, $needle, $to_insert) = @_;
 
     my $columns = $self->column_order;
@@ -121,3 +121,52 @@ sub replace_fields {
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+
+=encoding utf8
+
+=head1 NAME
+
+Form::SensibleX::FieldFactory::Manager - Manage field factories
+
+=head1 DESCRIPTION
+
+When building a Form::Sensible form object, and having complex field factories
+(classes which generate one or more fields, and handle their communication with
+the database), this is their manager. It has pointer to each one of them, and
+is able to apply them to the form in the end. It's supposed to be used by
+L<Form::SensibleX::FormFactory>.
+
+=head1 METHODS
+
+=head2 add_factories_to_form
+
+Run through all the factories in memory and call L</add_factory_to_form> on
+them, to apply them on the form.
+
+=head2 add_factory_to_form
+
+Add one factory to the form.
+
+=head2 init_factory
+
+When adding a new instance to a factory class, if it's the first time this
+class has been seen, it must be initialized with this method.
+
+=head2 add_to_factory
+
+Add new instance to an initialized factory class, or initialize a new one.
+
+=head2 _replace_fields
+
+=head2 _fix_definition_and_get_class_name
+
+=head1 AUTHOR
+
+André Walker <andre@andrewalker.net>
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify it under
+the same terms as Perl itself.

@@ -3,7 +3,14 @@ use strict;
 use FindBin '$Bin';
 use lib "$Bin/lib";
 use Form::Custom;
-use Test::More;
+####################################### OUTDATED #########################################
+#                                                                                        #
+#                                                                                        #
+use Test::More skip_all => "most of the logic is moved to Form::SensibleX::FormFactory"; #
+#                                                                                        #
+#                                                                                        #
+##########################################################################################
+
 use Test::Moose;
 use HTML::TreeBuilder;
 

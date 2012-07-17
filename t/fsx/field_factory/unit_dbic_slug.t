@@ -40,7 +40,7 @@ sub create_container {
         model         => $container->get_sub_container('Model'),
     ));
     my $field = $field_factory->fields->[0];
-    isa_ok($field, 'Form::Sensible::Field::Hidden', 'slug field');
+    isa_ok($field, 'Form::Sensible::Field::Text', 'slug field');
     my $row = $cat_rs->new_result({ name => 'Category 1' });
 
     is($field_factory->prepare_execute($row, { $field->name => $field->value }), 1, 'prepare_execute works');
@@ -57,7 +57,7 @@ sub create_container {
         model         => $container->get_sub_container('Model'),
     ));
     my $field = $field_factory->fields->[0];
-    isa_ok($field, 'Form::Sensible::Field::Hidden', 'slug field');
+    isa_ok($field, 'Form::Sensible::Field::Text', 'slug field');
     my $row = $cat_rs->new_result({ name => 'Category 1' });
 
     is($field_factory->prepare_execute($row, { $field->name => $field->value }), 1, 'prepare_execute works');
@@ -74,7 +74,7 @@ sub create_container {
         model         => $container->get_sub_container('Model'),
     ));
     my $field = $field_factory->fields->[0];
-    isa_ok($field, 'Form::Sensible::Field::Hidden', 'slug field');
+    isa_ok($field, 'Form::Sensible::Field::Text', 'slug field');
     my $row = $cat_rs->new_result({ name => 'Category 2' });
 
     is($field_factory->prepare_execute($row, { $field->name => $field->value }), 1, 'prepare_execute works');
@@ -91,7 +91,7 @@ sub create_container {
         model         => $container->get_sub_container('Model'),
     ));
     my $field = $field_factory->fields->[0];
-    isa_ok($field, 'Form::Sensible::Field::Hidden', 'slug field');
+    isa_ok($field, 'Form::Sensible::Field::Text', 'slug field');
     my $row = $cat_rs->new_result({ name => 'Category 1' });
 
     is($field_factory->prepare_execute($row, { $field->name => $field->value }), 1, 'prepare_execute works');

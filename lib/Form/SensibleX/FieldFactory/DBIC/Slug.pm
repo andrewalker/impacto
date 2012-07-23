@@ -67,7 +67,7 @@ sub prepare_execute {
                 $row->get_column($self->field_sources->[$i])
             );
 
-        $row->set_column($name, $value);
+        $row->set_column($name => $value);
 
         $i++;
     }

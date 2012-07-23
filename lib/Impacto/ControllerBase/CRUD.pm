@@ -155,6 +155,18 @@ sub delete : Chained('crud_base') PathPart Args(0) {
     $c->res->body("$count registros removidos");
 }
 
+sub rebuild_index : Chained('crud_base') PathPart Args(0) {
+    my ($self, $c) = @_;
+    my $es = $c->model('Search')->_es;
+    $c->model('SearchIndex')->reindex_controller($es, $self);
+
+    $c->flash(rebuilt_index => 1);
+
+    $c->res->redirect(
+        $c->uri_for( $self->action_for('list') )
+    );
+}
+
 ### -- Helper Methods -- ###
 
 sub make_form_action {

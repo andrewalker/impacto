@@ -4,6 +4,10 @@
     datagrid_layout = [% structure %];
 </script>
 
+[% IF rebuilt_index %]
+    <p>Índice reconstruído.</p>
+[% END %]
+
 <section id="search">
     <img src="[% static_root_uri %]/images/logotipo-impacto.png" alt="" />
     <form method="get" action="" onsubmit="return false">

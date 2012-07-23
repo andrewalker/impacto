@@ -113,4 +113,32 @@ my $person_rs = $db->resultset(
     is($client_field->name, 'client', "it's really the client");
 }
 
+{
+    my $container = container FormFactory => as {
+        service column_order => [ qw/slug name birthday supplier/ ];
+    };
+
+    my $row = $person_rs->find('person1');
+
+    $container->add_sub_container(
+        Form::SensibleX::FormFactory::Model::DBIC->new(
+            resultset => $person_rs,
+            row       => $row,
+        )
+    );
+
+    ok(my $field_factory = Form::SensibleX::FieldFactory::DBIC::MightBe->new(
+        name         => 'supplier',
+        display_name => 'Supplier',
+        model        => $container->get_sub_container('Model'),
+    ), 'creates the object');
+
+    ok($field_factory->add_field({
+        name         => 'client',
+        display_name => 'Client',
+    }), 'creates the object');
+
+    is_deeply($field_factory->get_values_from_row( $row, [qw/client supplier/] ), { client => 0, supplier => 1 }, 'the values from factory are fetched');
+}
+
 done_testing();

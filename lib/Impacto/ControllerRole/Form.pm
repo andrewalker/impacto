@@ -86,6 +86,8 @@ sub render_form {
     my $fs_renderer = Form::Sensible::Renderer::HTML->new({
         additional_include_paths => $self->form_templates_paths,
     });
+    $fs_renderer->tt_config->{PRE_CHOMP}  = 2;
+    $fs_renderer->tt_config->{POST_CHOMP} = 2;
 
     my $rendered_form = $fs_renderer->render( $form );
     $rendered_form->display_name_delegate(

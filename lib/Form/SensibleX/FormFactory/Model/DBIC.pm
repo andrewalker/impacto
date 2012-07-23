@@ -1,6 +1,7 @@
 package Form::SensibleX::FormFactory::Model::DBIC;
 use Moose;
 use Bread::Board;
+use Moose::Util::TypeConstraints qw/enum/;
 
 # FIXME: get this as a parameter
 use Impacto::Form::Sensible::Reflector::DBIC;
@@ -9,6 +10,7 @@ use Impacto::Form::Sensible::Reflector::DBIC;
 # even though we don't need it directly
 use Form::Sensible;
 
+use Carp;
 use Hash::Merge qw(merge);
 use namespace::autoclean;
 
@@ -186,14 +188,14 @@ sub BUILD {
                     my $value   = $field->value();
                     my $factory = $field->{from_factory};
 
-                    next if defined $value && $value eq '';
                     next if $field->field_type eq 'trigger';
 
                     if (defined $factory) {
+                        carp "adding $factory - $fieldname = $value";
                         $factories->{$factory} ||= {};
                         $factories->{$factory}{$fieldname} = $value;
                     }
-                    else {
+                    elsif (not (defined $value && $value eq '')) {
                         $values->{$fieldname} = $value;
                     }
                 }
@@ -227,41 +229,49 @@ sub BUILD {
             lifecycle    => 'Singleton', # as long as this doesn't persist through requests
         );
 
-        service execute_create => (
-            dependencies => [ depends_on('row'), depends_on('pre_execute'), depends_on('values_from_plain_fields_from_form') ],
+        service row_with_form_values => (
+            dependencies => [ depends_on('row'), depends_on('values_from_plain_fields_from_form') ],
             block        => sub {
                 my $self = shift;
-                return 0 if !$self->param('pre_execute');
                 my $values = $self->param('values_from_plain_fields_from_form');
                 my $row = $self->param('row');
                 $row->set_columns( $values );
-                $row->insert;
-                return 1;
-            },
+                return $row;
+            }
         );
 
-        service execute_update => (
-            dependencies => [ depends_on('row'), depends_on('pre_execute'), depends_on('values_from_plain_fields_from_form') ],
+        service execute => (
+            dependencies => [ depends_on('complete_row'), depends_on('validate_form'), ],
+            parameters   => {
+                action => { is => 'ro', isa => enum([qw/ create update /]), required => 1 }
+            },
             block        => sub {
                 my $self = shift;
-                return 0 if !$self->param('pre_execute');
-                my $values = $self->param('values_from_plain_fields_from_form');
-                my $row = $self->param('row');
-                $row->update( $values );
+                my $action = $self->param('action') eq 'create' ? 'insert' : 'update';
+
+                if (!$self->param('validate_form')) {
+                    croak 'form not valid';
+                }
+
+                my $row = $self->param('complete_row');
+                if (!$row) {
+                    croak 'no row!';
+                }
+
+                $row->$action;
+
                 return 1;
             },
         );
 
-        service pre_execute => (
+        service complete_row => (
             dependencies => {
                 mgr      => depends_on('/field_factory_manager'),
-                row      => depends_on('row'),
-                validate => depends_on('validate_form'),
+                row      => depends_on('row_with_form_values'),
                 ff       => depends_on('field_factories_from_form'),
             },
             block        => sub {
                 my $self = shift;
-                return 0 if !$self->param('validate');
                 my $field_factories = $self->param('ff');
                 my $row = $self->param('row');
                 my $mgr = $self->param('mgr');
@@ -274,14 +284,14 @@ sub BUILD {
                     $result = $obj->prepare_execute($row, $field_factories->{$field_factory_class});
                 }
 
-                return $result;
+                return $result ? $row : 0;
             },
         );
 
         service post_execute => (
             dependencies => {
                 mgr  => depends_on('/field_factory_manager'),
-                row  => depends_on('row'),
+                row  => depends_on('complete_row'),
                 ff   => depends_on('field_factories_from_form'),
             },
             block        => sub {
@@ -309,7 +319,7 @@ sub BUILD {
 sub execute {
     my ($self, $action) = @_;
 
-    return $self->resolve(service => "execute_$action") &&
+    return $self->resolve(service => "execute", parameters => { action => $action }) &&
            $self->resolve(service => "post_execute");
 }
 

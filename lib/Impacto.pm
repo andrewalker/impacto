@@ -38,48 +38,6 @@ extends 'Catalyst';
 
 our $VERSION = '0.01';
 
-# Configure the application.
-#
-# Note that settings in impacto.conf (or other external
-# configuration file that you set up manually) take precedence
-# over this when using ConfigLoader. Thus configuration
-# details given here can function as a default configuration,
-# with an external configuration file acting as an override for
-# local deployment.
-
-__PACKAGE__->config(
-    name => 'Impacto',
-    default_view => 'TT',
-    authentication => {
-       default_realm => 'user_account',
-       realms        => {
-          user_account => {
-             credential => {
-                class          => 'Password',
-                password_field => 'password',
-                password_type  => 'clear'
-             },
-             store => {
-                class         => 'DBIx::Class',
-                user_model    => 'DB::UserAccountUserAccount',
-                role_relation => 'roles',
-                role_field    => 'role',
-             }
-          }
-       },
-    },
-    I18N => {
-        default_locale => 'pt_BR',
-        locales     => {
-            'pt_BR' => {},
-            'pt' => {},
-            'en' => {},
-        },
-    },
-    # Disable deprecated behavior needed by old applications
-    disable_component_resolution_regex_fallback => 1,
-);
-
 # Start the application
 __PACKAGE__->setup();
 

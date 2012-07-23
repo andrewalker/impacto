@@ -6,6 +6,12 @@ BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
 has '+crud_model_name' => ( default => 'DB::FinanceLedgerType' );
 
+sub form_columns_extra_params {
+    {
+        slug => { x_field_factory => 'DBIC::Slug', field_source => 'name' },
+    }
+}
+
 __PACKAGE__->meta->make_immutable;
 
 1;

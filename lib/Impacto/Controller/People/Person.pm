@@ -7,12 +7,17 @@ BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 has '+crud_model_name' => ( default => 'DB::PeoplePerson' );
 
 sub form_columns {
-    [ qw/ slug name phone email site comments / ]
+    [ qw/ slug name phone email site client employee representant supplier comments / ]
 }
 
 sub form_columns_extra_params {
     {
-        comments => { field_class => 'LongText' },
+        slug         => { x_field_factory => 'DBIC::Slug', field_source => 'name' },
+        comments     => { field_class     => 'LongText'                           },
+        client       => { x_field_factory => 'DBIC::MightBe'                      },
+        employee     => { x_field_factory => 'DBIC::MightBe'                      },
+        representant => { x_field_factory => 'DBIC::MightBe'                      },
+        supplier     => { x_field_factory => 'DBIC::MightBe'                      },
     }
 }
 

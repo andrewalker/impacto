@@ -175,6 +175,18 @@ msgstr "Email"
 msgid "crud.people.person.site"
 msgstr "Site"
 
+msgid "crud.people.person.client"
+msgstr "Cliente"
+
+msgid "crud.people.person.supplier"
+msgstr "Fornecedor"
+
+msgid "crud.people.person.representant"
+msgstr "Representante"
+
+msgid "crud.people.person.employee"
+msgstr "Funcionário"
+
 msgid "crud.people.person.comments"
 msgstr "Comentários"
 

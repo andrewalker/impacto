@@ -830,7 +830,8 @@ SET search_path = people, pg_catalog;
 --
 
 ALTER TABLE ONLY address
-    ADD CONSTRAINT address_person_fkey FOREIGN KEY (person) REFERENCES person(slug);
+    ADD CONSTRAINT address_person_fkey FOREIGN KEY (person) REFERENCES person(slug)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
@@ -838,7 +839,8 @@ ALTER TABLE ONLY address
 --
 
 ALTER TABLE ONLY bank_account
-    ADD CONSTRAINT bank_account_person_fkey FOREIGN KEY (person) REFERENCES person(slug);
+    ADD CONSTRAINT bank_account_person_fkey FOREIGN KEY (person) REFERENCES person(slug)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
@@ -846,7 +848,8 @@ ALTER TABLE ONLY bank_account
 --
 
 ALTER TABLE ONLY client
-    ADD CONSTRAINT client_person_fkey FOREIGN KEY (person) REFERENCES person(slug);
+    ADD CONSTRAINT client_person_fkey FOREIGN KEY (person) REFERENCES person(slug)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
@@ -854,7 +857,8 @@ ALTER TABLE ONLY client
 --
 
 ALTER TABLE ONLY contact
-    ADD CONSTRAINT contact_client_fkey FOREIGN KEY (client) REFERENCES client(person);
+    ADD CONSTRAINT contact_client_fkey FOREIGN KEY (client) REFERENCES client(person)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
@@ -862,7 +866,8 @@ ALTER TABLE ONLY contact
 --
 
 ALTER TABLE ONLY document
-    ADD CONSTRAINT document_person_fkey FOREIGN KEY (person) REFERENCES person(slug);
+    ADD CONSTRAINT document_person_fkey FOREIGN KEY (person) REFERENCES person(slug)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
@@ -870,7 +875,8 @@ ALTER TABLE ONLY document
 --
 
 ALTER TABLE ONLY employee
-    ADD CONSTRAINT employee_person_fkey FOREIGN KEY (person) REFERENCES person(slug);
+    ADD CONSTRAINT employee_person_fkey FOREIGN KEY (person) REFERENCES person(slug)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
@@ -878,7 +884,8 @@ ALTER TABLE ONLY employee
 --
 
 ALTER TABLE ONLY representant
-    ADD CONSTRAINT representant_person_fkey FOREIGN KEY (person) REFERENCES person(slug);
+    ADD CONSTRAINT representant_person_fkey FOREIGN KEY (person) REFERENCES person(slug)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
@@ -886,20 +893,23 @@ ALTER TABLE ONLY representant
 --
 
 ALTER TABLE ONLY supplier
-    ADD CONSTRAINT supplier_person_fkey FOREIGN KEY (person) REFERENCES person(slug);
+    ADD CONSTRAINT supplier_person_fkey FOREIGN KEY (person) REFERENCES person(slug)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 SET search_path = product, pg_catalog;
 
 ALTER TABLE ONLY product_meta
-    ADD CONSTRAINT product_meta_product_fkey FOREIGN KEY (product) REFERENCES product(id);
+    ADD CONSTRAINT product_meta_product_fkey FOREIGN KEY (product) REFERENCES product(id)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Name: consignation_representant_fkey; Type: FK CONSTRAINT; Schema: product; Owner: -
 --
 
 ALTER TABLE ONLY consignation
-    ADD CONSTRAINT consignation_representant_fkey FOREIGN KEY (representant) REFERENCES people.representant(person);
+    ADD CONSTRAINT consignation_representant_fkey FOREIGN KEY (representant) REFERENCES people.representant(person)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
@@ -907,13 +917,16 @@ ALTER TABLE ONLY consignation
 --
 
 ALTER TABLE ONLY consignation
-    ADD CONSTRAINT consignation_stock_movement_fkey FOREIGN KEY (stock_movement) REFERENCES stock_movement(id);
+    ADD CONSTRAINT consignation_stock_movement_fkey FOREIGN KEY (stock_movement) REFERENCES stock_movement(id)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE ONLY consignation
-    ADD CONSTRAINT consignation_product_fkey FOREIGN KEY (product) REFERENCES product(id);
+    ADD CONSTRAINT consignation_product_fkey FOREIGN KEY (product) REFERENCES product(id)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE ONLY category
-    ADD CONSTRAINT category_category_fkey FOREIGN KEY (parent) REFERENCES category(slug);
+    ADD CONSTRAINT category_category_fkey FOREIGN KEY (parent) REFERENCES category(slug)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
@@ -921,7 +934,8 @@ ALTER TABLE ONLY category
 --
 
 ALTER TABLE ONLY product_category
-    ADD CONSTRAINT product_category_category_fkey FOREIGN KEY (category) REFERENCES category(slug);
+    ADD CONSTRAINT product_category_category_fkey FOREIGN KEY (category) REFERENCES category(slug)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
@@ -929,7 +943,8 @@ ALTER TABLE ONLY product_category
 --
 
 ALTER TABLE ONLY product_category
-    ADD CONSTRAINT product_category_product_fkey FOREIGN KEY (product) REFERENCES product(id);
+    ADD CONSTRAINT product_category_product_fkey FOREIGN KEY (product) REFERENCES product(id)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
@@ -937,7 +952,8 @@ ALTER TABLE ONLY product_category
 --
 
 ALTER TABLE ONLY product_stock
-    ADD CONSTRAINT product_stock_place_fkey FOREIGN KEY (place) REFERENCES place(place);
+    ADD CONSTRAINT product_stock_place_fkey FOREIGN KEY (place) REFERENCES place(place)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
@@ -945,7 +961,8 @@ ALTER TABLE ONLY product_stock
 --
 
 ALTER TABLE ONLY product_stock
-    ADD CONSTRAINT product_stock_product_fkey FOREIGN KEY (product) REFERENCES product(id);
+    ADD CONSTRAINT product_stock_product_fkey FOREIGN KEY (product) REFERENCES product(id)
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --

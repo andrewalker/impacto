@@ -1,1 +1,11 @@
-<input type="checkbox" [% IF !field.editable %] class="noteditable" disabled="disabled"[% END %] name="[% field.name %]" value="1" [% IF field.value == 'true' %] checked="checked"[% END %]>
+<input
+    type="checkbox"
+    [% IF !field.editable %]
+        class="noteditable" disabled="disabled"
+    [% END %]
+    name="[% field.name %]"
+    value="1"
+    [% IF field.value and field.value != 'false' %]
+        checked="yes"
+    [% END %]
+/>

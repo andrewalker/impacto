@@ -42,11 +42,6 @@ __PACKAGE__->table("product.product_meta");
 
 =head1 ACCESSORS
 
-=head2 id
-
-  data_type: 'integer'
-  is_nullable: 0
-
 =head2 product
 
   data_type: 'integer'
@@ -66,8 +61,6 @@ __PACKAGE__->table("product.product_meta");
 =cut
 
 __PACKAGE__->add_columns(
-  "id",
-  { data_type => "integer", is_nullable => 0 },
   "product",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "name",
@@ -80,13 +73,15 @@ __PACKAGE__->add_columns(
 
 =over 4
 
-=item * L</id>
+=item * L</product>
+
+=item * L</name>
 
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("id");
+__PACKAGE__->set_primary_key("product", "name");
 
 =head1 RELATIONS
 
@@ -106,8 +101,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-03-13 00:13:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DMOM2O4VYh7O5b0joHIB8A
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-24 18:38:52
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hzT8O60X4u8Zr/PA0xYbaA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

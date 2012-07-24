@@ -350,7 +350,6 @@ CREATE TABLE product (
 );
 
 CREATE TABLE product_meta (
-    id integer NOT NULL,
     product integer NOT NULL,
     name text NOT NULL,
     value text NOT NULL
@@ -712,7 +711,7 @@ ALTER TABLE ONLY product
     ADD CONSTRAINT product_pkey PRIMARY KEY (id);
 
 ALTER TABLE ONLY product_meta
-    ADD CONSTRAINT product_meta_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT product_meta_pkey PRIMARY KEY (product, name);
 
 
 --

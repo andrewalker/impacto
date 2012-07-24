@@ -98,7 +98,7 @@ sub create_container {
     $cfield->value('grey');
     $bfield->value('Imp2');
 
-    is_deeply($field_factory->get_values_from_row($row,  [qw/product_metas/]), { brand => 'Impacto', color => 'black' }, 'values fetched');
+    is_deeply($field_factory->get_values_from_row($row,  [qw/brand color/]), { brand => 'Impacto', color => 'black' }, 'values fetched');
     is($field_factory->execute($row, { $bfield->name => $bfield->value, $cfield->name => $cfield->value }), 1, 'execute works');
 
     ok(my $brand_row = $row->product_metas->search({ name => 'brand' })->single, 'found the row');

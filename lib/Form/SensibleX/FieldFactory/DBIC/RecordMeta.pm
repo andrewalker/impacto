@@ -73,7 +73,7 @@ sub execute {
             $row->update_or_create_related($field->{_ff_name}, { name => $name, value => $value });
         }
         else {
-            if (my $r = $row->find_related($name, { name => $name })) {
+            if (my $r = $row->find_related($field->{_ff_name}, { name => $name })) {
                 $r->delete;
             }
         }
@@ -87,8 +87,8 @@ sub execute {
 sub get_values_from_row {
     my ( $self, $row, $fields ) = @_;
 
-    my %field_table     = map  { $_ => 1                        } @$fields;
-    my @filtered_fields = grep { $field_table{ $_->{_ff_name} } } @{ $self->fields };
+    my %field_table     = map  { $_ => 1                  } @$fields;
+    my @filtered_fields = grep { $field_table{ $_->name } } @{ $self->fields };
 
     return {
         map {

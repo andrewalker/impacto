@@ -23,7 +23,7 @@ Readonly my %TYPE_MAP = (
 
     integer   => 'integer',
     float     => 'float',
-    money     => 'float',
+    #money     => 'float',
     double    => 'double',
 );
 

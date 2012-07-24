@@ -1,4 +1,4 @@
-package ElasticSearch::Impacto::Indexer;
+package Impacto::ModelBackend::Indexer;
 use Moose;
 use Readonly;
 use namespace::autoclean;
@@ -30,7 +30,7 @@ Readonly my %TYPE_MAP = (
 sub _get_type {
     my $data_type = shift;
 
-    return $TYPE_MAP{ $data_type } || 'string'
+    return $TYPE_MAP{ $data_type } || 'string';
 }
 
 sub _get_properties {
@@ -144,7 +144,7 @@ __END__
 
 =head1 NAME
 
-ElasticSearch::Impacto::Indexer
+Impacto::ModelBackend::Indexer
 
 =head1 AUTHOR
 

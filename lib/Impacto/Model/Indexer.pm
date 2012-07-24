@@ -4,36 +4,16 @@ extends 'Catalyst::Model';
 use Impacto::ModelBackend::Indexer;
 use namespace::autoclean;
 
-has indexer => (
-    isa => 'Impacto::ModelBackend::Indexer',
-    is  => 'ro',
-    writer => '_set_indexer',
-    handles => [qw/
-        reindex_controller
-        initialize_mapping
-        initialize_index
-    /],
-);
+# TODO
+# use Catalyst::Model::Factory
 
 sub ACCEPT_CONTEXT {
     my ($self, $c) = @_;
-    $self->_set_indexer(
-        Impacto::ModelBackend::Indexer->new(
-            es         => $c->model('Search')->_es,
-            index_name => 'impacto',
-        )
+
+    return Impacto::ModelBackend::Indexer->new(
+        es         => $c->model('Search')->_es,
+        index_name => 'impacto',
     );
-    return $self;
-}
-
-sub reindex_db {
-    my ($self, $c) = @_;
-
-    foreach my $controller ($c->controllers) {
-        $controller = $c->controller($controller);
-        next unless $controller->isa('Impacto::ControllerBase::CRUD');
-        $self->reindex_controller($controller);
-    }
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -46,7 +26,7 @@ __END__
 
 =head1 NAME
 
-Impacto::Model::SearchIndex
+Impacto::Model::Indexer
 
 =head1 SYNOPSIS
 

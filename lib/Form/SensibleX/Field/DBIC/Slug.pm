@@ -12,11 +12,6 @@ has resultset => (
     required => 1,
 );
 
-sub BUILD {
-    #my $self = shift;
-    #$self->render_hints->{field_type} = 'hidden';
-}
-
 sub _default_field_type {
     'hidden'
 }

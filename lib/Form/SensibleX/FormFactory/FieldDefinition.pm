@@ -9,15 +9,10 @@ has field_factories => (
     weak_ref => 1,
 );
 
-has delete_definition => (
-    isa => 'Bool',
-    is => 'rw',
-    default => 0,
-);
-
 has definition => (
-    isa => 'HashRef',
-    is  => 'rw',
+    isa     => 'HashRef',
+    is      => 'rw',
+    clearer => 'delete_definition',
     default => sub { +{} },
 );
 
@@ -63,8 +58,17 @@ sub check_field_factory {
     if ($definition->{x_field_factory}) {
         $definition->{name} = $self->name;
         $self->field_factories->add_to_factory($definition);
-        $self->delete_definition(1);
+        $self->delete_definition();
     }
+}
+
+sub get_raw_definition {
+    my $self = shift;
+
+    $self->check_field_class;
+    $self->merge_definition;
+
+    return $self->definition;
 }
 
 sub get_definition {
@@ -73,8 +77,6 @@ sub get_definition {
     $self->check_field_class;
     $self->merge_definition;
     $self->check_field_factory;
-
-    return if ($self->delete_definition);
 
     return $self->definition;
 }

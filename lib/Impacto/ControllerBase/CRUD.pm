@@ -157,8 +157,8 @@ sub delete : Chained('crud_base') PathPart Args(0) {
 
 sub rebuild_index : Chained('crud_base') PathPart Args(0) {
     my ($self, $c) = @_;
-    my $es = $c->model('Search')->_es;
-    $c->model('SearchIndex')->reindex_controller($es, $self);
+
+    $c->model('Indexer')->reindex_controller($self);
 
     $c->flash(rebuilt_index => 1);
 

@@ -110,6 +110,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 product_metas
+
+Type: has_many
+
+Related object: L<Schema::Result::ProductMeta>
+
+=cut
+
+__PACKAGE__->has_many(
+  "product_metas",
+  "Schema::Result::ProductMeta",
+  { "foreign.product" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 product_tags
 
 Type: has_many
@@ -156,8 +171,8 @@ Composing rels: L</product_categories> -> category
 __PACKAGE__->many_to_many("categories", "product_categories", "category");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-13 01:40:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:8czafEJU2HVda36qIaIEXQ
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-24 17:11:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3Aw13qeZsAwaoAsaP7D72A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

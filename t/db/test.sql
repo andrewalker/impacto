@@ -63,6 +63,14 @@ CREATE TABLE product_tag (
     PRIMARY KEY (product, tag)
 );
 
+CREATE TABLE product_meta (
+    product integer NOT NULL,
+    name    text NOT NULL,
+    value   text NOT NULL,
+    FOREIGN KEY (product) REFERENCES product(id),
+    PRIMARY KEY (product, name)
+);
+
 INSERT INTO person (slug, name, birthday, phone, email) VALUES ('person1', 'André Walker',     '01/05/1991', '1234-5678', 'me1@andrewalker.net');
 INSERT INTO person (slug, name, birthday, phone, email) VALUES ('person2', 'Mr. Walker',       '02/05/1991', '2234-5678', 'me2@andrewalker.net');
 INSERT INTO person (slug, name, birthday, phone, email) VALUES ('person3', 'Mr. André',        '03/05/1991', '3234-5678', 'me3@andrewalker.net');
@@ -91,3 +99,6 @@ INSERT INTO product_category (product, category) VALUES (3, 'mag');
 
 INSERT INTO product_tag (product, tag) VALUES (3, 'beautiful');
 INSERT INTO product_tag (product, tag) VALUES (3, 'cheap');
+
+INSERT INTO product_meta (product, name, value) VALUES (1, 'brand', 'my fancy brand');
+INSERT INTO product_meta (product, name, value) VALUES (1, 'color', 'white');

@@ -1,154 +1,122 @@
 package Form::SensibleX::FieldFactory::DBIC::RecordMeta;
 
 use Moose;
-use namespace::autoclean;
+use Carp;
+use List::Util qw/first/;
+use List::MoreUtils qw/distinct/;
 use Form::Sensible::Field::Text;
+use namespace::autoclean;
 
 extends 'Form::SensibleX::FieldFactory::DBIC::Base';
 
-# form extra params:
-# meta_fields => { x_field_factory => 'RecordMeta', custom_field_name => 'name', custom_field_value => 'value' }
-
-has resultset          => ( is => 'ro' );
-
-has related_resultset => (
+has resultset => (
     is => 'ro',
-    isa => 'ArrayRef',
-    default => sub { [] },
-    traits  => ['Array'],
-    handles => {
-        add_related_resultset  => 'push',
-    }
 );
 
-has field_names => (
-    is => 'ro',
-    isa => 'ArrayRef[Str]',
-    default => sub { [] },
-    traits  => ['Array'],
-    handles => {
-        add_field_name  => 'push',
-    }
-);
-
-has field_values => (
-    is => 'ro',
-    isa => 'ArrayRef[Str]',
-    default => sub { [] },
-    traits  => ['Array'],
-    handles => {
-        add_field_value  => 'push',
-    }
-);
-
-around field_count => sub {
-    my $orig = shift;
-    my $self = shift;
-
-    return $self->$orig(@_) / 2;
-};
+sub _field_class {
+    'Form::Sensible::Field::Text'
+}
 
 around BUILDARGS => sub {
     my $orig  = shift;
     my $class = shift;
 
-    my %args  = ref $_[0] && ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
+    my %args = $class->_get_buildargs_args(@_);
 
+    $args{resultset} = $args{model}->resolve(service => 'resultset') if $args{model};
+    my $metas        = delete $args{metas};
 
-    my $rel   = delete $args{name};
-    my $i     = 0;
-    my $rs    = $args{model}->resultset || $args{resultset};
-    my $rrs   = $rs->result_source->related_source($rel)->resultset;
-    my $name  = delete $args{custom_field_name};
-    my $value = delete $args{custom_field_value};
+    $args{fields} = [
+        map {
+            $_->{_ff_name} = $args{name};
+            $class->create_field($_)
+        } @$metas
+    ];
 
-    $args{resultset}         = $rs;
-    $args{related_resultset} = [ $rrs ];
     delete $args{model};
     delete $args{request};
-    my $search = $rrs->search(undef, {
-        columns => [ $name ],
-        distinct => 1
-    });
-    my @fields;
 
-    foreach ($search->all) {
-        push @fields, _create_field(
-            $rel, $name, $i
-        );
-        push @fields, _create_field(
-            $rel, $value, $i
-        );
+    return $class->$orig(\%args);
+};
+
+sub add_field {
+    croak 'not implemented';
+}
+
+around field_factory_names => sub {
+    my $orig = shift;
+    my $self = shift;
+
+    return [ distinct @{ $self->$orig(@_) } ];
+};
+
+sub execute {
+    my ( $self, $row, $fields ) = @_;
+    my $i = 0;
+
+    while (my ($name, $value) = each %$fields) {
+        my $field = first { $name eq  $_->name } @{ $self->fields };
+
+        # TODO!
+        # {
+        #     name  => $name,
+        #     value => $value,
+        # }
+        # shouldn't be hardcoded like this.
+        #
+        # It should be instead:
+        # {
+        #     $field->name_column  => $name,
+        #     $field->value_column => $value,
+        # }
+        if ($value) {
+            $row->update_or_create_related($field->{_ff_name}, { name => $name, value => $value });
+        }
+        else {
+            if (my $r = $row->find_related($name, { name => $name })) {
+                $r->delete;
+            }
+        }
 
         $i++;
     }
 
-    $args{field_values}  = [ $value ];
-    $args{field_names}   = [ $name  ];
-    $args{names}         = [ $rel   ];
-
-    $args{fields} = \@fields;
-
-    return $class->$orig(%args);
-};
-
-sub _create_field {
-    my ($rel, $field, $i, $value) = @_;
-
-    my $name = join '_', ($rel, $field, $i);
-
-    my @args = (name => $name, display_name => $name);
-    if ($value) {
-        push @args, (value => $value);
-    }
-
-    my $obj = Form::Sensible::Field::Text->new(@args);
-
-    $obj->{from_factory} = __PACKAGE__;
-    $obj->{_fname}       = $rel;
-
-    return $obj;
-}
-
-sub add_field {
-    my ( $self, $args ) = @_;
-
-    my $name   = delete $args->{custom_field_name};
-    my $value  = delete $args->{custom_field_value};
-    my $rel    = $args->{name};
-    my $rrs    = $self->resultset->result_source->related_source($rel)->resultset;
-    my $count  = $self->field_count;
-    my $search = $rrs->search(undef, {
-        columns => [ $name ],
-        distinct => 1
-    });
-
-    $self->add_name( $rel );
-    $self->add_related_resultset( $rrs );
-    $self->add_field_name(  $name  );
-    $self->add_field_value( $value );
-
-    foreach ($search->all) {
-        my $f1 = _create_field(
-            $rel, $name, $count
-        );
-        my $f2 = _create_field(
-            $rel, $value, $count
-        );
-        $self->_add_field($f1);
-        $self->_add_field($f2);
-        $count++;
-    }
-
-    return 1;
+    return $i > 0;
 }
 
 sub get_values_from_row {
     my ( $self, $row, $fields ) = @_;
 
-    return {};
+    my %field_table     = map  { $_ => 1                        } @$fields;
+    my @filtered_fields = grep { $field_table{ $_->{_ff_name} } } @{ $self->fields };
+
+    return {
+        map {
+            my $name = $_->name;
+            $name => $row->find_related($_->{_ff_name}, { name => $name })->value
+        } @filtered_fields
+    };
 }
 
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+__END__
+
+=encoding utf8
+
+=head1 NAME
+
+Form::SensibleX::FieldFactory::DBIC::RecordMeta
+
+=head1 METHODS
+
+=head1 AUTHOR
+
+André Walker <andre@andrewalker.net>
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify it under
+the same terms as Perl itself.

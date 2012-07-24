@@ -1,14 +1,17 @@
-    - ** Select's with more than one field in the label **
-        - write tests!
+    - record_meta
+    - field factory bytea to display image when editing
 
-    - ** test the form factory **
-    - bread board it :)
-
-    - subclass FileSelector -> bytea -> display image when editing
-    - test many_to_many
-    - record_meta + tests
+    - make things pretty
+        - dojo (Date fields, theming forms, menus, etc)
+        - twitter bootstrap?
+        - login screen
 
     - subforms!
+        - breadcrumbs
+        - parent
+            url
+        - children
+            item in the menu
 
     - Further customizations on controllers
     - Create a page to manage users

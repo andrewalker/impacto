@@ -6,6 +6,15 @@ use Form::Sensible::DelegateConnection;
 
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
+my $TYPE_OPTIONS = [
+    { value => 'sell',         name => 'Venda'            },
+    { value => 'buy',          name => 'Compra'           },
+    { value => 'consignation', name => 'Consignação'      },
+    { value => 'return',       name => 'Retorno'          },
+    { value => 'donation',     name => 'Doação'           },
+    { value => 'relocation',   name => 'Mudança de local' },
+];
+
 has '+crud_model_name' => ( default => 'DB::ProductStockMovement' );
 sub datagrid_columns {
     [ qw/ datetime amount type place product / ]
@@ -21,22 +30,10 @@ sub form_columns {
 sub form_columns_extra_params {
     my $self = shift;
     {
-        type    => { field_class => 'Select', options_delegate => FSConnector(\&_get_stock_movement_types) },
+        type    => { field_class => 'Select', options => $TYPE_OPTIONS },
         place   => { x_field_factory => "DBIC::BelongsTo", option_label => 'place' },
         product => { x_field_factory => "DBIC::BelongsTo", option_label => 'name', option_value => 'id' },
     }
-}
-
-sub _get_stock_movement_types {
-    my ($self, $field, $args) = @_;
-    return [
-        { value => 'sell',         name => 'Venda' },
-        { value => 'buy',          name => 'Compra' },
-        { value => 'consignation', name => 'Consignação' },
-        { value => 'return',       name => 'Retorno' },
-        { value => 'donation',     name => 'Doação' },
-        { value => 'relocation',   name => 'Mudança de local' },
-    ];
 }
 
 __PACKAGE__->meta->make_immutable;

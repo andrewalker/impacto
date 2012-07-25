@@ -145,8 +145,8 @@ sub BUILD {
                         name            => $field,
                     );
 
-                    $form_definition->check_field_class;
-                    $form_definition->merge_definition;
+                    $field_definition->check_field_class;
+                    $field_definition->merge_definition;
 
                     $form_definition->{fields}{$field} = $field_definition->get_definition;
                 }
@@ -219,7 +219,7 @@ sub BUILD {
                         field_factories => $field_factories,
                     );
 
-                    $form_definition->check_field_factory;
+                    $field_definition->check_field_factory;
 
                     if (my $result = $field_definition->get_definition) {
                         $form_definition->{fields}{$field} = $result;

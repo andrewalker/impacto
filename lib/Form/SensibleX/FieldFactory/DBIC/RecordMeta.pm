@@ -93,7 +93,11 @@ sub get_values_from_row {
     return {
         map {
             my $name = $_->name;
-            $name => $row->find_related($_->{_ff_name}, { name => $name })->value
+            $name =>
+                ( $row->count_related($_->{_ff_name}, { name => $name }) == 1 )
+                ? $row->find_related($_->{_ff_name}, { name => $name })->value
+                : ''
+                ;
         } @filtered_fields
     };
 }

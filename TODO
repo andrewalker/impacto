@@ -1,9 +1,7 @@
-    - record_meta
     - field factory bytea to display image when editing
 
     - make things pretty
         - dojo (Date fields, theming forms, menus, etc)
-        - twitter bootstrap?
         - login screen
 
     - subforms!
@@ -13,6 +11,5 @@
         - children
             item in the menu
 
-    - Further customizations on controllers
     - Create a page to manage users
     - Create a page for user's settings

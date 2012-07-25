@@ -1,0 +1,104 @@
+{
+   "fields" : {
+      "amount" : {
+         "field_type" : "number",
+         "value" : null,
+         "name" : "amount",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Amount",
+         "field_class" : "Number",
+         "render_hints" : {},
+         "default_value" : null,
+         "integer_only" : "1"
+      },
+      "ledger" : {
+         "value" : null,
+         "name" : "ledger",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Ledger",
+         "field_class" : "Number",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "option_value" : "id",
+         "default_value" : null,
+         "integer_only" : "1"
+      },
+      "consignation" : {
+         "value" : null,
+         "name" : "consignation",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Consignation",
+         "field_class" : "Number",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "option_value" : "id",
+         "default_value" : null,
+         "integer_only" : "1"
+      },
+      "stock_movement" : {
+         "value" : null,
+         "name" : "stock_movement",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Stock movement",
+         "field_class" : "Number",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "option_value" : "id",
+         "default_value" : null,
+         "integer_only" : "1"
+      },
+      "submit" : {
+         "field_type" : "trigger",
+         "value" : null,
+         "name" : "submit",
+         "validation" : {
+            "required" : 0
+         },
+         "display_name" : "Submit",
+         "field_class" : "Trigger",
+         "render_hints" : {},
+         "default_value" : null,
+         "event_to_trigger" : "submit_triggered"
+      },
+      "id" : {
+         "field_type" : "number",
+         "value" : null,
+         "name" : "id",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Id",
+         "field_class" : "Number",
+         "render_hints" : {
+            "field_type" : "hidden"
+         },
+         "default_value" : null,
+         "integer_only" : "1"
+      },
+      "datetime" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "datetime",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Datetime",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      }
+   },
+   "name" : "product.return",
+   "validation" : {},
+   "render_hints" : {}
+}

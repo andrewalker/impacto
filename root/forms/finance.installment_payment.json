@@ -1,0 +1,102 @@
+{
+   "fields" : {
+      "payment_method" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "payment_method",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Payment method",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "amount" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "amount",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Amount",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "account" : {
+         "option_label" : "name",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "account",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Account",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "installment" : {
+         "option_label" : [
+            "ledger",
+            "due"
+         ],
+         "option_value" : [
+            "ledger",
+            "due"
+         ],
+         "x_field_factory" : "DBIC::BelongsTo",
+         "name" : "installment"
+      },
+      "date" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "date",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Date",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "submit" : {
+         "field_type" : "trigger",
+         "value" : null,
+         "name" : "submit",
+         "validation" : {
+            "required" : 0
+         },
+         "display_name" : "Submit",
+         "field_class" : "Trigger",
+         "render_hints" : {},
+         "default_value" : null,
+         "event_to_trigger" : "submit_triggered"
+      },
+      "comments" : {
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "comments",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Comments",
+         "render_hints" : {},
+         "field_class" : "LongText",
+         "default_value" : null,
+         "should_truncate" : "0"
+      }
+   },
+   "name" : "finance.installment_payment",
+   "validation" : {},
+   "render_hints" : {}
+}

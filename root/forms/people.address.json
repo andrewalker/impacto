@@ -1,0 +1,163 @@
+{
+   "fields" : {
+      "country" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "country",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Country",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "number" : {
+         "field_type" : "number",
+         "value" : null,
+         "name" : "number",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Number",
+         "field_class" : "Number",
+         "render_hints" : {},
+         "default_value" : null,
+         "integer_only" : "1"
+      },
+      "street" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "street",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Street",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "submit" : {
+         "field_type" : "trigger",
+         "value" : null,
+         "name" : "submit",
+         "validation" : {
+            "required" : 0
+         },
+         "display_name" : "Submit",
+         "field_class" : "Trigger",
+         "render_hints" : {},
+         "default_value" : null,
+         "event_to_trigger" : "submit_triggered"
+      },
+      "is_main_address" : {
+         "field_type" : "toggle",
+         "value" : null,
+         "name" : "is_main_address",
+         "off_value" : "off",
+         "on_label" : "On",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Is main address",
+         "field_class" : "Toggle",
+         "render_hints" : {},
+         "on_value" : "on",
+         "default_value" : null,
+         "off_label" : "Off"
+      },
+      "name" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "name",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Name",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "zip_code" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "zip_code",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Zip code",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "phone" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "phone",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Phone",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "state" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "state",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "State",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "city" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "city",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "City",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "person" : {
+         "option_label" : "name",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "person",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Person",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "option_value" : "slug",
+         "default_value" : null,
+         "should_truncate" : "0"
+      }
+   },
+   "name" : "people.address",
+   "validation" : {},
+   "render_hints" : {}
+}

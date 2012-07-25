@@ -1,0 +1,65 @@
+{
+   "fields" : {
+      "parent" : {
+         "option_label" : "name",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "parent",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Parent",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "option_value" : "slug",
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "slug" : {
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "slug",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Slug",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::Slug",
+         "default_value" : null,
+         "should_truncate" : "0",
+         "field_source" : "name"
+      },
+      "submit" : {
+         "field_type" : "trigger",
+         "value" : null,
+         "name" : "submit",
+         "validation" : {
+            "required" : 0
+         },
+         "display_name" : "Submit",
+         "field_class" : "Trigger",
+         "render_hints" : {},
+         "default_value" : null,
+         "event_to_trigger" : "submit_triggered"
+      },
+      "name" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "name",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Name",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      }
+   },
+   "name" : "product.category",
+   "validation" : {},
+   "render_hints" : {}
+}

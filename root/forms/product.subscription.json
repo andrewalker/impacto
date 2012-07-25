@@ -1,0 +1,121 @@
+{
+   "fields" : {
+      "subscription_edition" : {
+         "field_type" : "number",
+         "value" : null,
+         "name" : "subscription_edition",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Subscription edition",
+         "field_class" : "Number",
+         "render_hints" : {},
+         "default_value" : null,
+         "integer_only" : "1"
+      },
+      "submit" : {
+         "field_type" : "trigger",
+         "value" : null,
+         "name" : "submit",
+         "validation" : {
+            "required" : 0
+         },
+         "display_name" : "Submit",
+         "field_class" : "Trigger",
+         "render_hints" : {},
+         "default_value" : null,
+         "event_to_trigger" : "submit_triggered"
+      },
+      "active" : {
+         "field_type" : "toggle",
+         "value" : null,
+         "name" : "active",
+         "off_value" : "off",
+         "on_label" : "On",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Active",
+         "field_class" : "Toggle",
+         "render_hints" : {},
+         "on_value" : "on",
+         "default_value" : null,
+         "off_label" : "Off"
+      },
+      "expiry_date" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "expiry_date",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Expiry date",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "expiry_edition" : {
+         "field_type" : "number",
+         "value" : null,
+         "name" : "expiry_edition",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Expiry edition",
+         "field_class" : "Number",
+         "render_hints" : {},
+         "default_value" : null,
+         "integer_only" : "1"
+      },
+      "client" : {
+         "option_label" : "person.name",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "client",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Client",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "option_value" : "person",
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "subscription_date" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "subscription_date",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Subscription date",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "product" : {
+         "option_label" : "name",
+         "value" : null,
+         "name" : "product",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Product",
+         "field_class" : "Number",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "option_value" : "id",
+         "default_value" : null,
+         "integer_only" : "1"
+      }
+   },
+   "name" : "product.subscription",
+   "validation" : {},
+   "render_hints" : {}
+}

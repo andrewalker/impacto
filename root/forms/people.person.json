@@ -1,0 +1,120 @@
+{
+   "fields" : {
+      "representant" : {
+         "x_field_factory" : "DBIC::MightBe",
+         "name" : "representant"
+      },
+      "submit" : {
+         "field_type" : "trigger",
+         "value" : null,
+         "name" : "submit",
+         "validation" : {
+            "required" : 0
+         },
+         "display_name" : "Submit",
+         "field_class" : "Trigger",
+         "render_hints" : {},
+         "default_value" : null,
+         "event_to_trigger" : "submit_triggered"
+      },
+      "name" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "name",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Name",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "comments" : {
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "comments",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Comments",
+         "render_hints" : {},
+         "field_class" : "LongText",
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "phone" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "phone",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Phone",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "email" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "email",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Email",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "client" : {
+         "x_field_factory" : "DBIC::MightBe",
+         "name" : "client"
+      },
+      "site" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "site",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Site",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "supplier" : {
+         "x_field_factory" : "DBIC::MightBe",
+         "name" : "supplier"
+      },
+      "employee" : {
+         "x_field_factory" : "DBIC::MightBe",
+         "name" : "employee"
+      },
+      "slug" : {
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "slug",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Slug",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::Slug",
+         "default_value" : null,
+         "should_truncate" : "0",
+         "field_source" : "name"
+      }
+   },
+   "name" : "people.person",
+   "validation" : {},
+   "render_hints" : {}
+}

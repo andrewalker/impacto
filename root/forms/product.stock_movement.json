@@ -1,0 +1,115 @@
+{
+   "fields" : {
+      "amount" : {
+         "field_type" : "number",
+         "value" : null,
+         "name" : "amount",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Amount",
+         "field_class" : "Number",
+         "render_hints" : {},
+         "default_value" : null,
+         "integer_only" : "1"
+      },
+      "place" : {
+         "option_label" : "place",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "place",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Place",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "submit" : {
+         "field_type" : "trigger",
+         "value" : null,
+         "name" : "submit",
+         "validation" : {
+            "required" : 0
+         },
+         "display_name" : "Submit",
+         "field_class" : "Trigger",
+         "render_hints" : {},
+         "default_value" : null,
+         "event_to_trigger" : "submit_triggered"
+      },
+      "product" : {
+         "option_label" : "name",
+         "value" : null,
+         "name" : "product",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Product",
+         "field_class" : "Number",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "option_value" : "id",
+         "default_value" : null,
+         "integer_only" : "1"
+      },
+      "type" : {
+         "options" : [
+            {
+               "value" : "sell",
+               "name" : "Venda"
+            },
+            {
+               "value" : "buy",
+               "name" : "Compra"
+            },
+            {
+               "value" : "consignation",
+               "name" : "Consignação"
+            },
+            {
+               "value" : "return",
+               "name" : "Retorno"
+            },
+            {
+               "value" : "donation",
+               "name" : "Doação"
+            },
+            {
+               "value" : "relocation",
+               "name" : "Mudança de local"
+            }
+         ],
+         "value" : null,
+         "name" : "type",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Type",
+         "render_hints" : {},
+         "field_class" : "Select",
+         "default_value" : null,
+         "accepts_multiple" : "0"
+      },
+      "datetime" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "datetime",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Datetime",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      }
+   },
+   "name" : "product.stock_movement",
+   "validation" : {},
+   "render_hints" : {}
+}

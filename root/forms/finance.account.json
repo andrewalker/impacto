@@ -1,0 +1,90 @@
+{
+   "fields" : {
+      "bank" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "bank",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Bank",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "balance" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "balance",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Balance",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "submit" : {
+         "field_type" : "trigger",
+         "value" : null,
+         "name" : "submit",
+         "validation" : {
+            "required" : 0
+         },
+         "display_name" : "Submit",
+         "field_class" : "Trigger",
+         "render_hints" : {},
+         "default_value" : null,
+         "event_to_trigger" : "submit_triggered"
+      },
+      "name" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "name",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Name",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "agency" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "agency",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Agency",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "account_number" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "account_number",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Account number",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      }
+   },
+   "name" : "finance.account",
+   "validation" : {},
+   "render_hints" : {}
+}

@@ -1,0 +1,36 @@
+{
+   "fields" : {
+      "person" : {
+         "option_label" : "name",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "person",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Person",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "option_value" : "slug",
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "submit" : {
+         "field_type" : "trigger",
+         "value" : null,
+         "name" : "submit",
+         "validation" : {
+            "required" : 0
+         },
+         "display_name" : "Submit",
+         "field_class" : "Trigger",
+         "render_hints" : {},
+         "default_value" : null,
+         "event_to_trigger" : "submit_triggered"
+      }
+   },
+   "name" : "people.employee",
+   "validation" : {},
+   "render_hints" : {}
+}

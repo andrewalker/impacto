@@ -1,0 +1,34 @@
+{
+   "fields" : {
+      "submit" : {
+         "field_type" : "trigger",
+         "value" : null,
+         "name" : "submit",
+         "validation" : {
+            "required" : 0
+         },
+         "display_name" : "Submit",
+         "field_class" : "Trigger",
+         "render_hints" : {},
+         "default_value" : null,
+         "event_to_trigger" : "submit_triggered"
+      },
+      "place" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "place",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Place",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      }
+   },
+   "name" : "product.place",
+   "validation" : {},
+   "render_hints" : {}
+}

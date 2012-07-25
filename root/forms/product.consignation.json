@@ -1,0 +1,121 @@
+{
+   "fields" : {
+      "representant" : {
+         "option_label" : "person.name",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "representant",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Representant",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "option_value" : "person",
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "submit" : {
+         "field_type" : "trigger",
+         "value" : null,
+         "name" : "submit",
+         "validation" : {
+            "required" : 0
+         },
+         "display_name" : "Submit",
+         "field_class" : "Trigger",
+         "render_hints" : {},
+         "default_value" : null,
+         "event_to_trigger" : "submit_triggered"
+      },
+      "datetime" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "datetime",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Datetime",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "expected_return" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "expected_return",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Expected return",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "amount" : {
+         "field_type" : "number",
+         "value" : null,
+         "name" : "amount",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Amount",
+         "field_class" : "Number",
+         "render_hints" : {},
+         "default_value" : null,
+         "integer_only" : "1"
+      },
+      "stock_movement" : {
+         "value" : null,
+         "name" : "stock_movement",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Stock movement",
+         "field_class" : "Number",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "option_value" : "id",
+         "default_value" : null,
+         "integer_only" : "1"
+      },
+      "product" : {
+         "option_label" : "name",
+         "value" : null,
+         "name" : "product",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Product",
+         "field_class" : "Number",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "option_value" : "id",
+         "default_value" : null,
+         "integer_only" : "1"
+      },
+      "id" : {
+         "field_type" : "number",
+         "value" : null,
+         "name" : "id",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Id",
+         "field_class" : "Number",
+         "render_hints" : {
+            "field_type" : "hidden"
+         },
+         "default_value" : null,
+         "integer_only" : "1"
+      }
+   },
+   "name" : "product.consignation",
+   "validation" : {},
+   "render_hints" : {}
+}

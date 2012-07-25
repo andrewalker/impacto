@@ -1,0 +1,125 @@
+{
+   "fields" : {
+      "value" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "value",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Value",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "account" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "account",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Account",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "submit" : {
+         "field_type" : "trigger",
+         "value" : null,
+         "name" : "submit",
+         "validation" : {
+            "required" : 0
+         },
+         "display_name" : "Submit",
+         "field_class" : "Trigger",
+         "render_hints" : {},
+         "default_value" : null,
+         "event_to_trigger" : "submit_triggered"
+      },
+      "datetime" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "datetime",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Datetime",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "comment" : {
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "comment",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Comment",
+         "render_hints" : {},
+         "field_class" : "LongText",
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "stock_movement" : {
+         "option_label" : [
+            "datetime",
+            "product.name",
+            "place"
+         ],
+         "value" : null,
+         "name" : "stock_movement",
+         "validation" : {
+            "required" : ""
+         },
+         "display_name" : "Stock movement",
+         "field_class" : "Number",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "option_value" : "id",
+         "default_value" : null,
+         "integer_only" : "1"
+      },
+      "ledger_type" : {
+         "option_label" : "name",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "ledger_type",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Ledger type",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "x_field_factory" : "DBIC::BelongsTo",
+         "option_value" : "slug",
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "id" : {
+         "field_type" : "number",
+         "value" : null,
+         "name" : "id",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Id",
+         "field_class" : "Number",
+         "render_hints" : {
+            "field_type" : "hidden"
+         },
+         "default_value" : null,
+         "integer_only" : "1"
+      }
+   },
+   "name" : "finance.ledger",
+   "validation" : {},
+   "render_hints" : {}
+}

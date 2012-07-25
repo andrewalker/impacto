@@ -4,7 +4,8 @@ use strict;
 use Test::More;
 use Form::SensibleX::FormFactory::FormDefinition;
 use FindBin '$Bin';
-use Config::General;
+use File::Slurp;
+use JSON;
 
 {
     my %sample = (
@@ -22,9 +23,10 @@ use Config::General;
 }
 
 {
-    ok(-e "$Bin/foobar.conf", 'config file was created');
-    my $conf = Config::General->new("$Bin/foobar.conf");
-    is_deeply({ $conf->getall }, { foo => 'bar', bar => 'baz' }, 'config was saved ok');
+    ok(-e "$Bin/foobar.json", 'config file was created');
+    my $file = read_file("$Bin/foobar.json");
+    my $conf = from_json($file);
+    is_deeply($conf, { foo => 'bar', bar => 'baz' }, 'config was saved ok');
 }
 
 {
@@ -40,6 +42,6 @@ use Config::General;
     is_deeply($loaded_def, { foo => 'bar', bar => 'baz' }, 'config was loaded ok');
 }
 
-unlink "$Bin/foobar.conf";
+unlink "$Bin/foobar.json";
 
 done_testing;

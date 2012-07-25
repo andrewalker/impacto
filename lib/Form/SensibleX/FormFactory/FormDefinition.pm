@@ -1,7 +1,7 @@
 package Form::SensibleX::FormFactory::FormDefinition;
 use Moose;
-use feature 'say';
-use Config::General qw/ParseConfig SaveConfig/;
+use JSON;
+use File::Slurp;
 use namespace::autoclean;
 
 has path_to_form => (
@@ -24,21 +24,21 @@ around BUILDARGS => sub {
     substr($path, -1) eq '/'
         or $path .= '/';
 
-    $args->{path_to_form} = $path . $name . '.conf';
+    $args->{path_to_form} = $path . $name . '.json';
 
     return $args;
 };
 
 sub save {
     my ($self, $hash) = @_;
-    SaveConfig($self->path_to_form, $hash);
+    my $json_text   = to_json( $hash, { pretty => 1 } );
+    write_file($self->path_to_form, $json_text);
 }
 
 sub load {
     my $self = shift;
-    return {
-        ParseConfig(-ConfigFile => $self->path_to_form)
-    };
+    my $file = read_file($self->path_to_form);
+    return from_json($file);
 }
 
 __PACKAGE__->meta->make_immutable;

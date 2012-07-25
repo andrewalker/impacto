@@ -87,6 +87,13 @@ $req->mock( 'upload',      sub { ()           } );
             field_factories => $manager,
         ), 'builds ok');
 
+        eval {
+            $fd->check_field_class();
+            $fd->merge_definition();
+            $fd->check_field_factory();
+        };
+        ok(!$@, '0 kills so far');
+
         ok(my $def = $fd->get_definition(), 'gets definition');
 
         isa_ok($fd, 'Form::SensibleX::FormFactory::FieldDefinition');
@@ -103,6 +110,13 @@ $req->mock( 'upload',      sub { ()           } );
             name            => 'file',
             field_factories => $manager,
         ), 'builds ok');
+
+        eval {
+            $fd->check_field_class();
+            $fd->merge_definition();
+            $fd->check_field_factory();
+        };
+        ok(!$@, '0 kills so far');
 
         ok(my $def = $fd->get_definition(), 'gets definition');
 
@@ -121,6 +135,13 @@ $req->mock( 'upload',      sub { ()           } );
             name            => 'product',
             field_factories => $manager,
         ), 'builds ok');
+
+        eval {
+            $fd->check_field_class();
+            $fd->merge_definition();
+            $fd->check_field_factory();
+        };
+        ok(!$@, '0 kills so far');
 
         ok(!$fd->get_definition(), 'definition is undef because its a factory');
 

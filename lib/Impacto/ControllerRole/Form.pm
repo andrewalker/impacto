@@ -68,8 +68,11 @@ sub build_form_factory {
     my @row_or_nothing = ( row => $c->stash->{row} )
         if $c->stash->{row};
 
+    my $form_files = $self->_app->path_to(qw/root forms/)->stringify;
+
     return $self->form_factory_class->new(
         controller_name => ref $self,
+        path_to_forms   => $form_files,
         columns         => $self->form_columns,
         extra_params    => $self->form_columns_extra_params,
         request_args    => { req => $c->req },

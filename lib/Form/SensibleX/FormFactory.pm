@@ -15,6 +15,11 @@ has container => (
     },
 );
 
+has path_to_forms => (
+    isa        => 'Str',
+    is         => 'ro',
+);
+
 has columns => (
     isa        => 'ArrayRef',
     is         => 'ro',
@@ -203,7 +208,7 @@ sub BUILD {
             },
             block        => sub {
                 my $s = shift;
-                my $form_definition = $s->param('form_definition_manager')->load();
+                my $form_definition = $s->param('form_definition')->load();
                 my $field_factories = $s->param('field_factories');
 
                 foreach my $field (keys %{ $form_definition->{fields} }) {

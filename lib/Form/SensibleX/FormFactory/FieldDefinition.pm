@@ -33,7 +33,7 @@ has name => (
 sub check_field_class {
     my $self = shift;
 
-    if ($self->extra_params->{field_class}) {
+    if ($self->extra_params->{field_class} || $self->definition->{field_class}) {
         delete $self->definition->{field_type};
     }
 

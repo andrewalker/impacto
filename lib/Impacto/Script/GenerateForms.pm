@@ -3,7 +3,6 @@ use Moose;
 use Impacto;
 use feature 'say';
 use namespace::autoclean;
-use Data::Dumper;
 
 with 'Catalyst::ScriptRole';
 
@@ -18,10 +17,17 @@ sub generate_forms {
     for ($c->controllers) {
         my $controller = $c->controller($_);
         if ( $controller->isa('Impacto::ControllerBase::CRUD') ) {
+            my $controller_class = ref $controller;
+            print "$controller_class - ";
+
             my $form_factory = $controller->build_form_factory( $c );
-            say Dumper( $form_factory->container->resolve(service => 'form_raw_definition') );
+            eval { $form_factory->container->resolve(service => 'save_form_definition') };
+
+            say $@ ? $@ : 'ok';
         }
     }
 }
+
+__PACKAGE__->meta->make_immutable;
 
 1;

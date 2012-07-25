@@ -140,18 +140,39 @@ sub BUILD {
                         name            => $field,
                     );
 
-                    $form_definition->{fields}{$field} = $field_definition->get_raw_definition;
+                    $form_definition->check_field_class;
+                    $form_definition->merge_definition;
+
+                    $form_definition->{fields}{$field} = $field_definition->get_definition;
                 }
 
                 return $form_definition;
             },
         )
     );
+
+    $container->add_service(
+        Bread::Board::BlockInjection->new(
+            name         => 'form_name',
+            dependencies => [
+                depends_on('/Model/result_source'),
+            ],
+            block        => sub {
+                my $s = shift;
+                return $s->param('result_source')->from;
+            },
+            lifecycle    => 'Singleton',
+        )
+    );
+
     $container->add_service(
         Bread::Board::ConstructorInjection->new(
             name         => 'form_definition_manager',
             class        => 'Form::SensibleX::FormFactory::FormDefinition',
-            dependencies => depends_on('path_to_forms'),
+            dependencies => [
+                depends_on('form_name'),
+                depends_on('path_to_forms'),
+            ],
             lifecycle    => 'Singleton',
         )
     );
@@ -192,6 +213,8 @@ sub BUILD {
                         definition      => $flat_field,
                         field_factories => $field_factories,
                     );
+
+                    $form_definition->check_field_factory;
 
                     if (my $result = $field_definition->get_definition) {
                         $form_definition->{fields}{$field} = $result;

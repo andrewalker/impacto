@@ -6,6 +6,7 @@ use namespace::autoclean;
 
 has field_factories => (
     is       => 'ro',
+    required => 0,
     weak_ref => 1,
 );
 
@@ -13,17 +14,19 @@ has definition => (
     isa     => 'HashRef',
     is      => 'rw',
     clearer => 'delete_definition',
+    reader  => 'get_definition',
     default => sub { +{} },
 );
 
 has extra_params => (
-    is => 'ro',
-    isa => 'HashRef',
-    default => sub { +{} },
+    is       => 'ro',
+    isa      => 'HashRef',
+    default  => sub { +{} },
+    required => 0,
 );
 
 has name => (
-    is => 'ro',
+    is  => 'ro',
     isa => 'Str',
 );
 
@@ -46,8 +49,10 @@ sub check_field_class {
 }
 
 sub merge_definition {
-    my $self       = shift;
-    my $definition = merge( $self->extra_params, $self->definition );
+    my $self            = shift;
+    my $definition      = merge( $self->extra_params, $self->definition );
+    $definition->{name} = $self->name;
+
     $self->definition($definition);
 }
 
@@ -60,25 +65,6 @@ sub check_field_factory {
         $self->field_factories->add_to_factory($definition);
         $self->delete_definition();
     }
-}
-
-sub get_raw_definition {
-    my $self = shift;
-
-    $self->check_field_class;
-    $self->merge_definition;
-
-    return $self->definition;
-}
-
-sub get_definition {
-    my $self = shift;
-
-    $self->check_field_class;
-    $self->merge_definition;
-    $self->check_field_factory;
-
-    return $self->definition;
 }
 
 __PACKAGE__->meta->make_immutable;

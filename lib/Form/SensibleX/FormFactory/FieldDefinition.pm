@@ -26,8 +26,12 @@ has extra_params => (
 );
 
 has name => (
-    is  => 'ro',
-    isa => 'Str',
+    is      => 'ro',
+    isa     => 'Str',
+    lazy    => 1,
+    default => sub {
+        shift->definition->{name};
+    },
 );
 
 sub check_field_class {
@@ -61,7 +65,6 @@ sub check_field_factory {
     my $definition = $self->definition;
 
     if ($definition->{x_field_factory}) {
-        $definition->{name} = $self->name;
         $self->field_factories->add_to_factory($definition);
         $self->delete_definition();
     }

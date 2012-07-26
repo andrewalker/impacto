@@ -2,7 +2,7 @@
    "fields" : {
       "country" : {
          "field_type" : "text",
-         "value" : null,
+         "value" : "Brasil",
          "maximum_length" : 256,
          "name" : "country",
          "validation" : {
@@ -11,7 +11,7 @@
          "display_name" : "Country",
          "field_class" : "Text",
          "render_hints" : {},
-         "default_value" : null,
+         "default_value" : "Brasil",
          "should_truncate" : "0"
       },
       "number" : {

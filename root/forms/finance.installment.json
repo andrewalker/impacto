@@ -17,7 +17,7 @@
          "off_label" : "Off"
       },
       "amount" : {
-         "field_type" : "text",
+         "field_type" : "money",
          "value" : null,
          "maximum_length" : 256,
          "name" : "amount",
@@ -31,7 +31,7 @@
          "should_truncate" : "0"
       },
       "due" : {
-         "field_type" : "text",
+         "field_type" : "datetime",
          "value" : null,
          "maximum_length" : 256,
          "name" : "due",
@@ -39,7 +39,7 @@
             "required" : "1"
          },
          "display_name" : "Due",
-         "field_class" : "Text",
+         "field_class" : "DateTime",
          "render_hints" : {},
          "default_value" : null,
          "should_truncate" : "0"

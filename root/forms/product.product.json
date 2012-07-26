@@ -1,7 +1,7 @@
 {
    "fields" : {
       "cost" : {
-         "field_type" : "text",
+         "field_type" : "money",
          "value" : null,
          "maximum_length" : 256,
          "name" : "cost",
@@ -10,12 +10,11 @@
          },
          "display_name" : "Cost",
          "field_class" : "Text",
-         "render_hints" : {},
          "default_value" : null,
          "should_truncate" : "0"
       },
       "minimum_price" : {
-         "field_type" : "text",
+         "field_type" : "money",
          "value" : null,
          "maximum_length" : 256,
          "name" : "minimum_price",
@@ -114,7 +113,7 @@
          "should_truncate" : "0"
       },
       "price" : {
-         "field_type" : "text",
+         "field_type" : "money",
          "value" : null,
          "maximum_length" : 256,
          "name" : "price",

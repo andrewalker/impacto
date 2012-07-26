@@ -43,7 +43,7 @@
          "off_label" : "Off"
       },
       "expiry_date" : {
-         "field_type" : "text",
+         "field_type" : "datetime",
          "value" : null,
          "maximum_length" : 256,
          "name" : "expiry_date",
@@ -51,7 +51,7 @@
             "required" : ""
          },
          "display_name" : "Expiry date",
-         "field_class" : "Text",
+         "field_class" : "DateTime",
          "render_hints" : {},
          "default_value" : null,
          "should_truncate" : "0"
@@ -86,7 +86,7 @@
          "should_truncate" : "0"
       },
       "subscription_date" : {
-         "field_type" : "text",
+         "field_type" : "datetime",
          "value" : null,
          "maximum_length" : 256,
          "name" : "subscription_date",
@@ -94,7 +94,7 @@
             "required" : "1"
          },
          "display_name" : "Subscription date",
-         "field_class" : "Text",
+         "field_class" : "DateTime",
          "render_hints" : {},
          "default_value" : null,
          "should_truncate" : "0"

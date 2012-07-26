@@ -95,7 +95,7 @@
          "accepts_multiple" : "0"
       },
       "datetime" : {
-         "field_type" : "text",
+         "field_type" : "datetime",
          "value" : null,
          "maximum_length" : 256,
          "name" : "datetime",
@@ -103,7 +103,7 @@
             "required" : "1"
          },
          "display_name" : "Datetime",
-         "field_class" : "Text",
+         "field_class" : "DateTime",
          "render_hints" : {},
          "default_value" : null,
          "should_truncate" : "0"

@@ -1,0 +1,16 @@
+[% select_size = '' %]
+[%- IF render_hints.select_size %][% select_size='size="' _ render_hints.select_size _'"' %][% END -%]
+<select name="[% field_name %]" [%- IF field.accepts_multiple %]multiple[%- END %] [% select_size %] id="[% css_prefix _ form.name %]_[% field_name %]_input" class="[% css_prefix %]input [% css_prefix _ field_type %]_input [% css_prefix _ field_name %]_input  [% IF !field.editable %] noteditable" disabled="disabled[% END %]" data-dojo-type="dijit.form.FilteringSelect">
+    [% FOREACH item = field.get_options -%]
+    [%- selected = "" -%]
+    [%- FOREACH val = field.value -%]
+        [%- IF item.value == val %][% selected = ' selected="selected"' %][% END -%]
+    [%- END -%]
+   <option value="[% item.value %]"[%- selected -%]>[% item.name %]</option>
+   [% END %]
+</select>
+[%- IF !field.editable %]
+    [%- FOREACH val = field.value -%]
+        <input type="hidden" name="[% field_name %]" value="[% val %]" />
+    [%- END -%]
+[% END -%]

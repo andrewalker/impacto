@@ -1,4 +1,5 @@
 <input
+    data-dojo-type="dijit.form.CheckBox"
     type="checkbox"
     [% IF !field.editable %]
         class="noteditable" disabled="disabled"

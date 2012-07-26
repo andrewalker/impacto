@@ -35,6 +35,12 @@ body {
     text-align: center;
 }
 
+.tundra .dijitMenu, .tundra .dijitMenuBar {
+    margin: 0;
+    background-color: #2d2d2d;
+    border: 0;
+}
+
 .dijitMenuItem {
     background-color: #2d2d2d;
     padding: 5px 10px;

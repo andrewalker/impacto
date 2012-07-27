@@ -191,7 +191,6 @@ sub BUILD {
                     next if $field->field_type eq 'trigger';
 
                     if (defined $factory) {
-                        carp "adding $factory - $fieldname = $value";
                         $factories->{$factory} ||= {};
                         $factories->{$factory}{$fieldname} = $value;
                     }

@@ -14,7 +14,7 @@ sub index :Path Args(0) {
     my ( $self, $c ) = @_;
 
     $c->forward('global_base');
-    $c->detach('/login/login') if (!$c->user);
+    $c->res->redirect('/login') if (!$c->user);
 }
 
 sub default :Path {

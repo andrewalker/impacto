@@ -16,6 +16,7 @@ __PACKAGE__->config(
     login_form_args => {
        authenticate_username_field_name => 'login',
     },
+    traits => ['-RenderAsTTTemplate', 'Logout'],
 );
 
 1;

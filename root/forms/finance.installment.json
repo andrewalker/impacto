@@ -4,7 +4,7 @@
          "field_type" : "toggle",
          "value" : null,
          "name" : "payed",
-         "off_value" : "off",
+         "off_value" : "0",
          "on_label" : "On",
          "validation" : {
             "required" : "1"
@@ -12,8 +12,8 @@
          "display_name" : "Payed",
          "field_class" : "Toggle",
          "render_hints" : {},
-         "on_value" : "on",
-         "default_value" : null,
+         "on_value" : "1",
+         "default_value" : "0",
          "off_label" : "Off"
       },
       "amount" : {

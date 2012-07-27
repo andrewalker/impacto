@@ -5,6 +5,17 @@ use namespace::autoclean;
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
 has '+crud_model_name' => ( default => 'DB::PeopleBankAccount' );
+
+sub datagrid_columns {
+    [qw/ person bank account agency /];
+}
+
+sub datagrid_columns_extra_params {
+    {
+        person => { fk => 'person.name' }
+    }
+}
+
 sub form_columns_extra_params {
     {
         person => { x_field_factory => "DBIC::BelongsTo", option_label => 'name', option_value => 'slug', },

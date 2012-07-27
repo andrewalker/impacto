@@ -24,8 +24,14 @@ sub form_columns_extra_params {
 
 sub datagrid_columns {
     [qw/
-        name supplier cost minimum_price price weight
+        name supplier price
     /]
+}
+
+sub datagrid_columns_extra_params {
+    {
+        supplier => { fk => 'supplier.person.name' }
+    }
 }
 
 has '+crud_model_name' => ( default => 'DB::ProductProduct' );

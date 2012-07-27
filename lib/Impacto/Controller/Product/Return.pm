@@ -5,6 +5,18 @@ use namespace::autoclean;
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
 has '+crud_model_name' => ( default => 'DB::ProductReturn' );
+
+sub datagrid_columns {
+    [ qw/ datetime consignation amount / ];
+}
+
+sub datagrid_columns_extra_params {
+    die "TODO: see datagrid_columns_extra_params in Impacto::Controller::Product::Return";
+    {
+        consignation   => { fk => [ 'consignation.datetime', 'consignation.representant.name' ] },
+    }
+}
+
 sub form_columns_extra_params {
     {
         consignation   => { x_field_factory => "DBIC::BelongsTo", option_value => 'id' },

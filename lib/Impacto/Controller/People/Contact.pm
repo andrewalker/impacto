@@ -5,6 +5,17 @@ use namespace::autoclean;
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
 has '+crud_model_name' => ( default => 'DB::PeopleContact' );
+
+sub datagrid_columns {
+    [qw/ date client answered type /];
+}
+
+sub datagrid_columns_extra_params {
+    {
+        client => { fk => 'client.person.name' }
+    }
+}
+
 sub form_columns_extra_params {
     {
         client   => { x_field_factory => "DBIC::BelongsTo", option_label => 'person.name', option_value => 'person', },

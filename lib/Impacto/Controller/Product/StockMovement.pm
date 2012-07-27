@@ -17,7 +17,7 @@ my $TYPE_OPTIONS = [
 
 has '+crud_model_name' => ( default => 'DB::ProductStockMovement' );
 sub datagrid_columns {
-    [ qw/ datetime amount type place product / ]
+    [ qw/ datetime product amount type place / ]
 }
 sub datagrid_columns_extra_params {
     {

@@ -4,6 +4,17 @@ use namespace::autoclean;
 
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
+sub datagrid_columns {
+    [qw/ client product subscription_date expiry_date /];
+}
+
+sub datagrid_columns_extra_params {
+    {
+        client  => { fk => 'client.person.name' },
+        product => { fk => 'product.name' }
+    }
+}
+
 has '+crud_model_name' => ( default => 'DB::ProductSubscription' );
 sub form_columns_extra_params {
     {

@@ -6,6 +6,10 @@ BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
 has '+crud_model_name' => ( default => 'DB::PeoplePerson' );
 
+sub datagrid_columns {
+    [ qw/ name phone email site / ]
+}
+
 sub form_columns {
     [ qw/ slug name phone email site client employee representant supplier comments / ]
 }

@@ -1,4 +1,5 @@
-[% META extra_js = 'browse.js' %]
+[% META extra_js  = 'browse.js' %]
+[% META extra_css = 'datagrid.css search.css' %]
 
 <script type="text/javascript">
     datagrid_layout = [% structure %];
@@ -8,23 +9,20 @@
     <p>Índice reconstruído.</p>
 [% END %]
 
-<section id="search">
-    <img src="[% static_root_uri %]/images/logotipo-impacto.png" alt="" />
-    <form method="get" action="" onsubmit="return false">
-        <fieldset>
-            <input name="q" data-dojo-type="dijit.form.TextBox" id='input_query' />
-            <button data-dojo-type="dijit.form.Button">
-                <img src="[% static_root_uri %]/images/search.png" height="23" alt="Pesquisar" />
-            </button>
-        </fieldset>
-    </form>
-</section>
-<section id="datagrid">
-    <div data-dojo-type="dijit.Menu" id="rowMenu" style="display: none;">
-        <!--div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: view">Visualizar</div-->
-        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: delete_row">Excluir</div>
-    </div>
-    <div data-dojo-type="dijit.Menu" id="selectedRegionMenu" style="display: none;">
-        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: delete_selected">Excluir</div>
-    </div>
-</section>
+<div class="tundra">
+    <section id="search">
+        <a href="[% root_uri %]" class="logo">
+            <img src="[% static_root_uri %]/images/logotipo-impacto.png" alt="" />
+        </a>
+        <form method="get" action="" onsubmit="return false">
+            <fieldset>
+                <input name="q" data-dojo-type="dijit.form.TextBox" id='input_query' data-dojo-props="onKeyUp: search_input_keypress" />
+                <button data-dojo-type="dijit.form.Button">
+                    <img src="[% static_root_uri %]/images/search.png" height="23" alt="Pesquisar" />
+                </button>
+            </fieldset>
+        </form>
+    </section>
+    <section id="datagrid">
+    </section>
+</div>

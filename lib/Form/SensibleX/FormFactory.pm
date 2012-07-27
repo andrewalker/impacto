@@ -272,7 +272,17 @@ sub get_form {
 
 sub get_row {
     my $self = shift;
-    return $self->container->resolve(service => '/Model/row');
+
+    my $c      = $self->container->get_sub_container('Model');
+    my $row    = $c->resolve(service => 'complete_row');
+    my $rs     = $c->resolve(service => 'resultset');
+
+    # $row->id returns the primary keys for the recently added row
+    # so I fetch the $row again from the database.
+    # I do this because otherwise some inflated fields (dates, etc),
+    # or fields formatted from the RDBMS such as money are not correctly
+    # inflated for ElasticSearch.
+    return $rs->find($row->id);
 }
 
 sub execute {

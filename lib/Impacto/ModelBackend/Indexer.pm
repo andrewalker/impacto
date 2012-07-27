@@ -13,24 +13,24 @@ has index_name => (
     isa => 'Str',
 );
 
-Readonly my %TYPE_MAP = (
-    text      => 'string',
-    varchar   => 'string',
+#Readonly my %TYPE_MAP = (
+#   text      => 'string',
+#   varchar   => 'string',
 
-    datetime  => 'date',
-    timestamp => 'date',
-    date      => 'date',
+#   datetime  => 'date',
+#   timestamp => 'date',
+#   date      => 'date',
 
-    integer   => 'integer',
-    float     => 'float',
-    #money     => 'float',
-    double    => 'double',
-);
+#   integer   => 'integer',
+#   float     => 'float',
+#   money     => 'float',
+#   double    => 'double',
+#);
 
 sub _get_type {
     my $data_type = shift;
 
-    return $TYPE_MAP{ $data_type } || 'string';
+    return 'string';
 }
 
 sub _get_properties {

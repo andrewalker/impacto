@@ -6,8 +6,12 @@ body {
 
 #top-menu {
     width: 100%;
-    background-color: #2d2d2d;
+    height: 38px;
+    overflow: hidden;
+    opacity: 0;
+/*    background-color: #2d2d2d;
     color: #c8c4aa;
+    */
     font-size: 13px;
 }
 
@@ -26,44 +30,15 @@ body {
     float: left;
     font-size: 13px;
     vertical-align: center;
+    /*
     background-color: #2d2d2d;
     padding: 8px 5px;
     margin: 0 8px;
     border-top: 2px solid #DD4B39;
     text-shadow: 1px 1px 0.5px #6d6d6d;
     min-width: 150px;
+    */
     text-align: center;
-}
-
-.tundra .dijitMenu, .tundra .dijitMenuBar {
-    margin: 0;
-    background-color: #2d2d2d;
-    border: 0;
-}
-
-.dijitMenuItem {
-    background-color: #2d2d2d;
-    padding: 5px 10px;
-}
-
-.dijitMenuPassive .dijitMenuItemHover,
-.dijitMenuItemSelected {
-    color: #c8c4aa;
-    background-color: #4d4d4d !important;
-    text-shadow: 1px 1px 1px #111;
-}
-
-.dijitMenuTable {
-    width: 150px;
-}
-
-.dijitMenuTable tr.dijitMenuItem td {
-    padding: 5px;
-}
-
-.dijitPopup .dijitMenuItem {
-    color: #c8c4aa;
-    font-size: 13px;
 }
 
 /* wrapper */
@@ -72,47 +47,3 @@ body {
     margin: 0 auto;
 }
 
-/* search bar section on top */
-#search {
-    width: 100%;
-    margin: 50px 0;
-    height: 53px;
-    padding: 5px;
-}
-
-#search > img {
-    float: left;
-}
-
-#search > form {
-    float: left;
-    margin: 7px 0 0 20px;
-    width: 685px;
-    display: block;
-}
-
-#search .dijitTextBox {
-    width: 625px;
-    font-size: 15px;
-    padding: 4px 2px;
-}
-
-/* table in the center */
-#datagrid .dojoxGrid {
-    font: 12px 'Trebuchet MS', Arial, sans-serif;
-}
-#datagrid {
-    width: 100%;
-    height: 400px;
-}
-#datagrid-table .dojoxGridHeader .dojoxGridCell {
-    background: #2d2d2d;
-    color: #c8c4aa !important;
-    font-size: 12.5px;
-    font-weight: normal;
-}
-#datagrid-table .dojoxGridHeader .dojoxGridCell.dojoxGridCellOver .dojoxGridSortNode,
-#datagrid-table .dojoxGridHeader .dojoxGridCellSortFocus .dojoxGridSortNodeFocus,
-#datagrid-table .dojoxGridHeader .dojoxGridCellSortFocus .dojoxGridSortNode {
-    background: #6d6d6d;
-}

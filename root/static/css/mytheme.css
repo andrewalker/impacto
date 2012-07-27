@@ -1,0 +1,75 @@
+.tundra .dijitMenuTable, .tundra .dijitMenuBar {
+    margin: 0;
+    background-color: #2d2d2d;
+    background-image: none;
+    border: 0;
+}
+
+.tundra .dijitMenuBar .dijitMenuItem {
+    color: #c8c4aa;
+    background-color: #2d2d2d;
+    padding: 6px 10px;
+    background-image: none;
+    border: 0;
+}
+
+.tundra .dijitMenuPassive .dijitMenuItemHover,
+.tundra .dijitMenuItemSelected {
+    color: #c8c4aa;
+    background-color: #4d4d4d !important;
+    background-image: none;
+    text-shadow: 1px 1px 1px #111;
+    padding: 6px 10px;
+    border: 0;
+}
+
+.dijitMenuTable {
+    width: 150px;
+}
+
+.dijitMenuTable tr.dijitMenuItem td {
+    padding: 5px;
+}
+
+.tundra .dijitMenuPopup .dijitMenuItem,
+.tundra .dijitMenuActive .dijitMenuItemHover,
+.tundra .dijitMenuActive .dijitMenuItemSelected {
+    color: #c8c4aa;
+    font-size: 13px;
+}
+
+#top-menu {
+    background-color: #2d2d2d;
+    color: #c8c4aa;
+}
+
+#top-menu h1.current-page {
+    background-color: #2d2d2d;
+    padding: 8px 5px;
+    margin: 0 8px;
+    border-top: 2px solid #DD4B39;
+    text-shadow: 1px 1px 0.5px #6d6d6d;
+    min-width: 150px;
+}
+
+.tundra .dijitFocusedLabel {
+    outline: none;
+}
+/*
+.tundra .dijitTextBoxHover {
+    background-color: #eee;
+}
+
+.tundra .dijitButton .dijitButtonNode, .tundra .dijitDropDownButton .dijitButtonNode, .tundra .dijitComboButton .dijitButtonNode, .tundra .dijitToggleButton .dijitButtonNode {
+    background-color: #eee;
+    background-image: none;
+}
+
+.tundra .dijitButtonHover .dijitButtonNode, .tundra .dijitDropDownButtonHover .dijitButtonNode, .tundra .dijitComboButton .dijitButtonNodeHover, .tundra .dijitComboButton .dijitDownArrowButtonHover, .tundra .dijitToggleButtonHover .dijitButtonNode {
+    background-color: #ccc;
+}
+*/
+
+.dijitInputField.dijitArrowButtonInner {
+    border: 0;
+}

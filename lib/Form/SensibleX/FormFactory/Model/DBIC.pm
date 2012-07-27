@@ -225,7 +225,7 @@ sub BUILD {
 
         service validate_form => (
             dependencies => [ depends_on('/form') ],
-            block        => sub { shift->param('form')->validate()->is_valid },
+            block        => sub { shift->param('form')->validate() },
             lifecycle    => 'Singleton', # as long as this doesn't persist through requests
         );
 
@@ -248,9 +248,17 @@ sub BUILD {
             block        => sub {
                 my $self = shift;
                 my $action = $self->param('action') eq 'create' ? 'insert' : 'update';
+                my $validation = $self->param('validate_form');
 
-                if (!$self->param('validate_form')) {
-                    croak 'form not valid';
+                if (!$validation->is_valid()) {
+                    my $messages = '';
+                    foreach my $key ( keys %{$validation->error_fields()} ) {
+                        $messages .= $key . "\n";
+                        foreach my $message ( @{ $validation->error_fields->{$key} } ) {
+                               $messages .= $message . "\n";
+                        }
+                    }
+                    croak "Form not valid.\n$messages";
                 }
 
                 my $row = $self->param('complete_row');
@@ -265,6 +273,7 @@ sub BUILD {
         );
 
         service complete_row => (
+            lifecycle    => 'Singleton',
             dependencies => {
                 mgr      => depends_on('/field_factory_manager'),
                 row      => depends_on('row_with_form_values'),

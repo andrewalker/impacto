@@ -38,7 +38,7 @@ sub get_elastic_search_insert_data {
         }
         elsif (my $fk = $column_params->{fk}) {
             my @items      = split /\./, $fk;
-            $data{$column} = reduce { $a->$b } $self, @items;
+            $data{$column} = reduce { $a ? $a->$b : '' } $self, @items;
         }
         else {
             $data{$column} = $self->get_column($column);

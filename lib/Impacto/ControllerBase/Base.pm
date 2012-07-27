@@ -10,6 +10,7 @@ sub global_base : Chained('/login/required') PathPart('') CaptureArgs(0) {
 
     $c->set_locale('pt_BR');
     $c->stash(
+        root_uri        => $c->uri_for('/'),
         static_root_uri => $c->uri_for('/static'),
         user            => $c->user,
     );

@@ -1,34 +1,18 @@
-dojo.require("dojox.grid.EnhancedGrid");
-dojo.require("dojox.grid.enhanced.plugins.Menu");
-dojo.require("dojox.grid.enhanced.plugins.NestedSorting");
-dojo.require("dojox.grid.enhanced.plugins.IndirectSelection");
-dojo.require("dojox.grid.enhanced.plugins.Pagination");
-dojo.require("dojox.data.QueryReadStore");
+require([
+    "dijit/form/TextBox",
+    "dijit/form/Button"
+]);
 
-
-dojo.require("dijit.form.TextBox");
-dojo.require("dijit.form.Button");
-
-/*
-dojo.require("dojox.grid.enhanced.plugins.DnD");
-*/
 var datagrid_layout;
 var datagrid_table;
 var timeout = 0;
 var last_term = '';
 var row_index;
 
-function datagrid_row_click_event(e) {
-    if (dojo.hasClass(e.target, 'dojoxGridCell'))
-        location.href = table_prefix_uri + '/' + datagrid_table.getItem(datagrid_table.focus.rowIndex).i._esid + '/update';
-}
-
-function set_row_index(e) {
-    row_index = e.rowIndex;
-}
+// search
 
 function search_input_keypress(e) {
-    var term = e.currentTarget.value;
+    var term = this.get('value');
 
     if (timeout)
         clearTimeout(timeout);
@@ -78,14 +62,71 @@ function _delete(rows) {
     });
 }
 
-dojo.addOnLoad(function () {
-    var datagrid_store = new dojox.data.QueryReadStore({
+// main
+require([
+    "dojo",
+    "dojo/parser",
+
+    "dijit/registry",
+
+    "dojo/dom",
+    "dojo/on",
+
+    "dijit/Menu",
+    "dijit/MenuItem",
+
+    "dojox/grid/EnhancedGrid",
+    "dojox/data/QueryReadStore",
+
+    "dojo/dom-class",
+
+    "dijit/form/TextBox",
+
+    "dojox/grid/enhanced/plugins/Menu",
+    "dojox/grid/enhanced/plugins/NestedSorting",
+    "dojox/grid/enhanced/plugins/IndirectSelection",
+    "dojox/grid/enhanced/plugins/Pagination",
+    "dojo/domReady!",
+],
+function (dojo, parser, registry, dom, on, Menu, MenuItem, Grid, Store, domclass) {
+    dojo.addOnLoad(function () {
+        dojo.fadeIn({
+            node: 'search'
+        }).play();
+    });
+
+    // datagrid
+
+    function datagrid_row_click_event(e) {
+        if (domclass.contains(e.target, 'dojoxGridCell'))
+            location.href = table_prefix_uri + '/' + datagrid_table.getItem(datagrid_table.focus.rowIndex).i._esid + '/update';
+    }
+
+    function set_row_index(e) {
+        row_index = e.rowIndex;
+    }
+
+    var row_menu = new Menu();
+    row_menu.addChild(new MenuItem({
+        "label": "Excluir",
+        "onClick": delete_row
+    }));
+    var selection_menu = new Menu();
+    selection_menu.addChild(new MenuItem({
+        "label": "Excluir",
+        "onClick": delete_selected
+    }));
+
+    row_menu.startup();
+    selection_menu.startup();
+
+    var datagrid_store = new Store({
         clearOnClose: true,
         url:          table_prefix_uri + '/list_json_data',
         identity:     '_esid'
     });
 
-    datagrid_table = new dojox.grid.EnhancedGrid({
+    datagrid_table = new Grid({
         plugins: {
             pagination: {
                 pageSizes: [ "1", "25", "50", "100" ],
@@ -97,8 +138,8 @@ dojo.addOnLoad(function () {
                 position: "bottom"
             },
             menus: {
-                rowMenu:            'rowMenu',
-                selectedRegionMenu: 'selectedRegionMenu'
+                rowMenu:            row_menu
+                //selectedRegionMenu: 'selectedRegionMenu'
             },
             nestedSorting:     true,
             indirectSelection: true
@@ -109,14 +150,13 @@ dojo.addOnLoad(function () {
         id: 'datagrid-table'
     }, document.createElement('div'));
 
-    dojo.byId("datagrid").appendChild(datagrid_table.domNode);
+    dom.byId("datagrid").appendChild(datagrid_table.domNode);
 
     datagrid_table.startup();
 
-    dojo.connect(datagrid_table, 'onRowContextMenu', set_row_index);
-    dojo.connect(datagrid_table, "onRowClick", datagrid_row_click_event);
-    dojo.connect(datagrid_table, "_onFetchComplete", function () { dojo.byId('input_query').focus() });
-    dojo.connect(dojo.byId('input_query'), "onkeyup", search_input_keypress);
+    datagrid_table.on('rowcontextmenu', set_row_index);
+    datagrid_table.on("rowclick", datagrid_row_click_event);
+    dojo.connect(datagrid_table, '_onFetchComplete', function () { registry.byId('input_query').focus() });
 
     datagrid_table.layout.setColumnVisibility(1, false);
 });

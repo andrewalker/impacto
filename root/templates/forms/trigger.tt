@@ -5,5 +5,5 @@
 [% ELSIF render_hints.render_as == 'button' %]
     <input type="button" id="[% css_prefix _ form.name %]_[% field_name %]_input" class="[% css_prefix %]input [% css_prefix _ field_type %]_input [% css_prefix _ field_name %]_input  [% IF !field.editable %] noteditable" disabled="disabled[% END %]" name="[% field_name %]" value="[% field.value ? field.value : field_display_name %]" />
 [% ELSE %]
-    <button type="submit" id="[% css_prefix _ form.name %]_[% field_name %]_input" class="[% css_prefix %]input [% css_prefix _ field_type %]_input [% css_prefix _ field_name %]_input  [% IF !field.editable %] noteditable" disabled="disabled[% END %]" name="[% field_name %]" data-dojo-type="dijit.form.Button">[% field.value ? field.value : field_display_name %]</button>
+    <button type="submit" id="[% css_prefix _ form.name %]_[% field_name %]_input" class="[% css_prefix %]input [% css_prefix _ field_type %]_input [% css_prefix _ field_name %]_input  [% IF !field.editable %] noteditable" disabled="disabled[% END %]" name="[% field_name %]" value="submit" data-dojo-type="dijit.form.Button">[% field.value ? field.value : field_display_name %]</button>
 [% END %]

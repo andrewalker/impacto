@@ -344,7 +344,7 @@ CREATE TABLE product (
     id integer NOT NULL,
     name text NOT NULL,
     supplier text,
-    cost money NOT NULL,
+    cost money,
     minimum_price money,
     price money NOT NULL,
     weight double precision,

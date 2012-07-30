@@ -177,16 +177,18 @@ SET search_path = people, pg_catalog;
 --
 
 CREATE TABLE address (
+    id  SERIAL NOT NULL,
     person text NOT NULL,
-    name text NOT NULL,
-    is_main_address boolean DEFAULT true NOT NULL,
-    number integer NOT NULL,
-    street text NOT NULL,
-    zip_code text NOT NULL,
+    street_address_line1 TEXT NOT NULL,
+    street_address_line2 TEXT,
+    borough text,
     city text NOT NULL,
     state text NOT NULL,
     country text NOT NULL,
     phone text
+    zip_code text NOT NULL,
+    post_office_box text,
+    is_main_address boolean DEFAULT true NOT NULL,
 );
 
 
@@ -602,7 +604,7 @@ SET search_path = people, pg_catalog;
 --
 
 ALTER TABLE ONLY address
-    ADD CONSTRAINT address_pkey PRIMARY KEY (person, name);
+    ADD CONSTRAINT address_pkey PRIMARY KEY (id);
 
 
 --

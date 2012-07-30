@@ -348,7 +348,9 @@ CREATE TABLE product (
     minimum_price money,
     price money NOT NULL,
     weight double precision,
-    image bytea
+    image bytea,
+    short_description text,
+    description text
 );
 
 CREATE TABLE product_meta (

@@ -344,6 +344,7 @@ CREATE TABLE product (
     id integer NOT NULL,
     name text NOT NULL,
     supplier text,
+    is_subscription boolean DEFAULT false NOT NULL,
     cost money,
     minimum_price money,
     price money NOT NULL,

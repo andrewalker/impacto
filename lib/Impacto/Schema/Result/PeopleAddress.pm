@@ -48,25 +48,10 @@ __PACKAGE__->table("people.address");
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 name
-
-  data_type: 'text'
-  is_nullable: 0
-
 =head2 is_main_address
 
   data_type: 'boolean'
   default_value: true
-  is_nullable: 0
-
-=head2 number
-
-  data_type: 'integer'
-  is_nullable: 0
-
-=head2 street
-
-  data_type: 'text'
   is_nullable: 0
 
 =head2 zip_code
@@ -94,19 +79,40 @@ __PACKAGE__->table("people.address");
   data_type: 'text'
   is_nullable: 1
 
+=head2 post_office_box
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 borough
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 street_address_line1
+
+  data_type: 'text'
+  is_nullable: 0
+
+=head2 street_address_line2
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 id
+
+  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'people.address_id_seq'
+
 =cut
 
 __PACKAGE__->add_columns(
   "person",
   { data_type => "text", is_foreign_key => 1, is_nullable => 0 },
-  "name",
-  { data_type => "text", is_nullable => 0 },
   "is_main_address",
   { data_type => "boolean", default_value => \"true", is_nullable => 0 },
-  "number",
-  { data_type => "integer", is_nullable => 0 },
-  "street",
-  { data_type => "text", is_nullable => 0 },
   "zip_code",
   { data_type => "text", is_nullable => 0 },
   "city",
@@ -117,21 +123,34 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 0 },
   "phone",
   { data_type => "text", is_nullable => 1 },
+  "post_office_box",
+  { data_type => "text", is_nullable => 1 },
+  "borough",
+  { data_type => "text", is_nullable => 1 },
+  "street_address_line1",
+  { data_type => "text", is_nullable => 0 },
+  "street_address_line2",
+  { data_type => "text", is_nullable => 1 },
+  "id",
+  {
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "people.address_id_seq",
+  },
 );
 
 =head1 PRIMARY KEY
 
 =over 4
 
-=item * L</person>
-
-=item * L</name>
+=item * L</id>
 
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("person", "name");
+__PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
@@ -151,8 +170,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-02-17 22:27:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Rh+wvgVYPwk70Z93AGplOg
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-30 19:49:46
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:4CrNuY40osIVTL742KlS7w
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

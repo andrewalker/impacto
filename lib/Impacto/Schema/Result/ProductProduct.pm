@@ -63,7 +63,7 @@ __PACKAGE__->table("product.product");
 =head2 cost
 
   data_type: 'money'
-  is_nullable: 0
+  is_nullable: 1
 
 =head2 minimum_price
 
@@ -85,6 +85,22 @@ __PACKAGE__->table("product.product");
   data_type: 'bytea'
   is_nullable: 1
 
+=head2 description
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 short_description
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 is_subscription
+
+  data_type: 'boolean'
+  default_value: false
+  is_nullable: 0
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -100,7 +116,7 @@ __PACKAGE__->add_columns(
   "supplier",
   { data_type => "text", is_foreign_key => 1, is_nullable => 1 },
   "cost",
-  { data_type => "money", is_nullable => 0 },
+  { data_type => "money", is_nullable => 1 },
   "minimum_price",
   { data_type => "money", is_nullable => 1 },
   "price",
@@ -109,6 +125,12 @@ __PACKAGE__->add_columns(
   { data_type => "double precision", is_nullable => 1 },
   "image",
   { data_type => "bytea", is_nullable => 1 },
+  "description",
+  { data_type => "text", is_nullable => 1 },
+  "short_description",
+  { data_type => "text", is_nullable => 1 },
+  "is_subscription",
+  { data_type => "boolean", default_value => \"false", is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
@@ -246,8 +268,8 @@ Composing rels: L</product_categories> -> category
 __PACKAGE__->many_to_many("categories", "product_categories", "category");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07015 @ 2012-03-13 00:13:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:chR2XlkrkxxbXx1Huqe5WQ
+# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-30 19:49:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:w8w9rDfAJXmtYKfCHj5CQw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

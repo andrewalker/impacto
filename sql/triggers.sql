@@ -1,5 +1,7 @@
 SET search_path = 'product';
 
+/* FUNCTIONS to power the triggers */
+
 CREATE OR REPLACE FUNCTION product_fix_stock_movement() RETURNS TRIGGER AS $$
 BEGIN
     /* this is wrong but not our problem */
@@ -75,6 +77,9 @@ BEGIN
     RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
+
+
+/* TRIGGERS */
 
 DROP TRIGGER IF EXISTS trigger_fix_stock_movement ON product.stock_movement;
 CREATE TRIGGER trigger_fix_stock_movement BEFORE INSERT OR UPDATE ON product.stock_movement

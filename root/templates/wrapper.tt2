@@ -37,7 +37,6 @@
                     document.write('<li data-dojo-type="dijit.MenuBarItem" data-dojo-props="onClick: function(){ location.href = \'[% table_prefix_uri %]\' }">Listar</li>');
                 }
             </script>
-            <li data-dojo-type="dijit.MenuBarItem" data-dojo-props="onClick: function(){ location.href = '[% table_prefix_uri %]/rebuild_index' }">Reindexar</li>
             [% END %]
             <li data-dojo-type="dijit.PopupMenuBarItem">
                 <a>Produtos</a>
@@ -83,6 +82,9 @@
                 <li data-dojo-type="dijit.PopupMenuBarItem">
                     <a>[% user.name %]</a>
                     <ul data-dojo-type="dijit.Menu" dir="ltr">
+                        [% IF table_prefix_uri %]
+                        <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '[% table_prefix_uri %]/rebuild_index' }">Reindexar</li>
+                        [% END %]
                         <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/profile/info' }">Dados</li>
                         <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/profile/options' }">Opções</li>
                         <li data-dojo-type="dijit.MenuItem" data-dojo-props="onClick: function(){ location.href = '/logout' }">Sair</li>

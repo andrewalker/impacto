@@ -1,10 +1,8 @@
 <input
     data-dojo-type="dijit.form.CheckBox"
     type="checkbox"
-    [% IF !field.editable %]
-        class="noteditable" disabled="disabled"
-    [% END %]
     name="[% field.name %]"
+    id="[% css_prefix _ form.name %]_[% field_name %]_input"
     value="1"
     [% IF field.value and field.value != 'false' %]
         checked="yes"

@@ -1,0 +1,14 @@
+<style type="text/css">
+.dijitEditorIFrameContainer {
+    padding: 0 10px;
+}
+</style>
+<div style="clear: both; width: 500px" class="[% css_prefix %]input [% css_prefix _ field_type %]_input [% css_prefix _ field_name %]_input">
+    <div data-dojo-type="dijit.Editor"
+        id="[% css_prefix _ form.name %]_[% field_name %]_editor"
+        data-dojo-props="onChange: function () {  dojo.byId('[% css_prefix _ form.name %]_[% field_name %]_input').value = this.getValue() }"
+    >
+        [% field.value %]
+    </div>
+    <input type="hidden" name="[% field_name %]" id="[% css_prefix _ form.name %]_[% field_name %]_input" value="[% field.value | html %]" />
+</div>

@@ -13,24 +13,24 @@ has index_name => (
     isa => 'Str',
 );
 
-#Readonly my %TYPE_MAP = (
-#   text      => 'string',
-#   varchar   => 'string',
+Readonly my %TYPE_MAP = (
+   text      => 'string',
+   varchar   => 'string',
 
-#   datetime  => 'date',
-#   timestamp => 'date',
-#   date      => 'date',
+   datetime  => 'date',
+   timestamp => 'date',
+   date      => 'date',
 
-#   integer   => 'integer',
-#   float     => 'float',
-#   money     => 'float',
-#   double    => 'double',
-#);
+   integer   => 'integer',
+   float     => 'float',
+   money     => 'float',
+   double    => 'double',
+);
 
 sub _get_type {
     my $data_type = shift;
 
-    return 'string';
+    return $TYPE_MAP{$data_type} || 'string';
 }
 
 sub _get_properties {
@@ -38,15 +38,15 @@ sub _get_properties {
     my %properties;
 
     foreach my $column (@{ $columns }) {
-        my $type = _get_type( $source->column_info($column)->{data_type} );
+        #my $type = _get_type( $source->has_column($column) ? $source->column_info($column)->{data_type} : '' );
         $properties{$column} = {
             type   => 'multi_field',
             fields => {
                 $column => {
-                    type => $type,
+                    type => 'string',
                 },
                 untouched => {
-                    type           => $type,
+                    type           => 'string',
                     index          => 'not_analyzed',
                     include_in_all => 0,
                 },

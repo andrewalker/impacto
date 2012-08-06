@@ -11,6 +11,7 @@ require([
     "dijit/form/DateTextBox",
     "dijit/form/FilteringSelect",
     "dijit/form/Button",
+    "dijit/Editor",
     "dojo/domReady!"
 ], function (dojo, $) {
     var node = $('form.fs_form').pop();

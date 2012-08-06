@@ -100,19 +100,17 @@
          "integer_only" : "1"
       },
       "id" : {
-         "field_type" : "number",
+         "field_type" : "hidden",
          "value" : null,
+         "maximum_length" : 256,
          "name" : "id",
          "validation" : {
-            "required" : "1"
+            "required" : "0"
          },
-         "display_name" : "Id",
-         "field_class" : "Number",
-         "render_hints" : {
-            "field_type" : "hidden"
-         },
+         "display_name" : "id",
+         "field_class" : "Text",
          "default_value" : null,
-         "integer_only" : "1"
+         "should_truncate" : "0"
       }
    },
    "name" : "product.consignation",

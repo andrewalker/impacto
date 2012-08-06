@@ -15,7 +15,7 @@
          "should_truncate" : "0"
       },
       "amount" : {
-         "field_type" : "text",
+         "field_type" : "money",
          "value" : null,
          "maximum_length" : 256,
          "name" : "amount",

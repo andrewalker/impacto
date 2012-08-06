@@ -1,5 +1,18 @@
 {
    "fields" : {
+      "id" : {
+         "field_type" : "hidden",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "id",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "id",
+         "field_class" : "Text",
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
       "country" : {
          "field_type" : "text",
          "value" : "Brasil",
@@ -14,28 +27,57 @@
          "default_value" : "Brasil",
          "should_truncate" : "0"
       },
-      "number" : {
-         "field_type" : "number",
-         "value" : null,
-         "name" : "number",
-         "validation" : {
-            "required" : "1"
-         },
-         "display_name" : "Number",
-         "field_class" : "Number",
-         "render_hints" : {},
-         "default_value" : null,
-         "integer_only" : "1"
-      },
-      "street" : {
+      "borough" : {
          "field_type" : "text",
          "value" : null,
          "maximum_length" : 256,
-         "name" : "street",
+         "name" : "borough",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Borough",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "street_address_line1" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "street_address_line1",
          "validation" : {
             "required" : "1"
          },
          "display_name" : "Street",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "street_address_line2" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "street_address_line2",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Street",
+         "field_class" : "Text",
+         "render_hints" : {},
+         "default_value" : null,
+         "should_truncate" : "0"
+      },
+      "post_office_box" : {
+         "field_type" : "text",
+         "value" : null,
+         "maximum_length" : 256,
+         "name" : "post_office_box",
+         "validation" : {
+            "required" : "1"
+         },
+         "display_name" : "Post Office Box",
          "field_class" : "Text",
          "render_hints" : {},
          "default_value" : null,
@@ -69,20 +111,6 @@
          "on_value" : "1",
          "default_value" : "0",
          "off_label" : "Off"
-      },
-      "name" : {
-         "field_type" : "text",
-         "value" : null,
-         "maximum_length" : 256,
-         "name" : "name",
-         "validation" : {
-            "required" : "1"
-         },
-         "display_name" : "Name",
-         "field_class" : "Text",
-         "render_hints" : {},
-         "default_value" : null,
-         "should_truncate" : "0"
       },
       "zip_code" : {
          "field_type" : "text",

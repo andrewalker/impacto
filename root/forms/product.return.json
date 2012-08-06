@@ -38,6 +38,7 @@
          "render_hints" : {},
          "x_field_factory" : "DBIC::BelongsTo",
          "option_value" : "id",
+         "option_label" :  [ "datetime", "representant.person" ],
          "default_value" : null,
          "integer_only" : "1"
       },
@@ -52,6 +53,7 @@
          "render_hints" : {},
          "x_field_factory" : "DBIC::BelongsTo",
          "option_value" : "id",
+         "option_label" :  [ "datetime", "product.name" ],
          "default_value" : null,
          "integer_only" : "1"
       },
@@ -73,7 +75,7 @@
          "value" : null,
          "name" : "id",
          "validation" : {
-            "required" : "1"
+            "required" : "0"
          },
          "display_name" : "Id",
          "field_class" : "Number",

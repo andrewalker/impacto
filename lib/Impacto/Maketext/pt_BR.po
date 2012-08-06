@@ -50,17 +50,20 @@ msgstr "Endereço"
 msgid "crud.people.address.person"
 msgstr "Pessoa"
 
-msgid "crud.people.address.name"
-msgstr "Nome"
+msgid "crud.people.address.post_office_box"
+msgstr "Caixa Postal"
+
+msgid "crud.people.address.borough"
+msgstr "Bairro"
 
 msgid "crud.people.address.is_main_address"
 msgstr "Endereço principal"
 
-msgid "crud.people.address.number"
-msgstr "Número"
+msgid "crud.people.address.street_address_line1"
+msgstr "Linha 1"
 
-msgid "crud.people.address.street"
-msgstr "Rua"
+msgid "crud.people.address.street_address_line2"
+msgstr "Linha 2"
 
 msgid "crud.people.address.zip_code"
 msgstr "CEP"
@@ -375,6 +378,15 @@ msgstr "Peso"
 msgid "crud.product.product.image"
 msgstr "Imagem"
 
+msgid "crud.product.product.description"
+msgstr "Descrição"
+
+msgid "crud.product.product.short_description"
+msgstr "Resumo"
+
+msgid "crud.product.product.is_subscription"
+msgstr "Assinatura"
+
 msgid "crud.product.product.categories"
 msgstr "Categorias"
 
@@ -479,7 +491,7 @@ msgid "crud.finance.installment_payment.date"
 msgstr "Data"
 
 msgid "crud.finance.installment_payment.amount"
-msgstr "Quantidade"
+msgstr "Valor"
 
 msgid "crud.finance.installment_payment.account"
 msgstr "Cliente"

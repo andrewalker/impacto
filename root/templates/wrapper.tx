@@ -7,7 +7,7 @@
     <link href="<: $static_root_uri :>/lib/dojox/grid/enhanced/resources/EnhancedGrid.css" type="text/css" rel="stylesheet" />
     <link href="<: $static_root_uri :>/lib/dojox/grid/enhanced/resources/tundra/EnhancedGrid.css" type="text/css" rel="stylesheet" />
     <link href="<: $static_root_uri :>/css/main.css" type="text/css" rel="stylesheet" />
-    <link href="<: $static_root_uri :>/css/mytheme.css" type="text/css" rel="stylesheet" />
+    <link href="<: $static_root_uri :>/css/menu.css" type="text/css" rel="stylesheet" />
 
 :   for $extra_css -> $css {
     <link href="<: $static_root_uri :>/css/<: $css :>" type="text/css" rel="stylesheet" />

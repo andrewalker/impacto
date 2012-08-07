@@ -1,6 +1,6 @@
 <:
     cascade wrapper {
-        extra_js  => [ 'browse.js' ],
+        extra_js  => [ 'list.js' ],
         extra_css => [ 'datagrid.css', 'search.css' ],
     }
     block content -> {

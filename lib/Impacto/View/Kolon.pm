@@ -1,4 +1,4 @@
-package Impacto::View::TT;
+package Impacto::View::Kolon;
 
 use utf8;
 
@@ -30,18 +30,18 @@ __END__
 
 =head1 NAME
 
-Impacto::View::TT - TT View for Impacto
+Impacto::View::Kolon - Kolon View for Impacto
 
 =head1 DESCRIPTION
 
-TT View for Impacto.
+Kolon View for Impacto.
 
 =head1 METHODS
 
 =head2 get_first_existing_template
 
-Given a list of template names (without the TEMPLATE_EXTENSION), returns the
-first one which exists in the filesystem (with the TEMPLATE_EXTENSION).
+Given a list of template names (without the extension), returns the
+first one which exists in the filesystem (with the extension).
 
 =head1 SEE ALSO
 

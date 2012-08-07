@@ -1,0 +1,66 @@
+<nav id="top-menu">
+    <h1 class="current-page">[% title || "Home" %]</h1>
+    <ul data-dojo-type="dijit.MenuBar">
+        [% IF crud_action %]
+            [% IF crud_action == 'list' %]
+                <li data-dojo-type="imp.MenuBarItem" data-dojo-props="href:'[% table_prefix_uri %]/create'">Inserir</li>
+            [% ELSE %]
+                <li data-dojo-type="imp.MenuBarItem" data-dojo-props="href:'[% table_prefix_uri %]'">Listar</li>
+            [% END %]
+        [% END %]
+
+        <li data-dojo-type="dijit.PopupMenuBarItem">
+            <a>Produtos</a>
+            <ul data-dojo-type="dijit.Menu">
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/product/category'">Categoria</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/product/product'">Produtos</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/product/productcategory'">Produtos | Categoria</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/product/subscription'">Assinatura</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/product/productstock'">Estoque do Produto</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/product/stockmovement'">Movimento de Estoque</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/product/place'">Local de Estoque</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/product/consignation'">Consignação</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/product/return'">Retorno</li>
+            </ul>
+        </li>
+        <li data-dojo-type="dijit.PopupMenuBarItem">
+            <a>Pessoas</a>
+            <ul data-dojo-type="dijit.Menu">
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/people/person'">Pessoa</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/people/address'">Endereço</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/people/bankaccount'">Conta bancária</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/people/contact'">Contato</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/people/document'">Documento</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/people/employee'">Empregado</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/people/representant'">Representante</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/people/supplier'">Fornecedor</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/people/client'">Cliente</li>
+            </ul>
+        </li>
+        <li data-dojo-type="dijit.PopupMenuBarItem">
+            <a>Financeiro</a>
+            <ul data-dojo-type="dijit.Menu">
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/finance/account'">Conta</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/finance/ledger'">Transação</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/finance/installment'">Parcela</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/finance/installmentpayment'">Pagamento da Parcela</li>
+                <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/finance/ledgertype'">Tipo de Transação</li>
+            </ul>
+        </li>
+    </ul>
+    <nav id="user-menu" dir="rtl">
+        <ul data-dojo-type="dijit.MenuBar">
+            <li data-dojo-type="dijit.PopupMenuBarItem">
+                <a>[% user.name %]</a>
+                <ul data-dojo-type="dijit.Menu" dir="ltr">
+                    [% IF table_prefix_uri %]
+                    <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'[% table_prefix_uri %]/rebuild_index'">Reindexar</li>
+                    [% END %]
+                    <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/profile/info'">Dados</li>
+                    <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/profile/options'">Opções</li>
+                    <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/logout'">Sair</li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</nav>

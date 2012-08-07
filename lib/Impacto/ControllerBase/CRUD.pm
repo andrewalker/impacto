@@ -102,9 +102,10 @@ sub list : Chained('crud_base') PathPart('') Args(0) {
     my ($self, $c) = @_;
 
     $c->stash(
-        template  => 'list.tt2',
-        structure => to_json($self->get_browse_structure()),
-        identity  => '_esid',
+        template    => 'list.tt2',
+        structure   => to_json($self->get_browse_structure()),
+        identity    => '_esid',
+        crud_action => 'list',
     );
 }
 
@@ -192,9 +193,10 @@ sub make_form_action {
     my $form     = $form_factory->get_form;
 
     $c->stash(
-        form      => $form,
-        form_html => $self->render_form( $form ),
-        template  => $template,
+        form        => $form,
+        form_html   => $self->render_form( $form ),
+        template    => $template,
+        crud_action => $action,
     );
 }
 

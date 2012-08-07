@@ -1,7 +1,7 @@
 : cascade with macros::menu
 <nav id="top-menu">
     <h1 class="current-page"><: $title // "Home" :></h1>
-    <ul data-dojo-type="dijit.MenuBar">
+    <ul data-dojo-type="dijit.MenuBar" class="topMenuBar">
 <:
         get_crud_action()
 
@@ -38,7 +38,7 @@
 :>
     </ul>
     <nav id="user-menu" dir="rtl">
-        <ul data-dojo-type="dijit.MenuBar">
+        <ul data-dojo-type="dijit.MenuBar" class="userMenuBar">
 <:
             my $rebuild = $table_prefix_uri
                         ? [ $table_prefix_uri ~ '/rebuild_index' => 'Reindexar' ]

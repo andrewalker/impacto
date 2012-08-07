@@ -25,20 +25,18 @@ body {
     top: 0;
 }
 
-#top-menu h1.current-page {
+h1.current-page {
     display: block;
     float: left;
     font-size: 13px;
     vertical-align: center;
-    /*
+    text-align: center;
     background-color: #2d2d2d;
     padding: 8px 5px;
     margin: 0 8px;
     border-top: 2px solid #DD4B39;
     text-shadow: 1px 1px 0.5px #6d6d6d;
     min-width: 150px;
-    */
-    text-align: center;
 }
 
 /* wrapper */
@@ -47,3 +45,10 @@ body {
     margin: 0 auto;
 }
 
+.dijitFocusedLabel {
+    outline: none !important; /* I hate outlines! */
+}
+
+.dijitInputField.dijitArrowButtonInner {
+    border: 0;
+}

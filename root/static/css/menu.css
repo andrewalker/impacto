@@ -1,0 +1,59 @@
+#top-menu {
+    background-color: #2d2d2d;
+    color: #c8c4aa;
+}
+
+.topNavMenu.dijitMenuTable,
+#top-menu  .dijitMenuBar   {
+    margin: 0;
+    background-color: #2d2d2d;
+    background-image: none;
+    border: 0;
+}
+
+.dijitMenuPopup  .topNavMenuItem.dijitMenuItem,
+.dijitMenuActive .topNavMenuItem.dijitMenuItemHover,
+.dijitMenuActive .topNavMenuItem.dijitMenuItemSelected,
+.dijitMenuBar    .topNavMenuItem.dijitMenuItem {
+    background: none;
+}
+
+.dijitMenuBar .topNavMenuItem.dijitMenuItem {
+    padding: 6px 10px;
+    border: 0;
+}
+
+.dijitMenuBar .topNavMenuItem.dijitMenuItem a {
+    color: #c8c4aa;
+}
+
+.dijitMenuPassive .topNavMenuItem.dijitMenuItemHover,
+.topNavMenuItem.dijitMenuItemSelected {
+    padding: 6px 10px;
+    border: 0;
+    color: #c8c4aa;
+    background-color: #4d4d4d !important;
+    background-image: none;
+    text-shadow: 1px 1px 1px #111;
+}
+
+.dijitMenuPassive .topNavMenuItem.dijitMenuItemHover a {
+    color: #c8c4aa;
+    text-shadow: 1px 1px 1px #111;
+}
+
+.dijitMenuTable {
+    width: 150px;
+}
+
+.dijitMenuTable tr.dijitMenuItem td {
+    padding: 5px;
+}
+
+.dijitMenuPopup  .topNavMenuItem.dijitMenuItem a,
+.dijitMenuActive .topNavMenuItem.dijitMenuItemHover a,
+.dijitMenuActive .topNavMenuItem.dijitMenuItemSelected a {
+    color: #c8c4aa;
+    font-size: 13px;
+    text-decoration: none;
+}

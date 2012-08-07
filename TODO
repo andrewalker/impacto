@@ -1,8 +1,8 @@
-    - field factory bytea to display image when editing
-
-    - make things pretty
-        - dojo (Date fields, theming forms, menus, etc)
-        - login screen
+    - create pages for
+        - sale
+        - purchase
+        - consignation
+        - return
 
     - subforms!
         - breadcrumbs
@@ -11,5 +11,11 @@
         - children
             item in the menu
 
-    - Create a page to manage users
-    - Create a page for user's settings
+    - product.return field 'confirmed'
+        - two forms for return
+            - one for employees, with confirmed set to true
+            - one for representant, with confirmed set to false
+
+    - field factory bytea to display image when editing
+    - create a page to manage users
+    - create a page for user's settings

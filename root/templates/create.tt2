@@ -1,3 +1,1 @@
-[% META extra_css = 'form.css' %]
-[% META extra_js  = 'form.js'  %]
-[% form_html %]
+: include form

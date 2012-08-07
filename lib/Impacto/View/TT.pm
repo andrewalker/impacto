@@ -1,10 +1,11 @@
 package Impacto::View::TT;
 
 use utf8;
-use strict;
-use warnings;
 
-use base 'Catalyst::View::TT';
+use Moose;
+use namespace::autoclean;
+
+extends 'Catalyst::View::Xslate';
 
 sub get_first_existing_template {
     my ($self, @names) = @_;
@@ -18,6 +19,8 @@ sub get_first_existing_template {
         }
     }
 }
+
+__PACKAGE__->meta->make_immutable;
 
 1;
 

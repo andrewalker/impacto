@@ -102,7 +102,7 @@ sub list : Chained('crud_base') PathPart('') Args(0) {
     my ($self, $c) = @_;
 
     $c->stash(
-        template    => 'list.tt2',
+        template    => $c->view('TT')->get_first_existing_template($c->action, 'list'),
         structure   => to_json($self->get_browse_structure()),
         identity    => '_esid',
         crud_action => 'list',

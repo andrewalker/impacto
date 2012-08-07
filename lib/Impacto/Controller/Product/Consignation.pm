@@ -13,7 +13,7 @@ sub datagrid_columns {
 sub datagrid_columns_extra_params {
     {
         product      => { fk => 'product.name' },
-        representant => { fk => 'person.name' },
+        representant => { fk => 'representant.person.name' },
     }
 }
 

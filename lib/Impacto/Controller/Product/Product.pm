@@ -6,12 +6,12 @@ BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 
 sub form_columns {
     [qw/
-         name supplier cost minimum_price price weight image categories product_metas
+         name is_subscription supplier cost minimum_price price weight short_description description product_metas categories
     /]
 }
 sub form_columns_extra_params {
     {
-        supplier      => { x_field_factory => "DBIC::BelongsTo", option_label => 'person', option_value => 'person' },
+        supplier      => { x_field_factory => "DBIC::BelongsTo", option_label => 'person.name', option_value => 'person' },
         image         => { x_field_class => 'FileSelector::CatalystByteA' },
         categories    => { x_field_factory => 'DBIC::ManyToMany', option_label => 'name', option_value => 'slug' },
         product_metas => { x_field_factory => 'DBIC::RecordMeta',

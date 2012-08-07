@@ -7,7 +7,7 @@ BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 has '+crud_model_name' => ( default => 'DB::PeopleAddress' );
 
 sub datagrid_columns {
-    [ qw/ person phone street number city state zip_code / ];
+    [ qw/ person phone street_address_line1 city state zip_code / ];
 }
 
 sub datagrid_columns_extra_params {

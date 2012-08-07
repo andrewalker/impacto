@@ -10,6 +10,7 @@ require([
     "dijit/PopupMenuItem",
     "dojo/domReady!",
 ], function (dojo) {
+/*
     var hideLoader = function(){
         dojo.fadeOut({
             node:"preloader",
@@ -19,10 +20,11 @@ require([
             }
         }).play();
     };
+*/
     dojo.addOnLoad(function () {
         dojo.fadeIn({
             node: 'top-menu'
-         //   onEnd: hideLoader
+//          onEnd: hideLoader
         }).play();
     });
 });

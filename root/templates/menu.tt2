@@ -1,13 +1,14 @@
 <nav id="top-menu">
-    <h1 class="current-page">[% title || "Home" %]</h1>
+    <h1 class="current-page"><: $title // "Home" :></h1>
     <ul data-dojo-type="dijit.MenuBar">
-        [% IF crud_action %]
-            [% IF crud_action == 'list' %]
-                <li data-dojo-type="imp.MenuBarItem" data-dojo-props="href:'[% table_prefix_uri %]/create'">Inserir</li>
-            [% ELSE %]
-                <li data-dojo-type="imp.MenuBarItem" data-dojo-props="href:'[% table_prefix_uri %]'">Listar</li>
-            [% END %]
-        [% END %]
+:       if $crud_action {
+:           if $crud_action == 'list' {
+                <li data-dojo-type="imp.MenuBarItem" data-dojo-props="href:'<: $table_prefix_uri :>/create'">Inserir</li>
+:           }
+:           else {
+                <li data-dojo-type="imp.MenuBarItem" data-dojo-props="href:'<: $table_prefix_uri :>'">Listar</li>
+:           }
+:       }
 
         <li data-dojo-type="dijit.PopupMenuBarItem">
             <a>Produtos</a>
@@ -51,11 +52,11 @@
     <nav id="user-menu" dir="rtl">
         <ul data-dojo-type="dijit.MenuBar">
             <li data-dojo-type="dijit.PopupMenuBarItem">
-                <a>[% user.name %]</a>
+                <a><: $user.name :></a>
                 <ul data-dojo-type="dijit.Menu" dir="ltr">
-                    [% IF table_prefix_uri %]
-                    <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'[% table_prefix_uri %]/rebuild_index'">Reindexar</li>
-                    [% END %]
+:                   if $table_prefix_uri {
+                    <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'<: table_prefix_uri :>/rebuild_index'">Reindexar</li>
+:                   }
                     <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/profile/info'">Dados</li>
                     <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/profile/options'">Opções</li>
                     <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/logout'">Sair</li>

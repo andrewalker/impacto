@@ -1,24 +1,29 @@
-[% META extra_js  = 'browse.js' %]
-[% META extra_css = 'datagrid.css search.css' %]
+<:
+    cascade wrapper {
+        extra_js  => [ 'browse.js' ],
+        extra_css => [ 'datagrid.css', 'search.css' ],
+    }
+    block content -> {
+:>
 
 <script type="text/javascript">
-    datagrid_layout = [% structure %];
+    datagrid_layout = <: $structure | raw :>;
 </script>
 
-[% IF rebuilt_index %]
+: if $rebuilt_index {
     <p>Índice reconstruído.</p>
-[% END %]
+: }
 
 <div class="tundra">
     <section id="search">
-        <a href="[% root_uri %]" class="logo">
-            <img src="[% static_root_uri %]/images/logotipo-impacto.png" alt="" />
+        <a href="<: $root_uri :>" class="logo">
+            <img src="<: $static_root_uri :>/images/logotipo-impacto.png" alt="" />
         </a>
         <form method="get" action="" onsubmit="return false">
             <fieldset>
                 <input name="q" data-dojo-type="dijit.form.TextBox" id='input_query' data-dojo-props="onKeyUp: search_input_keypress" />
                 <button data-dojo-type="dijit.form.Button">
-                    <img src="[% static_root_uri %]/images/search.png" height="23" alt="Pesquisar" />
+                    <img src="<: $static_root_uri :>/images/search.png" height="23" alt="Pesquisar" />
                 </button>
             </fieldset>
         </form>
@@ -26,3 +31,5 @@
     <section id="datagrid">
     </section>
 </div>
+
+:   }

@@ -10,8 +10,8 @@ extends 'Catalyst::View::Xslate';
 sub get_first_existing_template {
     my ($self, @names) = @_;
 
-    my @paths = @{ $self->include_path };
-    my $ext   = $self->config->{TEMPLATE_EXTENSION};
+    my @paths = @{ $self->path };
+    my $ext   = $self->template_extension;
 
     foreach my $path (@paths) {
         foreach my $name (@names) {

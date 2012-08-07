@@ -55,7 +55,7 @@
                 <a><: $user.name :></a>
                 <ul data-dojo-type="dijit.Menu" dir="ltr">
 :                   if $table_prefix_uri {
-                    <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'<: table_prefix_uri :>/rebuild_index'">Reindexar</li>
+                    <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'<: $table_prefix_uri :>/rebuild_index'">Reindexar</li>
 :                   }
                     <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/profile/info'">Dados</li>
                     <li data-dojo-type="imp.MenuItem" data-dojo-props="href:'/profile/options'">Opções</li>

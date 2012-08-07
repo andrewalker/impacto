@@ -1,37 +1,34 @@
-[% IF nowrap %]
-    [% content %]
-[% ELSE %]
-[% SET wrapper_extra_css = extra_css or template.extra_css %]
-[% SET wrapper_extra_js  = extra_js  or template.extra_js  %]
-[% SET dijit_theme       = "tundra"                        %]
+: my $dijit_theme = "tundra";
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Impacto[% IF title %] - [% title %][% END %]</title>
-    <link href="[% static_root_uri %]/lib/dijit/themes/[% dijit_theme %]/[% dijit_theme %].css" type="text/css" rel="stylesheet" />
-    <link href="[% static_root_uri %]/lib/dojox/grid/enhanced/resources/EnhancedGrid.css" type="text/css" rel="stylesheet" />
-    <link href="[% static_root_uri %]/lib/dojox/grid/enhanced/resources/tundra/EnhancedGrid.css" type="text/css" rel="stylesheet" />
-    <link href="[% static_root_uri %]/css/main.css" type="text/css" rel="stylesheet" />
-    <link href="[% static_root_uri %]/css/mytheme.css" type="text/css" rel="stylesheet" />
-    [% IF wrapper_extra_css %][% FOREACH css IN wrapper_extra_css.split(' ') %]
-        <link href="[% static_root_uri %]/css/[% css %]" type="text/css" rel="stylesheet" />
-    [% END %][% END %]
-    [% IF table_prefix_uri %]
+    <title>Impacto<: if $title { ' - ' ~ $title } :></title>
+    <link href="<: $static_root_uri :>/lib/dijit/themes/<: $dijit_theme :>/<: $dijit_theme :>.css" type="text/css" rel="stylesheet" />
+    <link href="<: $static_root_uri :>/lib/dojox/grid/enhanced/resources/EnhancedGrid.css" type="text/css" rel="stylesheet" />
+    <link href="<: $static_root_uri :>/lib/dojox/grid/enhanced/resources/tundra/EnhancedGrid.css" type="text/css" rel="stylesheet" />
+    <link href="<: $static_root_uri :>/css/main.css" type="text/css" rel="stylesheet" />
+    <link href="<: $static_root_uri :>/css/mytheme.css" type="text/css" rel="stylesheet" />
+
+:   for $extra_css -> $css {
+    <link href="<: $static_root_uri :>/css/<: $css :>" type="text/css" rel="stylesheet" />
+:   }
+
+:   if $table_prefix_uri {
     <script type="text/javascript">
-        var table_prefix_uri = '[% table_prefix_uri %]';
+        var table_prefix_uri = '<: $table_prefix_uri :>';
     </script>
-    [% END %]
+:   }
 </head>
-<body class="[% dijit_theme %]">
-    [% IF user %]
-        [% INCLUDE menu.tt2 %]
-    [% END %]
+<body class="<: $dijit_theme :>">
+:   if $user { include menu }
+
     <div class="wrapper">
-        [% content %]
+        <: content() :>
     </div>
+
     <script type="text/javascript">
     var dojoConfig = {
-        baseUrl:     '[% static_root_uri %]/',
+        baseUrl:     '<: $static_root_uri :>/',
         parseOnLoad: true,
         async:       true,
         locale:      'pt-br',
@@ -43,11 +40,14 @@
         ]
     };
     </script>
-    <script type="text/javascript" src="[% static_root_uri %]/lib/dojo/dojo.js"></script>
-    [% IF user %]<script type="text/javascript" src="[% static_root_uri %]/js/menu.js"></script>[% END %]
-    [% IF wrapper_extra_js %][% FOREACH js IN wrapper_extra_js.split(' ') %]
-        <script type="text/javascript" src="[% static_root_uri %]/js/[% js %]"></script>
-    [% END %][% END %]
+    <script type="text/javascript" src="<: $static_root_uri :>/lib/dojo/dojo.js"></script>
+
+:   if $user {
+        <script type="text/javascript" src="<: $static_root_uri :>/js/menu.js"></script>
+:   }
+
+:   for $extra_js -> $js {
+        <script type="text/javascript" src="<: $static_root_uri :>/js/<: $js :>"></script>
+:   }
 </body>
 </html>
-[% END %]

@@ -1,0 +1,32 @@
+:   macro popup_menu -> ($name, $items, $ltr) {
+    <li data-dojo-type="dijit.PopupMenuBarItem">
+        <a><: $name :></a>
+        <ul data-dojo-type="dijit.Menu" <: if $ltr { :>dir="ltr"<: } :>>
+<:
+        for $items -> $item {
+            if ($~item.index % 2) == 0 {
+                :><li data-dojo-type="imp.MenuItem" data-dojo-props="href:'<: $item :>'"><:
+            }
+            else {
+                $item ~ raw('</li>')
+            }
+        }
+:>
+        </ul>
+    </li>
+:   }
+
+<:
+    macro get_crud_action -> {
+        if $crud_action {
+            my $action_menu_item = $crud_action == 'list' ? {
+                url  => $table_prefix_uri ~ '/create',
+                text => 'Inserir',
+            } : {
+                url  => $table_prefix_uri,
+                text => 'Listar',
+            }
+            :><li data-dojo-type="imp.MenuBarItem" data-dojo-props="href:'<: $action_menu_item.url :>'"><: $action_menu_item.text :></li><:
+        }
+    }
+:>

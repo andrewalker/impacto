@@ -85,6 +85,8 @@ sub _get_sort_array {
     my @result = map {
         ( substr($_, 0, 1) eq '-' ) ?
             { substr($_, 1) . '.untouched' => 'desc' } :
+        ( substr($_, 0, 1) =~ qr/\W/ ) ?
+            { substr($_, 1) . '.untouched' => 'asc'  } :
             { $_            . '.untouched' => 'asc'  }
     } split /,/, $sort;
 

@@ -113,14 +113,20 @@ sub list_json_data : Chained('crud_base') PathPart Args(0) {
     my ($self, $c) = @_;
 
     my $query = $c->req->query_params;
+    my $range = $self->parse_range($c->req->headers->header('Range'));
 
     my $results = $c->model('Search')->browse_data({
         type  => $self->elastic_search_pseudo_table,
         query => $query->{q},
-        start => $query->{start},
-        count => $query->{count},
+        start => $range->{start},
+        count => $range->{count},
         sort  => $query->{sort},
     });
+
+    my $start = $range->{start};
+    my $end   = $range->{end} > $results->{total} ? $results->{total} : $range->{end};
+
+    $c->res->headers->header('Content-Range' => "items $start-$end/$results->{total}");
 
     $c->res->body(to_json($results->{items}));
     return 0;
@@ -130,6 +136,19 @@ sub list_json_data : Chained('crud_base') PathPart Args(0) {
         items        => $results->{items},
         numRows      => $results->{total},
     );
+}
+
+sub parse_range {
+    my ($self, $range) = @_;
+    if ($range =~ /items=(.*)/) {
+        my ($start, $end) = split m[\-], $1;
+        return {
+            start => $start,
+            end   => $end,
+            count => $end - $start + 1,
+        };
+    }
+    die "unexpected range $range";
 }
 
 # TODO

@@ -18,7 +18,9 @@ define([
             this.inherited(arguments);
             this.on(".dgrid-content .dgrid-row:click", function(evt){
                 var row = grid.row(evt);
-                location.href = table_prefix_uri + '/' + row.data._esid + '/update';
+                if (grid.column(evt).field != 'checkbox') {
+                    location.href = table_prefix_uri + '/' + row.data._esid + '/update';
+                }
             });
         }
     });

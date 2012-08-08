@@ -6,6 +6,7 @@
     block content -> {
 :>
 
+:# this seems ugly, but I don't have a better solution yet
 <script type="text/javascript">
     datagrid_layout = <: $structure | raw :>;
 </script>

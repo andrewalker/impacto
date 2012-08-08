@@ -8,9 +8,8 @@
 !.gitignore
 
 # downloaded by script/impacto_get_dojo.sh
-root/static/lib/dojo/
-root/static/lib/dojox/
-root/static/lib/dijit/
+# plus stuff installed using cpm (dgrid, etc)
+root/static/lib/
 
 # ctags-exuberant tags file can be manually generated so it doesn't need to be
 # in the vcs

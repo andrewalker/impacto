@@ -122,6 +122,9 @@ sub list_json_data : Chained('crud_base') PathPart Args(0) {
         sort  => $query->{sort},
     });
 
+    $c->res->body(to_json($results->{items}));
+    return 0;
+
     $c->stash(
         current_view => 'JSON',
         items        => $results->{items},

@@ -31,11 +31,11 @@ function (dojo, registry, on) {
 
     function execute_search(term) {
         last_term = term;
-        var dg_table = registry.byId('datagrid-table');
+        /*var dg_table = registry.byId('datagrid-table');
         dg_table.store.close();
         dg_table.store.url = table_prefix_uri + '/list_json_data?q=' + encodeURI(term);
         dg_table.store.fetch();
-        dg_table._refresh();
+        dg_table._refresh(); */
         timeout = 0;
     }
 });
@@ -43,6 +43,7 @@ function (dojo, registry, on) {
 // datagrid
 require([
     "dojo",
+    "dojo/_base/declare",
     "dijit/registry",
 
     "dojo/dom",
@@ -51,8 +52,10 @@ require([
 //    "dijit/Menu",
 //    "dijit/MenuItem",
 
-    "dojox/grid/EnhancedGrid",
-    "dojox/data/QueryReadStore",
+    "dgrid/OnDemandGrid",
+    "dgrid/Keyboard",
+    "dgrid/Selection",
+    "dojo/store/JsonRest",
 
     "dojo/dom-class",
 
@@ -62,7 +65,7 @@ require([
 //    "dojox/grid/enhanced/plugins/Pagination",
     "dojo/domReady!",
 ],
-function (dojo, registry, dom, on, /* Menu, MenuItem, */ Grid, Store, domclass) {
+function (dojo, declare, registry, dom, on, /* Menu, MenuItem, */ Grid, Keyboard, Selection, Store, domclass) {
     // datagrid
     var row_index;
     var datagrid_table;
@@ -128,11 +131,12 @@ function (dojo, registry, dom, on, /* Menu, MenuItem, */ Grid, Store, domclass) 
 
     var datagrid_store = new Store({
         clearOnClose: true,
-        url:          table_prefix_uri + '/list_json_data',
+        target:       table_prefix_uri + '/list_json_data',
+        sortParam:    'sort',
         identity:     '_esid'
     });
 
-    datagrid_table = new Grid({
+    datagrid_table = new declare([Grid, Keyboard, Selection])({
         /*plugins: {
             pagination: {
                 defaultPageSize: 18,
@@ -151,20 +155,18 @@ function (dojo, registry, dom, on, /* Menu, MenuItem, */ Grid, Store, domclass) 
             nestedSorting:     true,
             indirectSelection: true
         },*/
-        structure: datagrid_layout,
+        columns: datagrid_layout,
         store: datagrid_store,
         //rowSelector: '20px',
         id: 'datagrid-table'
-    }, document.createElement('div'));
+    }, 'datagrid');
 
-    dom.byId("datagrid").appendChild(datagrid_table.domNode);
-
-    datagrid_table.startup();
+    //datagrid_table.startup();
 
 //    datagrid_table.on('rowcontextmenu', set_row_index);
-    datagrid_table.on("rowclick", datagrid_row_click_event);
+//    datagrid_table.on("rowclick", datagrid_row_click_event);
 //    dojo.connect(datagrid_table, '_onFetchComplete', function () { registry.byId('input_query').focus() });
 
     // should be set to 1 if there is a column for checkboxes
-    datagrid_table.layout.setColumnVisibility(0, false);
+    //datagrid_table.layout.setColumnVisibility(0, false);
 });

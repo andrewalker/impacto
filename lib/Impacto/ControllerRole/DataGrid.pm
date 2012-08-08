@@ -35,14 +35,14 @@ sub get_browse_structure {
     return [
         {
             field => '_esid',
-            name => 'ID',
+            label => 'ID',
         },
         map {
             +{
-                field => $_,
-                name => $self->i18n->maketext("crud.$from.$_"),
-                editable => 0,
-                width => 'auto',
+                field    => $_,
+                label    => $self->i18n->maketext("crud.$from.$_"),
+#                width    => 'auto',
+#                editable => 0,
             }
         } @{ $self->datagrid_columns }
     ];

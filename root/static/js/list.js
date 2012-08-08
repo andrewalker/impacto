@@ -31,11 +31,7 @@ function (dojo, registry, on) {
 
     function execute_search(term) {
         last_term = term;
-        /*var dg_table = registry.byId('datagrid-table');
-        dg_table.store.close();
-        dg_table.store.url = table_prefix_uri + '/list_json_data?q=' + encodeURI(term);
-        dg_table.store.fetch();
-        dg_table._refresh(); */
+        grid.set('query', '?q=' + term);
         timeout = 0;
     }
 });
@@ -49,31 +45,19 @@ require([
     "dojo/dom",
     "dojo/on",
 
-//    "dijit/Menu",
-//    "dijit/MenuItem",
-
-    "dgrid/OnDemandGrid",
+    "dgrid/Grid",
     "dgrid/Keyboard",
+    "dgrid/selector",
     "dgrid/Selection",
+    "dgrid/extensions/Pagination",
+    "dojo/store/Cache",
     "dojo/store/JsonRest",
+    "dojo/store/Memory",
 
     "dojo/dom-class",
-
-//    "dojox/grid/enhanced/plugins/Menu",
-//    "dojox/grid/enhanced/plugins/NestedSorting",
-//    "dojox/grid/enhanced/plugins/IndirectSelection",
-//    "dojox/grid/enhanced/plugins/Pagination",
     "dojo/domReady!",
 ],
-function (dojo, declare, registry, dom, on, /* Menu, MenuItem, */ Grid, Keyboard, Selection, Store, domclass) {
-    // datagrid
-    var row_index;
-    var datagrid_table;
-
-    function datagrid_row_click_event(e) {
-        if (domclass.contains(e.target, 'dojoxGridCell'))
-            location.href = table_prefix_uri + '/' + datagrid_table.getItem(datagrid_table.focus.rowIndex).i._esid + '/update';
-    }
+function (dojo, declare, registry, dom, on, /* Menu, MenuItem, */ Grid, Keyboard, selector, Selection, Pagination, Cache, JsonStore, Memory, domclass) {
 
 /*
     function delete_row(e) {
@@ -106,67 +90,46 @@ function (dojo, declare, registry, dom, on, /* Menu, MenuItem, */ Grid, Keyboard
             }
         });
     }
-
-    function set_row_index(e) {
-        row_index = e.rowIndex;
-    }
-
-    var row_menu = new Menu();
-    row_menu.addChild(new MenuItem({
-        "label": "Excluir",
-        "onClick": delete_row
-    }));
-    var selection_menu = new Menu();
-    selection_menu.addChild(new MenuItem({
-        "label": "Excluir",
-        "onClick": delete_selected
-    }));
-
-    row_menu.startup();
-    selection_menu.startup();
-
-    dojo.addClass(row_menu.domNode, 'datagridMenu');
-    dojo.addClass(selection_menu.domNode, 'datagridMenu');
     */
 
-    var datagrid_store = new Store({
-        clearOnClose: true,
+    var datagrid_store = Cache(new JsonStore({
         target:       table_prefix_uri + '/list_json_data',
         sortParam:    'sort',
-        identity:     '_esid'
-    });
+        idProperty:   '_esid',
+        query: function (query, options) {
+            var r = JsonStore.prototype.query.call(this, query, options);
+            var iq;
+            if ( iq = registry.byId('input_query') )
+                iq.focus();
+            else
+                dojo.addOnLoad(function() {
+                    registry.byId('input_query').focus();
+                });
+            return r;
+        }
+    }), Memory());
 
-    datagrid_table = new declare([Grid, Keyboard, Selection])({
-        /*plugins: {
-            pagination: {
-                defaultPageSize: 18,
-                pageSizes:   [ "18", "50", "100" ],
-                description: true,
-                sizeSwitch:  true,
-                pageStepper: true,
-                gotoButton:  true,
-                maxPageStep: 4,
-                position:    "bottom"
-            },
-            menus: {
-                rowMenu:            row_menu
-                //selectedRegionMenu: 'selectedRegionMenu'
-            },
-            nestedSorting:     true,
-            indirectSelection: true
-        },*/
-        columns: datagrid_layout,
-        store: datagrid_store,
-        //rowSelector: '20px',
-        id: 'datagrid-table'
+    datagrid_layout.unshift(selector({ field: 'checkbox', label: ' ' }));
+
+    window.grid = new declare([Grid, Pagination, Keyboard, Selection], {
+        gotoPage: function () {
+            var args = arguments;
+            args[1] = false;
+            this.inherited(args);
+        }
+    })({
+        rowsPerPage:        15,
+        previousNextArrows: true,
+        firstLastArrows:    true,
+        pageSizeOptions:    [ 15, 50, 100 ],
+        columns:            datagrid_layout,
+        store:              datagrid_store,
+        selectionMode:      'single',
+        id:                 'datagrid-table'
     }, 'datagrid');
 
-    //datagrid_table.startup();
-
-//    datagrid_table.on('rowcontextmenu', set_row_index);
-//    datagrid_table.on("rowclick", datagrid_row_click_event);
-//    dojo.connect(datagrid_table, '_onFetchComplete', function () { registry.byId('input_query').focus() });
-
-    // should be set to 1 if there is a column for checkboxes
-    //datagrid_table.layout.setColumnVisibility(0, false);
+    grid.on(".dgrid-content .dgrid-row:click", function(evt){
+        var row = grid.row(evt);
+        location.href = table_prefix_uri + '/' + row.data._esid + '/update';
+    });
 });

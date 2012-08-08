@@ -1,5 +1,3 @@
-var datagrid_layout;
-
 // search
 require([
     "dojo",
@@ -50,25 +48,31 @@ require([
     "dojo/dom",
     "dojo/on",
 
-    "dijit/Menu",
-    "dijit/MenuItem",
+//    "dijit/Menu",
+//    "dijit/MenuItem",
 
     "dojox/grid/EnhancedGrid",
     "dojox/data/QueryReadStore",
 
     "dojo/dom-class",
 
-    "dojox/grid/enhanced/plugins/Menu",
-    "dojox/grid/enhanced/plugins/NestedSorting",
-    "dojox/grid/enhanced/plugins/IndirectSelection",
-    "dojox/grid/enhanced/plugins/Pagination",
+//    "dojox/grid/enhanced/plugins/Menu",
+//    "dojox/grid/enhanced/plugins/NestedSorting",
+//    "dojox/grid/enhanced/plugins/IndirectSelection",
+//    "dojox/grid/enhanced/plugins/Pagination",
     "dojo/domReady!",
 ],
-function (dojo, registry, dom, on, Menu, MenuItem, Grid, Store, domclass) {
+function (dojo, registry, dom, on, /* Menu, MenuItem, */ Grid, Store, domclass) {
     // datagrid
     var row_index;
     var datagrid_table;
 
+    function datagrid_row_click_event(e) {
+        if (domclass.contains(e.target, 'dojoxGridCell'))
+            location.href = table_prefix_uri + '/' + datagrid_table.getItem(datagrid_table.focus.rowIndex).i._esid + '/update';
+    }
+
+/*
     function delete_row(e) {
         _delete([ datagrid_table.getItem(row_index).i._esid ]);
     }
@@ -100,11 +104,6 @@ function (dojo, registry, dom, on, Menu, MenuItem, Grid, Store, domclass) {
         });
     }
 
-    function datagrid_row_click_event(e) {
-        if (domclass.contains(e.target, 'dojoxGridCell'))
-            location.href = table_prefix_uri + '/' + datagrid_table.getItem(datagrid_table.focus.rowIndex).i._esid + '/update';
-    }
-
     function set_row_index(e) {
         row_index = e.rowIndex;
     }
@@ -125,6 +124,7 @@ function (dojo, registry, dom, on, Menu, MenuItem, Grid, Store, domclass) {
 
     dojo.addClass(row_menu.domNode, 'datagridMenu');
     dojo.addClass(selection_menu.domNode, 'datagridMenu');
+    */
 
     var datagrid_store = new Store({
         clearOnClose: true,
@@ -133,15 +133,16 @@ function (dojo, registry, dom, on, Menu, MenuItem, Grid, Store, domclass) {
     });
 
     datagrid_table = new Grid({
-        plugins: {
+        /*plugins: {
             pagination: {
-                pageSizes: [ "1", "25", "50", "100" ],
+                defaultPageSize: 18,
+                pageSizes:   [ "18", "50", "100" ],
                 description: true,
-                sizeSwitch: true,
+                sizeSwitch:  true,
                 pageStepper: true,
-                gotoButton: true,
+                gotoButton:  true,
                 maxPageStep: 4,
-                position: "bottom"
+                position:    "bottom"
             },
             menus: {
                 rowMenu:            row_menu
@@ -149,10 +150,10 @@ function (dojo, registry, dom, on, Menu, MenuItem, Grid, Store, domclass) {
             },
             nestedSorting:     true,
             indirectSelection: true
-        },
+        },*/
         structure: datagrid_layout,
         store: datagrid_store,
-        rowSelector: '20px',
+        //rowSelector: '20px',
         id: 'datagrid-table'
     }, document.createElement('div'));
 
@@ -160,9 +161,10 @@ function (dojo, registry, dom, on, Menu, MenuItem, Grid, Store, domclass) {
 
     datagrid_table.startup();
 
-    datagrid_table.on('rowcontextmenu', set_row_index);
+//    datagrid_table.on('rowcontextmenu', set_row_index);
     datagrid_table.on("rowclick", datagrid_row_click_event);
-    dojo.connect(datagrid_table, '_onFetchComplete', function () { registry.byId('input_query').focus() });
+//    dojo.connect(datagrid_table, '_onFetchComplete', function () { registry.byId('input_query').focus() });
 
-    datagrid_table.layout.setColumnVisibility(1, false);
+    // should be set to 1 if there is a column for checkboxes
+    datagrid_table.layout.setColumnVisibility(0, false);
 });

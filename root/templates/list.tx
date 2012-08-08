@@ -22,7 +22,7 @@
         </a>
         <form method="get" action="" onsubmit="return false">
             <fieldset>
-                <input name="q" data-dojo-type="dijit.form.TextBox" id='input_query' />
+                <input name="q" data-dojo-type="imp.SearchBar" id='input_query' />
                 <button data-dojo-type="dijit.form.Button">
                     <img src="<: $static_root_uri :>/images/search.png" height="23" alt="Pesquisar" />
                 </button>

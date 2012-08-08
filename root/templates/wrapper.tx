@@ -33,10 +33,13 @@
         async:       true,
         locale:      'pt-br',
         packages: [
-            { name: "dojo",  location: "lib/dojo"              },
-            { name: "dijit", location: "lib/dijit"             },
-            { name: "dojox", location: "lib/dojox"             },
-            { name: "imp",   location: "imp",      main: "app" }
+            { name: "dojo",         location: "lib/dojo"              },
+            { name: "dijit",        location: "lib/dijit"             },
+            { name: "dojox",        location: "lib/dojox"             },
+            { name: "dgrid",        location: "lib/dgrid"             },
+            { name: "xstyle",       location: "lib/xstyle"            },
+            { name: "put-selector", location: "lib/put-selector"      },
+            { name: "imp",          location: "imp",      main: "app" }
         ]
     };
     </script>

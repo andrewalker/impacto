@@ -290,7 +290,11 @@ sub execute {
 
     # sets the value to the form too, using the request params
     if ( $self->container->resolve(service => '/Request/submit') ) {
-        return $self->container->get_sub_container('Model')->execute( $action );
+        my $ok = $self->container->get_sub_container('Model')->execute( $action );
+        if (!$ok) {
+            die "Execute failed";
+        }
+        return $ok;
     }
 
     $self->container->resolve(service => '/Model/set_values_from_row');

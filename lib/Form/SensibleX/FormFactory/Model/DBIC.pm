@@ -6,12 +6,6 @@ use Moose::Util::TypeConstraints qw/enum/;
 # FIXME: get this as a parameter
 use Impacto::Form::Sensible::Reflector::DBIC;
 
-# make sure all FS symbols are loaded
-# even though we don't need it directly
-use Form::Sensible;
-use Data::Dumper;
-
-use Carp;
 use Hash::Merge qw(merge);
 use namespace::autoclean;
 
@@ -123,96 +117,61 @@ sub BUILD {
             }
         );
 
-        service get_db_values_and_factories_from_form => (
-            lifecycle => 'Singleton',
-            dependencies => [ depends_on('/form') ],
-            block => sub {
-                my $self = shift;
-                my $form = $self->param('form');
+        service row_with_form_values => (
+            dependencies => [ depends_on('row'), depends_on('result_source'), depends_on('/form') ],
+            block        => sub {
+                my $s = shift;
+                my $form    = $s->param('form');
+                my $row     = $s->param('row');
+                my @columns = $s->param('result_source')->columns;
 
-                my $values    = {};
-                my $factories = {};
-
-                for my $fieldname ( $form->fieldnames ) {
-                    my $field   = $form->field($fieldname);
-                    my $value   = $field->value();
-                    my $factory = $field->{from_factory};
-
-                    next if $field->field_type eq 'trigger';
-
-                    if (defined $factory) {
-                        $factories->{$factory} ||= {};
-                        $factories->{$factory}{$fieldname} = $value;
-                    }
-                    elsif (not (defined $value && $value eq '')) {
-                        $values->{$fieldname} = $value;
+                foreach my $column (@columns) {
+                    if (my $field = $form->field($column)) {
+                        $row->set_column(
+                            $column => $field->value
+                        );
                     }
                 }
 
-                return {
-                    plain_values    => $values,
-                    field_factories => $factories,
-                };
-            }
-        );
-
-        service values_from_plain_fields_from_form => (
-            dependencies => [ depends_on('get_db_values_and_factories_from_form') ],
-            lifecycle => 'Singleton',
-            block => sub {
-                return shift->param('get_db_values_and_factories_from_form')->{plain_values};
-            },
-        );
-
-        service field_factories_from_form => (
-            dependencies => [ depends_on('get_db_values_and_factories_from_form') ],
-            lifecycle => 'Singleton',
-            block => sub {
-                return shift->param('get_db_values_and_factories_from_form')->{field_factories};
-            },
-        );
-
-        service validate_form => (
-            dependencies => [ depends_on('/form') ],
-            block        => sub { shift->param('form')->validate() },
-            lifecycle    => 'Singleton', # as long as this doesn't persist through requests
-        );
-
-        service row_with_form_values => (
-            dependencies => [ depends_on('row'), depends_on('values_from_plain_fields_from_form') ],
-            block        => sub {
-                my $self = shift;
-                my $values = $self->param('values_from_plain_fields_from_form');
-                my $row = $self->param('row');
-                $row->set_columns( $values );
                 return $row;
             }
         );
 
+        service complete_row => (
+            lifecycle    => 'Singleton',
+            dependencies => {
+                mgr => depends_on('/field_factory_manager'),
+                row => depends_on('row_with_form_values'),
+            },
+            block        => sub {
+                my $self = shift;
+                my $row  = $self->param('row');
+                my $mgr  = $self->param('mgr');
+
+                my $result = 1;
+
+                for my $ff ($mgr->all_factories) {
+                    return 0 if !$result;
+                    $result = $ff->prepare_execute($row);
+                }
+
+                return $result ? $row : 0;
+            },
+        );
+
         service execute => (
-            dependencies => [ depends_on('complete_row'), depends_on('validate_form'), ],
+            dependencies => [ depends_on('complete_row') ],
             parameters   => {
                 action => { is => 'ro', isa => enum([qw/ create update /]), required => 1 }
             },
             block        => sub {
                 my $self = shift;
                 my $action = $self->param('action') eq 'create' ? 'insert' : 'update';
-                my $validation = $self->param('validate_form');
-
-                if (!$validation->is_valid()) {
-                    my $messages = '';
-                    foreach my $key ( keys %{$validation->error_fields()} ) {
-                        $messages .= $key . "\n";
-                        foreach my $message ( @{ $validation->error_fields->{$key} } ) {
-                               $messages .= $message . "\n";
-                        }
-                    }
-                    croak "Form not valid.\n$messages";
-                }
 
                 my $row = $self->param('complete_row');
+
                 if (!$row) {
-                    croak 'no row!';
+                    die 'no row!';
                 }
 
                 $row->$action;
@@ -221,51 +180,21 @@ sub BUILD {
             },
         );
 
-        service complete_row => (
-            lifecycle    => 'Singleton',
-            dependencies => {
-                mgr      => depends_on('/field_factory_manager'),
-                row      => depends_on('row_with_form_values'),
-                ff       => depends_on('field_factories_from_form'),
-            },
-            block        => sub {
-                my $self = shift;
-                my $field_factories = $self->param('ff');
-                my $row = $self->param('row');
-                my $mgr = $self->param('mgr');
-
-                my $result = 1;
-
-                for my $field_factory_class (keys %$field_factories) {
-                    return 0 if !$result;
-                    my $obj = $mgr->get_factory($field_factory_class);
-                    $result = $obj->prepare_execute($row, $field_factories->{$field_factory_class});
-                }
-
-                return $result ? $row : 0;
-            },
-        );
-
         service post_execute => (
             dependencies => {
-                mgr  => depends_on('/field_factory_manager'),
-                row  => depends_on('complete_row'),
-                ff   => depends_on('field_factories_from_form'),
+                mgr => depends_on('/field_factory_manager'),
+                row => depends_on('complete_row'),
             },
             block        => sub {
                 my $self = shift;
-                my $field_factories = $self->param('ff');
                 my $row = $self->param('row');
                 my $mgr = $self->param('mgr');
 
                 my $result = 1;
 
-                for my $field_factory_class (keys %$field_factories) {
+                for my $ff ($mgr->all_factories) {
                     return 0 if !$result;
-
-                    my $obj = $mgr->get_factory($field_factory_class);
-
-                    $result = $obj->execute($row, $field_factories->{$field_factory_class});
+                    $result = $ff->execute($row);
                 }
 
                 return $result;

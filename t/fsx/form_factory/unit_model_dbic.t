@@ -123,14 +123,15 @@ my $plain_values = {
 
     $container->resolve(service => 'form')->set_values($plain_values);
 
-    ok($container->resolve(service => 'Model/validate_form'), 'form is valid');
-    is_deeply($container->resolve(service => 'Model/get_db_values_and_factories_from_form'), {
-        plain_values => $plain_values,
-        field_factories => {},
-    }, 'values are expected');
+    # decided not to validate in the container at the moment
+    # ok($container->resolve(service => 'Model/validate_form'), 'form is valid');
+#   is_deeply($container->resolve(service => 'Model/get_db_values_and_factories_from_form'), {
+#       plain_values => $plain_values,
+#       field_factories => {},
+#   }, 'values are expected');
 
-    is_deeply($container->resolve(service => 'Model/values_from_plain_fields_from_form'), $plain_values, 'plain values are expected');
-    is_deeply($container->resolve(service => 'Model/field_factories_from_form'), {}, 'no field factories');
+#   is_deeply($container->resolve(service => 'Model/values_from_plain_fields_from_form'), $plain_values, 'plain values are expected');
+#   is_deeply($container->resolve(service => 'Model/field_factories_from_form'), {}, 'no field factories');
 
     ok($container->get_sub_container('Model')->execute('create'), 'execute works');
     is($product_rs->find(4)->name, 'Test', 'product was inserted');
@@ -142,14 +143,15 @@ my $plain_values = {
     $plain_values->{cost} = 7;
     $container->resolve(service => 'form')->set_values($plain_values);
 
-    ok($container->resolve(service => 'Model/validate_form'), 'form is valid');
-    is_deeply($container->resolve(service => 'Model/get_db_values_and_factories_from_form'), {
-        plain_values => $plain_values,
-        field_factories => {},
-    }, 'values are expected');
+    # decided not to validate in the container at the moment
+    #ok($container->resolve(service => 'Model/validate_form'), 'form is valid');
+#   is_deeply($container->resolve(service => 'Model/get_db_values_and_factories_from_form'), {
+#       plain_values => $plain_values,
+#       field_factories => {},
+#   }, 'values are expected');
 
-    is_deeply($container->resolve(service => 'Model/values_from_plain_fields_from_form'), $plain_values, 'plain values are expected');
-    is_deeply($container->resolve(service => 'Model/field_factories_from_form'), {}, 'no field factories');
+#    is_deeply($container->resolve(service => 'Model/values_from_plain_fields_from_form'), $plain_values, 'plain values are expected');
+#    is_deeply($container->resolve(service => 'Model/field_factories_from_form'), {}, 'no field factories');
 
     ok($container->get_sub_container('Model')->execute('update'), 'execute works');
     is($product_rs->find(4)->name, 'Test', 'product is the same');

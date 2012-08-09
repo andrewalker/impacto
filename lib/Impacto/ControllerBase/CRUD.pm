@@ -109,7 +109,7 @@ sub list : Chained('crud_base') PathPart('') Args(0) {
     );
 }
 
-sub list_json_data : Chained('crud_base') PathPart Args(0) {
+sub json_rest : Chained('crud_base') PathPart('json_rest') Args(0) {
     my ($self, $c) = @_;
 
     my $query = $c->req->query_params;
@@ -129,13 +129,48 @@ sub list_json_data : Chained('crud_base') PathPart Args(0) {
     $c->res->headers->header('Content-Range' => "items $start-$end/$results->{total}");
 
     $c->res->body(to_json($results->{items}));
-    return 0;
+}
 
-    $c->stash(
-        current_view => 'JSON',
-        items        => $results->{items},
-        numRows      => $results->{total},
+sub json_rest_with_arg : Chained('crud_base') PathPart('json_rest') Args(1) {
+    my ($self, $c, $id) = @_;
+
+    my $method = $c->req->method;
+    if ($method eq 'DELETE') {
+        return $self->json_rest_delete($c, $id);
+    }
+    elsif ($method eq 'GET') {
+        return $self->json_rest_get($c, $id);
+    }
+}
+
+sub json_rest_get {
+    my ($self, $c, $id) = @_;
+
+    my $result = $c->model('Search')->get_item({
+        type  => $self->elastic_search_pseudo_table,
+        id    => $id,
+    });
+
+    $c->res->body(to_json($result));
+}
+
+sub json_rest_delete {
+    my ($self, $c, $id) = @_;
+
+    my $pks = $c->model('Search')->get_pks(
+        $self->elastic_search_pseudo_table,
+        $id
     );
+
+    $self->crud_model_instance->find($pks)->delete;
+
+    $c->model('Search')->delete(
+        index => 'impacto',
+        type  => $self->elastic_search_pseudo_table,
+        id    => $id,
+    );
+
+    $c->res->body(to_json([{msg => "Registros removidos"}]));
 }
 
 sub parse_range {

@@ -42,11 +42,6 @@ sub _get_buildargs_args {
 sub field_factory_names {
     my $self = shift;
 
-    # TODO
-    # consider using List::MoreUtils qw/distinct/
-    # when RecordMeta is done
-    # it probably will generate many fields for the same
-    # field factory object
     return [ map { $_->{_ff_name} } @{ $self->fields } ];
 }
 
@@ -98,7 +93,7 @@ sub get_fields_for_factory {
 
     my @filtered_fields = grep { $_->{_ff_name} eq $factory } @{ $self->fields };
 
-    return [ map { [ $_, $_->name ] } @filtered_fields ];
+    return \@filtered_fields;
 }
 
 __PACKAGE__->meta->make_immutable;

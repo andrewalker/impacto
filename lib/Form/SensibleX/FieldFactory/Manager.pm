@@ -99,9 +99,9 @@ sub add_factory_to_form {
     my $form = $self->form;
 
     foreach my $factory_field (@$factory_fields) {
-        my ($definition, $name) = @$factory_field;
+        my $name = $factory_field->name;
         push @fact_field_names, $name;
-        $form->add_field( $definition, $name );
+        $form->add_field( $factory_field, $name );
     }
 
     $self->_replace_fields($factory, \@fact_field_names);
@@ -116,6 +116,19 @@ sub _replace_fields {
         return splice @$columns, $i, 1, @$to_insert
             if $columns->[$i] eq $needle;
     }
+}
+
+sub get_all_factories_by_name {
+    my $self = shift;
+    my @ff;
+
+    foreach my $factory ($self->all_factories) {
+        foreach my $name (@{ $factory->field_factory_names }) {
+            push @ff, ( $name, $factory->get_fields_for_factory($name) );
+        }
+    }
+
+    return { @ff };
 }
 
 __PACKAGE__->meta->make_immutable;

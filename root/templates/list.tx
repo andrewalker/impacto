@@ -31,6 +31,12 @@
     </section>
     <section id="datagrid">
     </section>
+    <button type="button" id="remove_selected" data-dojo-type="dijit.form.Button">
+        Remover selecionados
+        <script type="dojo/method" data-dojo-event="onClick" data-dojo-args="evt">
+            remove_selected(evt);
+        </script>
+    </button>
 </div>
 
 :   }

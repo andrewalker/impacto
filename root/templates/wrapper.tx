@@ -3,9 +3,9 @@
 <html>
 <head>
     <title>Impacto<: if $title { ' - ' ~ $title } :></title>
+    <link href="<: $static_root_uri :>/lib/smoke/smoke.css" type="text/css" rel="stylesheet" />
+    <link href="<: $static_root_uri :>/lib/smoke/themes/dark.css" type="text/css" rel="stylesheet" />
     <link href="<: $static_root_uri :>/lib/dijit/themes/<: $dijit_theme :>/<: $dijit_theme :>.css" type="text/css" rel="stylesheet" />
-    <link href="<: $static_root_uri :>/lib/dojox/grid/enhanced/resources/EnhancedGrid.css" type="text/css" rel="stylesheet" />
-    <link href="<: $static_root_uri :>/lib/dojox/grid/enhanced/resources/tundra/EnhancedGrid.css" type="text/css" rel="stylesheet" />
     <link href="<: $static_root_uri :>/css/main.css" type="text/css" rel="stylesheet" />
     <link href="<: $static_root_uri :>/css/menu.css" type="text/css" rel="stylesheet" />
 
@@ -44,6 +44,7 @@
     };
     </script>
     <script type="text/javascript" src="<: $static_root_uri :>/lib/dojo/dojo.js"></script>
+    <script type="text/javascript" src="<: $static_root_uri :>/lib/smoke/smoke.js"></script>
 
 :   if $user {
         <script type="text/javascript" src="<: $static_root_uri :>/js/menu.js"></script>

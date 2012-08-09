@@ -1,4 +1,5 @@
 require([
+    "dojo/ready",
     "dojo",
     "dojo/_base/fx",
     "dojo/parser",
@@ -9,7 +10,7 @@ require([
     "dijit/PopupMenuBarItem",
     "dijit/PopupMenuItem",
     "dojo/domReady!",
-], function (dojo) {
+], function (ready, dojo) {
 /*
     var hideLoader = function(){
         dojo.fadeOut({
@@ -21,7 +22,7 @@ require([
         }).play();
     };
 */
-    dojo.addOnLoad(function () {
+    ready(function () {
         dojo.fadeIn({
             node: 'top-menu'
 //          onEnd: hideLoader

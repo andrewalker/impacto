@@ -1,13 +1,42 @@
-require([ 'dojo', 'imp/SearchBar', 'dojo/_base/fx' ],
-function (dojo) {
-    dojo.addOnLoad(function () {
+require([ 'dojo', 'dojo/ready', 'imp/SearchBar', 'dojo/_base/fx' ],
+function (dojo, ready) {
+    ready(function () {
         dojo.fadeIn({
             node: 'search'
         }).play();
     });
 });
 
-// datagrid
+function remove_selected() {
+    smoke.confirm("Tem certeza que deseja remover?", function (answer) {
+        if (!answer)
+            return;
+
+        var how_many = 0, finished = 0, done_all = false, alerted = false;
+        var alert_message_p = 'Registros removidos';
+        var alert_message   = 'Registro removido';
+
+        for (var i in grid.selection) {
+            how_many++;
+            grid.store.remove(i).then(function () {
+                finished++;
+                if (done_all && finished == how_many) {
+                    alerted = true;
+                    smoke.alert(finished > 1 ? alert_message_p : alert_message);
+                    grid.refresh();
+                }
+            });
+        }
+
+        done_all = true;
+
+        if (!alerted && finished == how_many) {
+            smoke.alert(finished > 1 ? alert_message_p : alert_message);
+            grid.refresh();
+        }
+    });
+}
+
 require([
     "dgrid/selector",
     "imp/DGridStore",
@@ -15,41 +44,8 @@ require([
     "dojo/domReady!"
 ],
 function (selector, DGridStore, DGrid) {
-/*
-    function delete_row(e) {
-        _delete([ datagrid_table.getItem(row_index).i._esid ]);
-    }
-
-    function delete_selected(e) {
-        var selected_rows = datagrid_table.selection.getSelected();
-        var ids = new Array();
-
-        for (var i = 0; i < selected_rows.length; i++)
-            ids.push(selected_rows[i].i._esid);
-
-        _delete(ids);
-    }
-
-    function _delete(rows) {
-        dojo.xhrPost({
-            url: table_prefix_uri + '/delete',
-            content: rows,
-            load: function(data){
-                datagrid_table.store.close();
-                datagrid_table.store.url = table_prefix_uri + '/list_json_data?q=' + encodeURI(last_term);
-                datagrid_table.store.fetch();
-                datagrid_table._refresh();
-                alert(data);
-            },
-            error: function(error){
-                alert(error);
-            }
-        });
-    }
-    */
-
     var datagrid_store = DGridStore({
-        target:       table_prefix_uri + '/list_json_data',
+        target:       table_prefix_uri + '/json_rest/',
         sortParam:    'sort',
         idProperty:   '_esid'
     });

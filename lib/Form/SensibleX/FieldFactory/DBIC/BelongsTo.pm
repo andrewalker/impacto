@@ -45,18 +45,18 @@ around add_field => sub {
 };
 
 sub prepare_execute {
-    my ( $self, $row, $fields ) = @_;
+    my ( $self, $row ) = @_;
     my $i = 0;
 
-    foreach my $keys (values %$fields) {
-        my $value   = $self->fields->[$i]->value;
+    foreach my $field (@{ $self->fields }) {
+        my $value   = $field->value;
         if (ref $value) {
             for my $k (keys %$value) {
                 $row->set_column($k => $value->{$k});
             }
         }
         else {
-            $row->set_column($self->fields->[$i]->name => $value);
+            $row->set_column($field->name => $value);
         }
         $i++;
     }

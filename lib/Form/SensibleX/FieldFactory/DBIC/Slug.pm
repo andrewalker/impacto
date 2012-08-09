@@ -56,11 +56,10 @@ around add_field => sub {
 # slug => { x_field_factory => 'DBIC::Slug' }
 
 sub prepare_execute {
-    my ( $self, $row, $fields ) = @_;
+    my ( $self, $row ) = @_;
     my $i = 0;
 
-    foreach my $keys (values %$fields) {
-        my $field = $self->fields->[$i];
+    foreach my $field (@{ $self->fields }) {
         my $name    = $field->name;
         my $value   = $field->value
             || $field->generate_slug_and_set_value(

@@ -2,7 +2,6 @@ package Form::SensibleX::FieldFactory::DBIC::RecordMeta;
 
 use Moose;
 use Carp;
-use List::Util qw/first/;
 use List::MoreUtils qw/distinct/;
 use Form::Sensible::Field::Text;
 use namespace::autoclean;
@@ -51,11 +50,12 @@ around field_factory_names => sub {
 };
 
 sub execute {
-    my ( $self, $row, $fields ) = @_;
+    my ( $self, $row ) = @_;
     my $i = 0;
 
-    while (my ($name, $value) = each %$fields) {
-        my $field = first { $name eq  $_->name } @{ $self->fields };
+    foreach my $field (@{ $self->fields }) {
+        my $name  = $field->name;
+        my $value = $field->value;
 
         # TODO!
         # {
@@ -72,10 +72,8 @@ sub execute {
         if ($value) {
             $row->update_or_create_related($field->{_ff_name}, { name => $name, value => $value });
         }
-        else {
-            if (my $r = $row->find_related($field->{_ff_name}, { name => $name })) {
-                $r->delete;
-            }
+        elsif (my $r = $row->find_related($field->{_ff_name}, { name => $name })) {
+            $r->delete;
         }
 
         $i++;

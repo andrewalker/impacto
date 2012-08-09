@@ -30,15 +30,15 @@ around BUILDARGS => sub {
 # categories => { x_field_factory => 'DBIC::ManyToMany', option_label => 'name', option_value => 'id' }
 
 sub execute {
-    my ( $self, $row, $fields ) = @_;
+    my ( $self, $row ) = @_;
     my $i = 0;
 
-    foreach my $keys (values %$fields) {
-        my $name    = $self->fields->[$i]->name;
+    foreach my $field (@{ $self->fields }) {
+        my $name    = $field->name;
         my $setter  = "set_${name}";
-        my $rs      = $self->fields->[$i]->get_rs;
+        my $rs      = $field->get_rs;
 
-        my @records = map { $rs->find($_) } @$keys;
+        my @records = map { $rs->find($_) } @{ $field->value };
 
         $row->$setter(\@records);
         $i++;

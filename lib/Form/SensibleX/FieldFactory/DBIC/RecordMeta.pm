@@ -85,10 +85,7 @@ sub execute {
 }
 
 sub get_values_from_row {
-    my ( $self, $row, $fields ) = @_;
-
-    my %field_table     = map  { $_ => 1                  } @$fields;
-    my @filtered_fields = grep { $field_table{ $_->name } } @{ $self->fields };
+    my ( $self, $row ) = @_;
 
     return {
         map {
@@ -98,7 +95,7 @@ sub get_values_from_row {
                 ? $row->find_related($_->{_ff_name}, { name => $name })->value
                 : ''
                 ;
-        } @filtered_fields
+        } @{ $self->fields }
     };
 }
 

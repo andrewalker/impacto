@@ -9,6 +9,7 @@ use Impacto::Form::Sensible::Reflector::DBIC;
 # make sure all FS symbols are loaded
 # even though we don't need it directly
 use Form::Sensible;
+use Data::Dumper;
 
 use Carp;
 use Hash::Merge qw(merge);
@@ -98,78 +99,27 @@ sub BUILD {
             },
         );
 
-        service prepare_get_db_values_from_row => (
-            dependencies => [ depends_on('/form'), depends_on('row') ],
-            lifecycle    => 'Singleton', # as this class lasts only for one request
-            block        => sub {
-                my $self = shift;
-                my $form = $self->param('form');
-                my $row  = $self->param('row');
-
-                my $values    = {};
-                my $factories = {};
-
-                for my $fieldname ( $form->fieldnames ) {
-                    my $field   = $form->field($fieldname);
-                    my $factory = $field->{from_factory};
-
-                    next if $field->field_type eq 'trigger';
-
-                    if (defined $factory) {
-                        $factories->{$factory} ||= [];
-                        push @{ $factories->{$factory} }, $fieldname;
-                    }
-                    else {
-                        $values->{$fieldname} = $row->get_column($fieldname);
-                    }
-                }
-
-                return {
-                    plain_values    => $values,
-                    field_factories => $factories,
-                };
-            },
-        );
-
-        service values_from_plain_fields_from_row => (
-            dependencies => [ depends_on('prepare_get_db_values_from_row') ],
-            lifecycle => 'Singleton',
-            block => sub {
-                return shift->param('prepare_get_db_values_from_row')->{plain_values};
-            },
-        );
-
-        service field_factories_from_row => (
-            dependencies => [ depends_on('prepare_get_db_values_from_row') ],
-            lifecycle => 'Singleton',
-            block => sub {
-                return shift->param('prepare_get_db_values_from_row')->{field_factories};
-            },
-        );
-
         service get_db_values_from_row => (
             dependencies => {
-                values => depends_on('values_from_plain_fields_from_row'),
-                facts  => depends_on('field_factories_from_row'),
                 mgr    => depends_on('/field_factory_manager'),
                 row    => depends_on('row'),
             },
             block => sub {
-                my $self      = shift;
-                my $values    = $self->param('values');
-                my $factories = $self->param('facts');
-                my $mgr       = $self->param('mgr');
+                my $self = shift;
+                my $mgr  = $self->param('mgr');
+                my $row  = $self->param('row');
+
+                my %plain_values = $row->get_columns;
 
                 my @values;
 
-                for my $factory (keys %$factories) {
-                    my $ff = $mgr->get_factory($factory);
+                for my $factory ($mgr->all_factories) {
                     push @values, %{
-                        $ff->get_values_from_row( $self->param('row'), $factories->{$factory} )
+                        $factory->get_values_from_row( $row )
                     };
                 }
 
-                return merge( $values, { @values } );
+                return merge( { @values }, \%plain_values );
             }
         );
 

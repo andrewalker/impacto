@@ -85,13 +85,10 @@ sub prepare_execute { 1 }
 
 # TODO: untested
 sub get_values_from_row {
-    my ( $self, $row, $fields ) = @_;
-
-    my %field_table     = map  { $_ => 1                        } @$fields;
-    my @filtered_fields = grep { $field_table{ $_->{_ff_name} } } @{ $self->fields };
+    my ( $self, $row ) = @_;
 
     return {
-        map { $_->name => $_->get_values_from_row($row) } @filtered_fields
+        map { $_->name => $_->get_values_from_row($row) } @{ $self->fields }
     };
 }
 

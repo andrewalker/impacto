@@ -1,4 +1,5 @@
-.fs_form_container form.fs_form .fs_formfieldline {
+.fs_form_container form.fs_form .fs_formfieldline,
+.fieldline {
     padding: 3px;
 }
 
@@ -11,7 +12,8 @@ label,
     float: left;
 }
 
-.fs_form_container form.fs_form .fs_checkbox label {
+.fs_form_container form.fs_form .fs_checkbox label,
+.checkboxes label {
     padding: 4px;
     text-align: left;
     width: 300px;
@@ -33,17 +35,36 @@ textarea, input[type="text"], input[type="password"],
 }
 
 /* 514 = 200 + 4*2 (label padding) + 2*2 (input padding) + 1*2 (input border) */
-.fs_form_container form.fs_form .fs_formfieldline.fs_submit { width: 514px; text-align: right; }
+.fs_form_container form.fs_form .fs_formfieldline.fs_submit,
+.fieldline.submit { width: 514px; text-align: right; }
 input[type="submit"], input[type="button"], input[type="reset"], button,
 .fs_form_container form.fs_form .fs_formfieldline.fs_submit input.fs_submit_input { border: 1px outset #bbb; }
 
-form.fs_form { opacity: 0 }
+form.fs_form, form { opacity: 0 }
 
 .tundra .dijitValidationContainer .dijitInputField.dijitValidationIcon.dijitValidationInner {
-    width: auto;
+    width: 24px;
     border: 0;
 }
 
 .tundra .dijitComboBox .dijitButtonNode {
     padding: 0.2em 0.2em;
+}
+
+.dijitEditorIFrameContainer {
+    padding: 0 10px;
+}
+
+.fs_htmltext_input,
+.htmltext_input {
+    clear: both;
+    width: 500px;
+}
+
+label .required_false {
+    display: none;
+}
+label .required_true {
+    color: red;
+    font-weight: bold
 }

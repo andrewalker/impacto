@@ -1,6 +1,6 @@
 <:
 cascade base::forms {
-    form_name => 'product.stock',
+    form_name => 'product.product_stock',
 }
 
 block form -> {

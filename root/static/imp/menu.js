@@ -11,6 +11,6 @@ define([
     "dojo/domReady!",
 ], function (dojo, ready) {
     ready(function () {
-        dojo.byId('top-menu').style('opacity', 1);
+        dojo.style(dojo.byId('top-menu'), 'opacity', 1);
     });
 });

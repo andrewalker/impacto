@@ -1,6 +1,6 @@
 : cascade base::wrapper {
-:    extra_js  => [ 'form.js' ],
-:    extra_css => [ 'form.css' ],
+:    extra_js  => 'form.js',
+:    extra_css => 'form.css',
 : }
 :
 : macro required -> $req {

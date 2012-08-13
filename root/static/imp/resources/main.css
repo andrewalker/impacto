@@ -3,6 +3,8 @@
 @import "../../lib/smoke/smoke.css";
 @import "../../lib/smoke/themes/dark.css";
 
+@import "menu.css";
+
 * {padding:0; margin:0; border:none; list-style:none; text-decoration:none; outline: none;}
 
 body {
@@ -54,5 +56,3 @@ h1.current-page {
 .dijitInputField.dijitArrowButtonInner {
     border: 0;
 }
-
-@import "menu.css";

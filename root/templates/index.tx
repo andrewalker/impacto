@@ -1,4 +1,7 @@
-: cascade base::wrapper
+: cascade base::wrapper {
+:   extra_css => 'list.css',
+:   extra_js  => 'list.js',
+: }
 : block content -> {
 <style type="text/css">
     .box { background: #efefef; width: 400px; float: left; margin: 15px; padding: 7px }

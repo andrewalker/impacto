@@ -1,7 +1,7 @@
 <:
     cascade base::wrapper {
-        extra_js  => [ 'list.js' ],
-        extra_css => [ 'datagrid.css', 'search.css' ],
+        extra_js  => 'list.js',
+        extra_css => 'list.css',
     }
     block content -> {
 :>

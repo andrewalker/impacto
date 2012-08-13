@@ -83,30 +83,30 @@ sub build_form_factory {
     );
 }
 
-sub render_form {
-    my ( $self, $form ) = @_;
+#   sub render_form {
+#       my ( $self, $form ) = @_;
 
-    my $fs_renderer = Form::Sensible::Renderer::HTML->new({
-        additional_include_paths => $self->form_templates_paths,
-    });
-    $fs_renderer->tt_config->{PRE_CHOMP}  = 2;
-    $fs_renderer->tt_config->{POST_CHOMP} = 2;
+#       my $fs_renderer = Form::Sensible::Renderer::HTML->new({
+#           additional_include_paths => $self->form_templates_paths,
+#       });
+#       $fs_renderer->tt_config->{PRE_CHOMP}  = 2;
+#       $fs_renderer->tt_config->{POST_CHOMP} = 2;
 
-    my $rendered_form = $fs_renderer->render( $form );
-    $rendered_form->display_name_delegate(
-        FSConnector(  sub { $self->_translate_form_field(@_) }  )
-    );
+#       my $rendered_form = $fs_renderer->render( $form );
+#       $rendered_form->display_name_delegate(
+#           FSConnector(  sub { $self->_translate_form_field(@_) }  )
+#       );
 
-    return $rendered_form->complete;
-}
+#       return $rendered_form->complete;
+#   }
 
-sub _translate_form_field {
-    my ($self, $caller, $display_name, $origin_object) = @_;
+#   sub _translate_form_field {
+#       my ($self, $caller, $display_name, $origin_object) = @_;
 
-    my $str = 'crud.' . $caller->form->name . '.' . $origin_object->name;
+#       my $str = 'crud.' . $caller->form->name . '.' . $origin_object->name;
 
-    return $self->i18n->maketext( $str ) || $display_name;
-}
+#       return $self->i18n->maketext( $str ) || $display_name;
+#   }
 
 1;
 

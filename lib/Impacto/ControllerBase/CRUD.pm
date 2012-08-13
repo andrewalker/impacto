@@ -70,6 +70,7 @@ sub crud_base : Chained('global_base') PathPrefix CaptureArgs(0) {
         resultset        => $self->crud_model_instance,
         table_prefix_uri => $c->uri_for('/') . $self->path_prefix($c),
         title            => $self->i18n->maketext('page_title.' . $self->crud_model_instance->result_source->from),
+        i18n             => $self->i18n,
     );
 }
 
@@ -246,12 +247,11 @@ sub make_form_action {
         return $c->res->redirect( $c->uri_for( $self->action_for( 'list' ) ) );
     }
 
-    my $template = $c->view->get_first_existing_template($c->action, $action);
-    my $form     = $form_factory->get_form;
+    my $template = $c->view->get_first_existing_template($c->namespace, $c->action, $action);
 
     $c->stash(
-        form        => $form,
-        form_html   => $self->render_form( $form ),
+        factories   => $form_factory->container->resolve( service => 'field_factory_manager' )->get_all_factories_by_name,
+        values      => $form_factory->container->get_sub_container('Model')->resolve( service => 'get_db_values_from_row' ),
         template    => $template,
         crud_action => $action,
     );

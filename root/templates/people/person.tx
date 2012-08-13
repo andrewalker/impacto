@@ -1,0 +1,19 @@
+<:
+cascade base::forms {
+    form_name => 'people.person',
+}
+
+block form -> {
+    hidden_field('slug')
+    text_field('name', required(true))
+    phone_field('phone', required(true))
+    email_field('email', required(true))
+    uri_field('site', required(true))
+    toggle_field('client')
+    toggle_field('representant')
+    toggle_field('employee')
+    toggle_field('supplier')
+    longtext_field('comments', required(false))
+}
+
+:>

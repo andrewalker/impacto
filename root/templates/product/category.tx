@@ -1,0 +1,10 @@
+<:
+cascade base::forms {
+    form_name => 'product.category',
+}
+
+block form -> {
+    combobox_factory_field('parent', required(false))
+    text_field('name', required(true))
+}
+:>

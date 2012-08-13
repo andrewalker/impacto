@@ -1,5 +1,5 @@
 <:
-    cascade wrapper {
+    cascade base::wrapper {
         extra_js  => [ 'list.js' ],
         extra_css => [ 'datagrid.css', 'search.css' ],
     }

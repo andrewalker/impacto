@@ -1,0 +1,12 @@
+<:
+
+cascade base::forms {
+    form_name => 'finance.ledger_type',
+}
+
+block form -> {
+    hidden_field('slug')
+    text_field('name', required(true))
+}
+
+:>

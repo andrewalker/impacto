@@ -1,0 +1,12 @@
+<:
+cascade base::forms {
+    form_name => 'people.document',
+}
+
+block form -> {
+    combobox_factory_field('person', required(true))
+    text_field('type', required(true))
+    text_field('value', required(true))
+}
+
+:>

@@ -1,0 +1,16 @@
+<:
+
+cascade base::forms {
+    form_name => 'finance.installment_payment',
+}
+
+block form -> {
+    combobox_factory_field('installment', required(true))
+    datetime_field('date', required(true))
+    money_field('amount', required(true))
+    combobox_factory_field('account', required(true))
+    text_field('payment_method', required(false))
+    longtext_field('comments', required(false))
+}
+
+:>

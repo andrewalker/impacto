@@ -1,0 +1,9 @@
+<:
+cascade base::forms {
+    form_name => 'people.employee',
+}
+
+block form -> {
+    combobox_factory_field('person', required(true))
+}
+:>

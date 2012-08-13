@@ -1,6 +1,6 @@
 : my $dijit_theme = "tundra";
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <title>Impacto<: if $title { ' - ' ~ $title } :></title>
     <link href="<: $static_root_uri :>/lib/smoke/smoke.css" type="text/css" rel="stylesheet" />
@@ -8,23 +8,6 @@
     <link href="<: $static_root_uri :>/lib/dijit/themes/<: $dijit_theme :>/<: $dijit_theme :>.css" type="text/css" rel="stylesheet" />
     <link href="<: $static_root_uri :>/css/main.css" type="text/css" rel="stylesheet" />
     <link href="<: $static_root_uri :>/css/menu.css" type="text/css" rel="stylesheet" />
-
-:   for $extra_css -> $css {
-    <link href="<: $static_root_uri :>/css/<: $css :>" type="text/css" rel="stylesheet" />
-:   }
-
-:   if $table_prefix_uri {
-    <script type="text/javascript">
-        var table_prefix_uri = '<: $table_prefix_uri :>';
-    </script>
-:   }
-</head>
-<body class="<: $dijit_theme :>">
-:   if $user { include menu }
-
-    <div class="wrapper">
-        <: content() :>
-    </div>
 
     <script type="text/javascript">
     var dojoConfig = {
@@ -43,6 +26,23 @@
         ]
     };
     </script>
+
+:   for $extra_css -> $css {
+    <link href="<: $static_root_uri :>/css/<: $css :>" type="text/css" rel="stylesheet" />
+:   }
+
+:   if $table_prefix_uri {
+    <script type="text/javascript">
+        var table_prefix_uri = '<: $table_prefix_uri :>';
+    </script>
+:   }
+</head>
+<body class="<: $dijit_theme :>">
+:   if $user { include menu }
+
+    <div class="wrapper">
+        <: content() :>
+    </div>
     <script type="text/javascript" src="<: $static_root_uri :>/lib/dojo/dojo.js"></script>
     <script type="text/javascript" src="<: $static_root_uri :>/lib/smoke/smoke.js"></script>
 

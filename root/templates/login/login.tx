@@ -1,5 +1,5 @@
 <:
-    cascade wrapper {
+    cascade base::wrapper {
         extra_css => [ 'form.css' ],
         extra_js  => [ 'login.js' ],
     }
@@ -12,15 +12,15 @@
             <: $error_msg :>
         </div>
         <div class="fs_formfieldline fs_text">
-            <label for="username" class="fs_label fs_text_label">Username</label>
+            <label for="username" class="fs_label fs_text_label">Usuário</label>
             <input type="text" name="username" id="username" value="" tabindex="1" data-dojo-type="dijit.form.TextBox" class="fs_input fs_text_input" />
         </div>
         <div class="fs_formfieldline fs_text">
-            <label for="password" class="fs_label fs_text_label">Password</label>
+            <label for="password" class="fs_label fs_text_label">Senha</label>
             <input type="password" name="password" id="password" value="" tabindex="2" data-dojo-type="dijit.form.TextBox" class="fs_input fs_text_input" />
         </div>
         <div class="fs_checkbox_container">
-            <label for="remember">Remember</label>
+            <label for="remember">Permanecer logado</label>
             <input type="checkbox" name="remember" id="remember" value="1" tabindex="3" data-dojo-type="dijit.form.CheckBox" />
         </div>
         <div class="fs_formfieldline fs_text">

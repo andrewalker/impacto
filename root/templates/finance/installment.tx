@@ -1,0 +1,14 @@
+<:
+
+cascade base::forms {
+    form_name => 'finance.installment',
+}
+
+block form -> {
+    combobox_factory_field('ledger', required(true))
+    datetime_field('due', required(true))
+    money_field('value', required(true))
+    toggle_field('payed')
+}
+
+:>

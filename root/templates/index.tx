@@ -1,4 +1,4 @@
-: cascade wrapper
+: cascade base::wrapper
 : block content -> {
 <style type="text/css">
     .box { background: #efefef; width: 400px; float: left; margin: 15px; padding: 7px }

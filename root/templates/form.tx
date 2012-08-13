@@ -1,9 +1,0 @@
-<:
-    cascade wrapper {
-        extra_js  => [ 'form.js' ],
-        extra_css => [ 'form.css' ],
-    }
-    block content -> {
-        $form_html | raw
-    }
-:>

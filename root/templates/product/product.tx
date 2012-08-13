@@ -1,0 +1,18 @@
+<:
+cascade base::forms {
+    form_name => 'product.product',
+}
+
+block form -> {
+    text_field('name', required(true))
+    toggle_field('is_subscription')
+    combobox_factory_field('supplier', required(false))
+    money_field('cost', required(false))
+    money_field('minimum_price', required(false))
+    money_field('price', required(true))
+    number_field('weight', required(false))
+    htmltext_field('short_description')
+    htmltext_field('description')
+    checkboxes_factory_field('categories')
+}
+:>

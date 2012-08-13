@@ -1,0 +1,15 @@
+<:
+cascade base::forms {
+    form_name => 'people.bank_account',
+}
+
+block form -> {
+    combobox_factory_field('person', required(true))
+    text_field('account', required(true))
+    text_field('agency', required(true))
+    text_field('bank', required(true))
+    toggle_field('is_savings_account')
+    longtext_field('comments', required(false))
+}
+
+:>

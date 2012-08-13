@@ -1,0 +1,15 @@
+<:
+
+cascade base::forms {
+    form_name => 'finance.account',
+}
+
+block form -> {
+    text_field('name', required(true))
+    text_field('account_number', required(false))
+    text_field('agency', required(false))
+    text_field('bank', required(false))
+    money_field('balance', required(true))
+}
+
+:>

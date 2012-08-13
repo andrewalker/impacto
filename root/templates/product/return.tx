@@ -1,0 +1,14 @@
+<:
+cascade base::forms {
+    form_name => 'product.return',
+}
+
+block form -> {
+    hidden_field('id')
+    datetime_field('datetime', required(true))
+    combobox_factory_field('consignation', required(true))
+    number_field('amount', required(true))
+    combobox_factory_field('stock_movement', required(false))
+    combobox_factory_field('ledger', required(false))
+}
+:>

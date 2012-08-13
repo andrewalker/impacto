@@ -1,0 +1,11 @@
+<:
+cascade base::forms {
+    form_name => 'product.stock',
+}
+
+block form -> {
+    combobox_factory_field('product', required(true))
+    combobox_factory_field('place', required(true))
+    number_field('amount', required(true))
+}
+:>

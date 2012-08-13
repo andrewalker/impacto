@@ -1,0 +1,16 @@
+<:
+
+cascade base::forms {
+    form_name => 'finance.ledger',
+}
+
+block form -> {
+    combobox_factory_field('ledger_type', required(true))
+    combobox_factory_field('account', required(true))
+    money_field('value', required(true))
+    datetime_field('datetime', required(true))
+    combobox_factory_field('stock_movement', required(false))
+    longtext_field('comments', required(false))
+}
+
+:>

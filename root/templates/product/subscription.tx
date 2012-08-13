@@ -1,0 +1,16 @@
+<:
+cascade base::forms {
+    form_name => 'product.subscription'
+}
+
+block form -> {
+    combobox_factory_field('client', required(true))
+    combobox_factory_field('product', required(true))
+    toggle_field('active')
+    datetime_field('subscription_date',    required(false))
+    datetime_field('expiry_date',          required(false))
+    datetime_field('subscription_edition', required(false))
+    datetime_field('expiry_edition',       required(false))
+}
+
+:>

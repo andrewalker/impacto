@@ -1,0 +1,14 @@
+<:
+cascade base::forms {
+    form_name => 'people.contact',
+}
+
+block form -> {
+    combobox_factory_field('client', required(true))
+    datetime_field('date', required(true))
+    toggle_field('answered')
+    text_field('type', required(true))
+    longtext_field('abstract', required(false))
+}
+
+:>

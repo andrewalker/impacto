@@ -1,0 +1,9 @@
+<:
+cascade base::forms {
+    form_name => 'product.place',
+}
+
+block form -> {
+    text_field('place', required(true))
+}
+:>

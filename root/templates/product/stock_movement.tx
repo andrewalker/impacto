@@ -1,0 +1,41 @@
+<:
+
+my $type_options = [
+   {
+      "value" => "sell",
+      "name" => "Venda"
+   },
+   {
+      "value" => "buy",
+      "name" => "Compra"
+   },
+   {
+      "value" => "consignation",
+      "name" => "Consignação"
+   },
+   {
+      "value" => "return",
+      "name" => "Retorno"
+   },
+   {
+      "value" => "donation",
+      "name" => "Doação"
+   },
+   {
+      "value" => "relocation",
+      "name" => "Mudança de local"
+   }
+];
+
+cascade base::forms {
+    form_name => 'product.stock_movement',
+}
+
+block form -> {
+    datetime_field('datetime', required(true))
+    number_field('amount', required(true))
+    combobox_field('type', $type_options, required(true))
+    combobox_factory_field('place', required(true))
+    combobox_factory_field('product', required(true))
+}
+:>

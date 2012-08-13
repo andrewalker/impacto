@@ -1,3 +1,8 @@
+@import "../../lib/dojo/resources/dojo.css";
+@import "../../lib/dijit/themes/tundra/tundra.css";
+@import "../../lib/smoke/smoke.css";
+@import "../../lib/smoke/themes/dark.css";
+
 * {padding:0; margin:0; border:none; list-style:none; text-decoration:none; outline: none;}
 
 body {
@@ -9,9 +14,6 @@ body {
     height: 38px;
     overflow: hidden;
     opacity: 0;
-/*    background-color: #2d2d2d;
-    color: #c8c4aa;
-    */
     font-size: 13px;
 }
 
@@ -52,3 +54,5 @@ h1.current-page {
 .dijitInputField.dijitArrowButtonInner {
     border: 0;
 }
+
+@import "menu.css";

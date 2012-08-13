@@ -2,6 +2,7 @@ require([
     "dojo",
     "dojo/query",
     "dojo/ready",
+    "imp/menu",
     "dojo/parser",
     "dijit/form/CheckBox",
     "dijit/form/CurrencyTextBox",

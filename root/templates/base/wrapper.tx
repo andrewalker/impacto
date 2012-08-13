@@ -46,10 +46,6 @@
     <script type="text/javascript" src="<: $static_root_uri :>/lib/dojo/dojo.js"></script>
     <script type="text/javascript" src="<: $static_root_uri :>/lib/smoke/smoke.js"></script>
 
-:   if $user {
-        <script type="text/javascript" src="<: $static_root_uri :>/js/menu.js"></script>
-:   }
-
 :   for $extra_js -> $js {
         <script type="text/javascript" src="<: $static_root_uri :>/js/<: $js :>"></script>
 :   }

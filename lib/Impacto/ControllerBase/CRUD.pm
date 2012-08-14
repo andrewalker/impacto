@@ -232,6 +232,7 @@ sub make_form_action {
     my ($self, $c, $action) = @_;
 
     my $form_factory = $self->build_form_factory( $c );
+    $form_factory->container->resolve( service => 'set_field_factories' );
 
     # $action = create or update
     # as in: insert new record in the db
@@ -248,10 +249,11 @@ sub make_form_action {
     }
 
     my $template = $c->view->get_first_existing_template($c->namespace, $c->action, $action);
+    my $values = $form_factory->container->get_sub_container('Model')->resolve( service => 'get_db_values_from_row' );
 
     $c->stash(
         factories   => $form_factory->container->resolve( service => 'field_factory_manager' )->get_all_factories_by_name,
-        values      => $form_factory->container->get_sub_container('Model')->resolve( service => 'get_db_values_from_row' ),
+        values      => $values,
         template    => $template,
         crud_action => $action,
     );

@@ -125,33 +125,28 @@ sub BUILD {
 
     $container->add_service(
         Bread::Board::BlockInjection->new(
-            name         => 'form_raw_definition',
+            name         => 'set_field_factories',
             lifecycle    => 'Singleton',
             dependencies => {
-                reflection      => depends_on('/Model/flattened_reflection'),
                 extra_params    => depends_on('extra_params'),
+                mgr             => depends_on('field_factory_manager'),
             },
             block        => sub {
                 my $s = shift;
-                my $form_definition = $s->param('reflection');
                 my %extra_params    = %{ $s->param('extra_params') };
+                my $mgr             = $s->param('mgr');
 
                 foreach my $field (keys %extra_params) {
-                    my $flat_field       = delete $form_definition->{fields}{$field} || +{};
-
                     my $field_definition = Form::SensibleX::FormFactory::FieldDefinition->new(
-                        definition      => $flat_field,
+                        definition      => {},
                         extra_params    => $extra_params{$field},
                         name            => $field,
+                        field_factories => $mgr,
                     );
 
-                    $field_definition->check_field_class;
                     $field_definition->merge_definition;
-
-                    $form_definition->{fields}{$field} = $field_definition->get_definition;
+                    $field_definition->check_field_factory;
                 }
-
-                return $form_definition;
             },
         )
     );
@@ -169,105 +164,6 @@ sub BUILD {
             lifecycle    => 'Singleton',
         )
     );
-
-    $container->add_service(
-        Bread::Board::ConstructorInjection->new(
-            name         => 'form_definition_manager',
-            class        => 'Form::SensibleX::FormFactory::FormDefinition',
-            dependencies => [
-                depends_on('form_name'),
-                depends_on('path_to_forms'),
-            ],
-            lifecycle    => 'Singleton',
-        )
-    );
-
-    $container->add_service(
-        Bread::Board::BlockInjection->new(
-            name         => 'save_form_definition',
-            dependencies => [
-                depends_on('form_definition_manager'),
-                depends_on('form_raw_definition'),
-            ],
-            block        => sub {
-                my $s = shift;
-                $s->param('form_definition_manager')->save(
-                    $s->param('form_raw_definition')
-                );
-            },
-        )
-    );
-
-    $container->add_service(
-        Bread::Board::BlockInjection->new(
-            name         => 'form_definition',
-            lifecycle    => 'Singleton',
-            dependencies => {
-                form_definition => depends_on('form_definition_manager'),
-                field_factories => depends_on('field_factory_manager'),
-            },
-            block        => sub {
-                my $s = shift;
-                my $form_definition = $s->param('form_definition')->load();
-                my $field_factories = $s->param('field_factories');
-
-                foreach my $field (keys %{ $form_definition->{fields} }) {
-                    my $flat_field       = delete $form_definition->{fields}{$field};
-
-                    my $field_definition = Form::SensibleX::FormFactory::FieldDefinition->new(
-                        definition      => $flat_field,
-                        field_factories => $field_factories,
-                    );
-
-                    $field_definition->check_field_factory;
-
-                    if (my $result = $field_definition->get_definition) {
-                        $form_definition->{fields}{$field} = $result;
-                    }
-                }
-
-                return $form_definition;
-            },
-        )
-    );
-
-    $container->add_service(
-        Bread::Board::BlockInjection->new(
-            name         => 'form_without_factories',
-            lifecycle    => 'Singleton',
-            dependencies => [
-                depends_on('form_definition'),
-            ],
-            block        => sub {
-                return Form::Sensible->create_form( shift->param('form_definition') );
-            },
-        )
-    );
-
-    $container->add_service(
-        Bread::Board::BlockInjection->new(
-            name         => 'form',
-            lifecycle    => 'Singleton',
-            dependencies => [
-                depends_on('form_without_factories'),
-                depends_on('field_factory_manager'),
-            ],
-            block        => sub {
-                my $s    = shift;
-                my $mgr  = $s->param('field_factory_manager');
-                my $form = $s->param('form_without_factories');
-
-                $mgr->add_factories_to_form($form);
-
-                return $form;
-            },
-        )
-    );
-}
-
-sub get_form {
-    my $self = shift;
-    return $self->container->resolve(service => 'form');
 }
 
 sub get_row {
@@ -297,7 +193,7 @@ sub execute {
         return $ok;
     }
 
-    $self->container->resolve(service => '/Model/set_values_from_row');
+#    $self->container->resolve(service => '/Model/set_values_from_row');
 
     return 0;
 }

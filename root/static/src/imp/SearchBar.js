@@ -3,7 +3,7 @@ define([
     "dijit/form/TextBox",
     "dijit/form/Button",
     "dojo/on",
-    "dojo/domReady!",
+    "dojo/domReady!"
 ], function(declare, TextBox) {
     var timeout = 0;
     var last_term = '';
@@ -29,7 +29,7 @@ define([
         postCreate: function () {
             this.inherited(arguments);
             this.on('keyup', search_input_keypress);
-        },
+        }
     });
 
 });

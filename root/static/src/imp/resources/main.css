@@ -1,7 +1,7 @@
-@import "../../lib/dojo/resources/dojo.css";
-@import "../../lib/dijit/themes/tundra/tundra.css";
-@import "../../lib/smoke/smoke.css";
-@import "../../lib/smoke/themes/dark.css";
+@import "../../dojo/resources/dojo.css";
+@import "../../dijit/themes/tundra/tundra.css";
+@import "../../smoke/smoke.css";
+@import "../../smoke/themes/dark.css";
 
 @import "menu.css";
 

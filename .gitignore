@@ -7,9 +7,14 @@
 # except this file, of course!
 !.gitignore
 
-# downloaded by script/impacto_get_dojo.sh
-# plus stuff installed using cpm (dgrid, etc)
-root/static/lib/
+# built stuff
+root/static/dist/
+
+# js packages
+root/static/src/
+
+# except our own
+!root/static/src/imp
 
 # ctags-exuberant tags file can be manually generated so it doesn't need to be
 # in the vcs

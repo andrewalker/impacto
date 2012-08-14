@@ -1,9 +1,8 @@
-require([
+require({ cache: {} }, [
     "dojo",
     "dojo/query",
-    "dojo/ready",
-    "imp/menu",
     "dojo/parser",
+    "imp/menu",
     "dijit/form/CheckBox",
     "dijit/form/CurrencyTextBox",
     "dijit/form/NumberTextBox",
@@ -16,8 +15,10 @@ require([
     "dijit/form/Form",
     "dijit/Editor",
     "dojo/domReady!"
-], function (dojo, $, ready) {
+], function (dojo, $, parser) {
     var node = $('form').pop();
-    if (node)
+    if (node) {
         dojo.style(node, 'opacity', 1);
+        parser.parse(node);
+    }
 });

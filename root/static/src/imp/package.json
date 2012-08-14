@@ -1,0 +1,15 @@
+{
+    "name": "imp",
+    "version": "1.0",
+    "main": "main",
+    "dependencies": {
+        "xstyle": "0.0.5",
+        "dojo": "1.7.3",
+        "dijit": "1.7.3",
+        "dojox": "1.7.3",
+        "put-selector": "0.3.0",
+        "dgrid": "0.3.1"
+    },
+    "description": "Impacto application",
+    "dojoBuild": "imp.profile.js"
+}

@@ -1,6 +1,5 @@
 define([
     "dojo",
-    "dojo/ready",
     "dojo/parser",
     "dijit/Menu",
     "imp/MenuItem",
@@ -9,8 +8,10 @@ define([
     "dijit/PopupMenuBarItem",
     "dijit/PopupMenuItem",
     "dojo/domReady!"
-], function (dojo, ready) {
+], function (dojo, parser) {
     var menu = dojo.byId('top-menu');
-    if (menu)
+    if (menu) {
+        parser.parse('top-menu');
         dojo.style(menu, 'opacity', 1);
+    }
 });

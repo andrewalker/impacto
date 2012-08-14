@@ -10,7 +10,7 @@ block form -> {
     money_field('value', required(true))
     datetime_field('datetime', required(true))
     combobox_factory_field('stock_movement', required(false))
-    longtext_field('comments', required(false))
+    longtext_field('comment', required(false))
 }
 
 :>

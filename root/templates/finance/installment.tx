@@ -7,7 +7,7 @@ cascade base::forms {
 block form -> {
     combobox_factory_field('ledger', required(true))
     datetime_field('due', required(true))
-    money_field('value', required(true))
+    money_field('amount', required(true))
     toggle_field('payed')
 }
 

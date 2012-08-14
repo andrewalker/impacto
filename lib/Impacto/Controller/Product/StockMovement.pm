@@ -2,7 +2,6 @@ package Impacto::Controller::Product::StockMovement;
 use utf8;
 use Moose;
 use namespace::autoclean;
-use Form::Sensible::DelegateConnection;
 
 BEGIN { extends 'Impacto::ControllerBase::CRUD' }
 

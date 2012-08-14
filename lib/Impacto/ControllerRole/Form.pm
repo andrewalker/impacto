@@ -1,7 +1,5 @@
 package Impacto::ControllerRole::Form;
 use utf8;
-use Form::Sensible::Renderer::HTML;
-use Form::Sensible::DelegateConnection;
 use Moose::Role;
 use Class::Load qw(load_first_existing_class);
 use namespace::autoclean;

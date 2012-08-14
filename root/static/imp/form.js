@@ -14,10 +14,10 @@ require([
     "dijit/form/FilteringSelect",
     "dijit/form/Button",
     "dijit/form/Form",
-    "dijit/Editor"
+    "dijit/Editor",
+    "dojo/domReady!"
 ], function (dojo, $, ready) {
-    ready(function () {
-        var node = $('form').pop();
+    var node = $('form').pop();
+    if (node)
         dojo.style(node, 'opacity', 1);
-    });
 });

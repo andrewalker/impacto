@@ -8,9 +8,9 @@ define([
     "dijit/MenuBar",
     "dijit/PopupMenuBarItem",
     "dijit/PopupMenuItem",
-    "dojo/domReady!",
+    "dojo/domReady!"
 ], function (dojo, ready) {
-    ready(function () {
-        dojo.style(dojo.byId('top-menu'), 'opacity', 1);
-    });
+    var menu = dojo.byId('top-menu');
+    if (menu)
+        dojo.style(menu, 'opacity', 1);
 });

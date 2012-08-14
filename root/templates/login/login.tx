@@ -1,7 +1,7 @@
 <:
     cascade base::wrapper {
         extra_css => 'form.css',
-        extra_js  => 'login.js',
+        extra_js  => 'form.js',
     }
     block content -> {
 :>

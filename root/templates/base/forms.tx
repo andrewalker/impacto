@@ -1,6 +1,5 @@
 : cascade base::wrapper {
-:    extra_js  => 'form.js',
-:    extra_css => 'form.css',
+:    page_type  => 'form',
 : }
 :
 : macro required -> $req {
@@ -47,7 +46,7 @@
     </script>
 :       form()
 :       trigger_field()
-    </div></div>
+    </form></div>
 : }
 :
 : macro datetime_field -> ($field_name, $required) {

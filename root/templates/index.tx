@@ -1,6 +1,5 @@
 : cascade base::wrapper {
-:   extra_css => 'list.css',
-:   extra_js  => 'list.js',
+:   page_type => 'list',
 : }
 : block content -> {
 <style type="text/css">

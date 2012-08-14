@@ -3,28 +3,7 @@
 <html lang="pt-br">
 <head>
     <title>Impacto<: if $title { ' - ' ~ $title } :></title>
-
-    <script type="text/javascript">
-    var dojoConfig = {
-        baseUrl:     '<: $static_root_uri :>/',
-        parseOnLoad: true,
-        async:       true,
-        locale:      'pt-br',
-        packages: [
-            { name: "dojo",         location: "lib/dojo"              },
-            { name: "dijit",        location: "lib/dijit"             },
-            { name: "dojox",        location: "lib/dojox"             },
-            { name: "dgrid",        location: "lib/dgrid"             },
-            { name: "xstyle",       location: "lib/xstyle"            },
-            { name: "put-selector", location: "lib/put-selector"      },
-            { name: "imp",          location: "imp",      main: "app" }
-        ]
-    };
-    </script>
-
-:   if $extra_css {
-    <link href="<: $static_root_uri :>/imp/resources/<: $extra_css :>" type="text/css" rel="stylesheet" />
-:   }
+    <link href="<: $static_root_uri :>/dist/imp/resources/<: $page_type :>.css" type="text/css" rel="stylesheet" />
 
 :   if $table_prefix_uri {
     <script type="text/javascript">
@@ -35,14 +14,10 @@
 <body class="<: $dijit_theme :>">
 :   if $user { include menu }
 
-    <div class="wrapper">
+    <div class="wrapper" id="wrapper">
         <: content() :>
     </div>
-    <script type="text/javascript" src="<: $static_root_uri :>/lib/dojo/dojo.js"></script>
-    <script type="text/javascript" src="<: $static_root_uri :>/lib/smoke/smoke.js"></script>
 
-:   if $extra_js  {
-        <script type="text/javascript" src="<: $static_root_uri :>/imp/<: $extra_js :>"></script>
-:   }
+    <script type="text/javascript" data-dojo-config="locale: 'pt-br', tlmSiblingOfDojo: false, deps: ['imp/<: $page_type :>']" src="<: $static_root_uri :>/dist/dojo/dojo.js"></script>
 </body>
 </html>

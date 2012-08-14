@@ -19,27 +19,34 @@ sub BUILD {
         service req    => (
             block => sub { $self->req },
         );
-        service submit => (
+        service form_values => (
             dependencies => {
-                form => depends_on('/form'),
                 req  => depends_on('req'),
             },
+            lifecycle => 'Singleton',
             block => sub {
                 my $s = shift;
-                my $req  = $s->param('req');
-                my $form = $s->param('form');
-
-                return 0 if ($req->method ne 'POST');
-
+                my $req = $s->param('req');
                 my $values = $req->body_params;
 
                 for my $field ($req->upload) {
                     $values->{$field} = $req->upload( $field );
                 }
 
-                $form->set_values( $values );
+                return $values;
+            },
+        );
+        service submit => (
+            dependencies => {
+                req  => depends_on('req'),
+                form_values  => depends_on('form_values'),
+            },
+            block => sub {
+                my $s = shift;
+                my $req  = $s->param('req');
+                my $v    = $s->param('form_values');
 
-                return 1;
+                return ($req->method eq 'POST' && delete $v->{submit});
             },
         );
     };

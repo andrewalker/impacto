@@ -5,13 +5,12 @@ use utf8;
 use Test::More;
 use Form::SensibleX::FormFactory::Request::Catalyst::Request;
 use Test::MockObject;
-use Bread::Board;
-use Form::Sensible;
 
 my $BODY_PARAMS = {
-    name => 'André',
-    sex  => 'Male',
-    age  => 21,
+    name   => 'André',
+    sex    => 'Male',
+    age    => 21,
+    submit => 1,
 };
 
 test_method('GET');
@@ -26,38 +25,16 @@ sub test_method {
     $req->mock( 'body_params', sub { $BODY_PARAMS } );
     $req->mock( 'upload',      sub { ()           } );
 
-    my $container = container FormFactory => as {
-        service form => (
-            lifecycle => 'Singleton',
-            block => sub {
-                my $s = shift;
-                return Form::Sensible->create_form({
-                    name => 'test',
-                    fields => [
-                        { name => 'name',   field_class => 'Text'    },
-                        { name => 'sex',    field_class => 'Text'    },
-                        { name => 'age',    field_class => 'Text'    },
-                        { name => 'submit', field_class => 'Trigger' },
-                    ],
-                });
-            },
-        );
-    };
-
-    $container->add_sub_container(
-        Form::SensibleX::FormFactory::Request::Catalyst::Request->new(
-            req => $req
-        )
+    my $container = Form::SensibleX::FormFactory::Request::Catalyst::Request->new(
+        req => $req
     );
 
-    my $is_post = $method eq 'POST' ? 1 : 0;
-    use Data::Dumper;
-    use feature 'say';
-    is($container->resolve(service => '/Request/submit'), $is_post, "Submit is $is_post when method is $method");
+    my $is_post = ($method eq 'POST');
+    is($container->resolve(service => 'submit'), $is_post, "Submit is $is_post when method is $method");
     if ($is_post) {
-        my $values = $container->resolve(service => 'form')->get_all_values;
+        my $values = $container->resolve(service => 'form_values');
         my %expected = %{ $BODY_PARAMS };
-        $expected{submit} = undef;
+        delete $expected{submit};
 
         is_deeply($values, \%expected, 'All values are set');
     }

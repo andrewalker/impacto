@@ -133,17 +133,19 @@ sub BUILD {
             dependencies => {
                 mgr => depends_on('/field_factory_manager'),
                 row => depends_on('row_with_form_values'),
+                val => depends_on('/Request/form_values'),
             },
             block        => sub {
                 my $self = shift;
                 my $row  = $self->param('row');
                 my $mgr  = $self->param('mgr');
+                my $val  = $self->param('val');
 
                 my $result = 1;
 
                 for my $ff ($mgr->all_factories) {
                     return 0 if !$result;
-                    $result = $ff->prepare_execute($row);
+                    $result = $ff->prepare_execute($row, $val);
                 }
 
                 return $result ? $row : 0;
@@ -175,17 +177,19 @@ sub BUILD {
             dependencies => {
                 mgr => depends_on('/field_factory_manager'),
                 row => depends_on('complete_row'),
+                val => depends_on('/Request/form_values'),
             },
             block        => sub {
                 my $self = shift;
                 my $row = $self->param('row');
                 my $mgr = $self->param('mgr');
+                my $val = $self->param('val');
 
                 my $result = 1;
 
                 for my $ff ($mgr->all_factories) {
                     return 0 if !$result;
-                    $result = $ff->execute($row);
+                    $result = $ff->execute($row, $val);
                 }
 
                 return $result;

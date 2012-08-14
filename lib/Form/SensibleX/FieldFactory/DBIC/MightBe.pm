@@ -43,12 +43,12 @@ around add_field => sub {
 # client => { x_field_factory => 'DBIC::MightBe', option_label => 'Client', option_value => 'person' }
 
 sub execute {
-    my ( $self, $row ) = @_;
+    my ( $self, $row, $val ) = @_;
     my $i = 0;
 
     foreach my $field (@{ $self->fields }) {
         my $name    = $field->name;
-        my $value   = $field->value;
+        my $value   = $val->{$name};
 
         if ($value) {
             $row->find_or_create_related($name, {});

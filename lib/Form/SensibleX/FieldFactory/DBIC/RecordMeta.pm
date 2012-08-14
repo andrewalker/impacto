@@ -50,12 +50,12 @@ around field_factory_names => sub {
 };
 
 sub execute {
-    my ( $self, $row ) = @_;
+    my ( $self, $row, $val ) = @_;
     my $i = 0;
 
     foreach my $field (@{ $self->fields }) {
         my $name  = $field->name;
-        my $value = $field->value;
+        my $value = $val->{$name};
 
         # TODO!
         # {

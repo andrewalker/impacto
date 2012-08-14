@@ -5,6 +5,9 @@ define([
     "dojo/domReady!"
 ],
 function (selector, DGridStore, DGrid) {
+    if (typeof table_prefix_uri == 'undefined')
+        return;
+
     var datagrid_store = DGridStore({
         target:       table_prefix_uri + '/json_rest/',
         sortParam:    'sort',

@@ -1,7 +1,6 @@
 package Form::SensibleX::FormFactory;
 use Bread::Board;
 use Moose;
-use Form::Sensible;
 use Class::Load qw/load_class/;
 use Form::SensibleX::FormFactory::FieldDefinition;
 use namespace::autoclean;

@@ -251,7 +251,6 @@
 :   for $field_value -> $fv {
 :      if $fv == $option_value {
 checked="checked"
-:        return
 :      }
 :   }
 : }

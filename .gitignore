@@ -11,7 +11,7 @@
 root/static/dist/
 
 # js packages
-root/static/src/
+root/static/src/*
 
 # except our own
 !root/static/src/imp

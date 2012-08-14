@@ -84,15 +84,6 @@ sub BUILD {
             lifecycle    => 'Singleton',
         );
 
-        service set_values_from_row => (
-            lifecycle    => 'Singleton',
-            dependencies => [ depends_on('/form'), depends_on('get_db_values_from_row') ],
-            block        => sub {
-                my $self = shift;
-                $self->param('form')->set_values( $self->param('get_db_values_from_row') );
-            },
-        );
-
         service get_db_values_from_row => (
             dependencies => {
                 mgr    => depends_on('/field_factory_manager'),
@@ -118,17 +109,17 @@ sub BUILD {
         );
 
         service row_with_form_values => (
-            dependencies => [ depends_on('row'), depends_on('result_source'), depends_on('/form') ],
+            dependencies => [ depends_on('row'), depends_on('result_source'), depends_on('/Request/form_values') ],
             block        => sub {
                 my $s = shift;
-                my $form    = $s->param('form');
+                my $form    = $s->param('form_values');
                 my $row     = $s->param('row');
                 my @columns = $s->param('result_source')->columns;
 
                 foreach my $column (@columns) {
-                    if (my $field = $form->field($column)) {
+                    if ($form->{$column}) {
                         $row->set_column(
-                            $column => $field->value
+                            $column => $form->{$column}
                         );
                     }
                 }
@@ -263,10 +254,6 @@ Creates L<Form::Sensible::Form> object based on the schema.
 =head2 flattened_reflection
 
 Flattens the form created by L</reflect>.
-
-=head2 set_values_from_row
-
-Sets all the values in the form using the L</row> service.
 
 =head2 prepare_get_db_values_from_row
 

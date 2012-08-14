@@ -19,7 +19,7 @@ has '+crud_model_name' => ( default => 'DB::ProductSubscription' );
 sub form_columns_extra_params {
     {
         client => { x_field_factory => "DBIC::BelongsTo", option_label => 'person.name', option_value => 'person' },
-        product => { x_field_factory => "DBIC::BelongsTo", option_label => 'name', option_value => 'id' },
+        product => { x_field_factory => "DBIC::BelongsTo", option_label => 'name', option_value => 'id', option_filter => { is_subscription => 1 } },
     }
 }
 

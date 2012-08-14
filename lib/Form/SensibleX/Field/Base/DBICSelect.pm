@@ -39,7 +39,7 @@ has option_sort => (
 );
 
 has option_filter => (
-    isa      => 'Str',
+    isa      => 'HashRef',
     is       => 'ro',
     required => 0,
 );

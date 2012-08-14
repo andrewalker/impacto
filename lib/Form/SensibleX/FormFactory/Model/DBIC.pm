@@ -2,10 +2,6 @@ package Form::SensibleX::FormFactory::Model::DBIC;
 use Moose;
 use Bread::Board;
 use Moose::Util::TypeConstraints qw/enum/;
-
-# FIXME: get this as a parameter
-use Impacto::Form::Sensible::Reflector::DBIC;
-
 use Hash::Merge qw(merge);
 use namespace::autoclean;
 
@@ -47,41 +43,6 @@ sub BUILD {
                 my $self = shift;
                 return $self->param('result_source')->related_source( $self->param('field') )->resultset;
             },
-        );
-
-        service reflect => (
-            lifecycle    => 'Singleton',
-            dependencies => {
-                columns       => depends_on('/column_order'),
-                result_source => depends_on('result_source'),
-                resultset     => depends_on('resultset'),
-            },
-            block => sub {
-                my $self      = shift;
-                my $columns   = $self->param('columns');
-                my $source    = $self->param('result_source');
-                my $reflector = Impacto::Form::Sensible::Reflector::DBIC->new();
-                my %db_columns = map { $_ => 1 } $source->columns;
-                my @db_columns = grep { $db_columns{$_} } @$columns;
-
-                my $form_options = {
-                    form             => { name => $source->from },
-                    with_trigger     => 1,
-                    fieldname_filter => sub { @db_columns },
-                };
-
-                return $reflector->reflect_from( $self->param('resultset'), $form_options );
-            },
-        );
-
-        service flattened_reflection => (
-            dependencies => [ depends_on('reflect') ],
-            block        => sub {
-                my $r = shift->param('reflect')->flatten;
-                delete $r->{field_order};
-                return $r;
-            },
-            lifecycle    => 'Singleton',
         );
 
         service get_db_values_from_row => (

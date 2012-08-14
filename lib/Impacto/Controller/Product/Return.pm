@@ -20,7 +20,7 @@ sub datagrid_columns_extra_params {
 sub form_columns_extra_params {
     {
         consignation   => { x_field_factory => "DBIC::BelongsTo", option_value => 'id', option_label => [ 'representant.person.name', 'datetime' ] },
-        stock_movement => { x_field_factory => "DBIC::BelongsTo", option_value => 'id' },
+        stock_movement => { x_field_factory => "DBIC::BelongsTo", option_value => 'id', option_label => [ 'datetime', 'product.name' ]  },
         ledger         => { x_field_factory => "DBIC::BelongsTo", option_value => 'id' },
     }
 }

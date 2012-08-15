@@ -53,8 +53,9 @@ function (selector, DGridStore, DGrid) {
             done_all = true;
 
             if (!alerted && finished == how_many) {
-                smoke.alert(finished > 1 ? alert_message_p : alert_message);
-                grid.refresh();
+                smoke.alert(finished > 1 ? alert_message_p : alert_message, {}, function () {
+                    grid.refresh();
+                });
             }
         });
     }

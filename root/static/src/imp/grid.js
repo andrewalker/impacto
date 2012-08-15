@@ -14,9 +14,11 @@ function (selector, DGridStore, DGrid) {
         idProperty:   '_esid'
     });
 
+    var first_column = datagrid_layout[1].field;
     datagrid_layout.unshift(selector({ field: 'checkbox', label: ' ' }));
 
     window.grid = new DGrid({
+        sort:               [ { attribute: first_column, descending: false } ],
         rowsPerPage:        15,
         previousNextArrows: true,
         firstLastArrows:    true,

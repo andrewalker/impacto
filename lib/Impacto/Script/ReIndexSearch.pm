@@ -15,6 +15,7 @@ sub reindex_db {
     my ($self, $c) = @_;
 
     my $model = $c->model('Indexer');
+    $model->initialize_index();
 
     for ($c->controllers) {
         my $controller = $c->controller($_);

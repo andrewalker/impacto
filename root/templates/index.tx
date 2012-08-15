@@ -2,10 +2,6 @@
 :   page_type => 'list',
 : }
 : block content -> {
-<style type="text/css">
-    .box { background: #efefef; width: 400px; float: left; margin: 15px; padding: 7px }
-</style>
-
 <div class="box">
     <h2>Produtos fora de estoque</h2>
     <ul>

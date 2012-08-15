@@ -56,3 +56,5 @@ h1.current-page {
 .dijitInputField.dijitArrowButtonInner {
     border: 0;
 }
+
+.box { background: #efefef; width: 400px; float: left; margin: 15px; padding: 7px }

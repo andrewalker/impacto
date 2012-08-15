@@ -10,6 +10,7 @@
     datagrid_layout = <: $structure | raw :>;
 </script>
 
+:# TODO: Catalyst::Plugin::StatusMessage
 : if $rebuilt_index {
     <p>Índice reconstruído.</p>
 : }
@@ -32,7 +33,7 @@
     </section>
     <button type="button" id="remove_selected" data-dojo-type="dijit.form.Button">
         Remover selecionados
-        <script type="dojo/method" data-dojo-event="onClick" data-dojo-args="evt">
+        <script type="dojo/on" data-dojo-event="click" data-dojo-args="evt">
             remove_selected(evt);
         </script>
     </button>

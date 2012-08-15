@@ -2,7 +2,6 @@ define([
     "dgrid/selector",
     "imp/DGridStore",
     "imp/DGrid",
-    "smoke/smoke",
     "dojo/domReady!"
 ],
 function (selector, DGridStore, DGrid) {

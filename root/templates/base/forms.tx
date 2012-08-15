@@ -27,7 +27,7 @@
 :
 : block content -> {
 <div id="<: $form_name :>_form_div" class="form_container <: $form_name :>_form_container">
-    <form
+    <div
         data-dojo-type="dijit.form.Form"
         action="<: $form_action // '' :>"
         method="<: $form_method // 'post' :>"
@@ -37,8 +37,8 @@
         accept-charset="utf-8"
         <: if $is_upload_form { 'enctype="multipart/form-data"' } :>
     >
-    <script type="dojo/method" data-dojo-event="onSubmit">
-        if(!this.validate()){
+    <script type="dojo/on" data-dojo-event="submit">
+        if (!this.validate()) {
             smoke.alert('O formulário contém erros.');
             return false;
         }
@@ -46,7 +46,7 @@
     </script>
 :       form()
 :       trigger_field()
-    </form></div>
+    </div></div>
 : }
 :
 : macro datetime_field -> ($field_name, $required) {

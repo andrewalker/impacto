@@ -18,6 +18,6 @@
         <: content() :>
     </div>
 
-    <script type="text/javascript" data-dojo-config="locale: 'pt-br', tlmSiblingOfDojo: false, deps: ['imp/<: $page_type :>']" src="<: $static_root_uri :>/dist/dojo/dojo.js"></script>
+    <script type="text/javascript" data-dojo-config="locale: 'pt-br', tlmSiblingOfDojo: false, deps: ['smoke/smoke', 'imp/<: $page_type :>']" src="<: $static_root_uri :>/dist/dojo/dojo.js"></script>
 </body>
 </html>

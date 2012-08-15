@@ -16,9 +16,9 @@ require({ cache: {} }, [
     "dijit/Editor",
     "dojo/domReady!"
 ], function (dojo, $, parser) {
-    var node = $('form').pop();
+    var node = $('.form').pop();
     if (node) {
         dojo.style(node, 'opacity', 1);
-        parser.parse(node);
+        parser.parse('wrapper');
     }
 });

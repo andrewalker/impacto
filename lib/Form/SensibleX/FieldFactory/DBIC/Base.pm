@@ -6,7 +6,7 @@ use Carp;
 
 has fields => (
     is      => 'ro',
-    isa     => 'ArrayRef[Form::Sensible::Field]',
+    isa     => 'ArrayRef',
     default => sub { [] },
     traits  => ['Array'],
     handles => {

@@ -3,7 +3,9 @@ package Form::SensibleX::Field::Base::DBICSelect;
 use Moose;
 use namespace::autoclean;
 
-extends 'Form::Sensible::Field::Select';
+has name    => (is => 'rw');
+has value   => (is => 'rw');
+has options => (is => 'rw');
 
 has option_label => (
     isa      => 'ArrayRef[Str]',
@@ -51,7 +53,7 @@ has first_empty_option => (
     default => sub {
         my $self = shift;
 
-        return '--' if !$self->required;
+        return '--'; # if !$self->required
     },
 );
 
@@ -66,8 +68,6 @@ has resultset => (
     is       => 'ro',
     required => 1,
 );
-
-sub _default_field_type { 'select' }
 
 sub _build_option_sort { shift->option_label }
 

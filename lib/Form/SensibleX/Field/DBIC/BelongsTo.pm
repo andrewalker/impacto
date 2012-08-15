@@ -2,16 +2,11 @@ package Form::SensibleX::Field::DBIC::BelongsTo;
 
 use Moose;
 use namespace::autoclean;
-use Form::Sensible::DelegateConnection;
 use MIME::Base64 qw/encode_base64url decode_base64url/;
 use Carp;
 use JSON;
 
 extends 'Form::SensibleX::Field::Base::DBICSelect';
-
-has '+options_delegate' => (
-    default => sub { FSConnector( \&options_delegate_get_from_db ) },
-);
 
 sub get_records_from_db {
     my $self = shift;
@@ -24,7 +19,7 @@ sub get_records_from_db {
     ];
 }
 
-sub options_delegate_get_from_db {
+sub get_options {
     my $self = shift;
 
     my $records = $self->get_records_from_db;

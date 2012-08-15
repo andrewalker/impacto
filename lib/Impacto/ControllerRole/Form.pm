@@ -1,28 +1,10 @@
 package Impacto::ControllerRole::Form;
 use utf8;
 use Moose::Role;
-use Class::Load qw(load_first_existing_class);
+use Form::SensibleX::FormFactory;
 use namespace::autoclean;
 
-requires 'crud_model_instance', 'i18n';
-
-has form_factory_class => (
-    isa        => 'Str',
-    is         => 'ro',
-    lazy_build => 1,
-);
-
-has form_templates_paths => (
-    isa        => 'ArrayRef[Str]',
-    is         => 'ro',
-    lazy_build => 1,
-);
-
-sub _build_form_templates_paths {
-    my $self = shift;
-
-    return [ $self->_app->path_to(qw/root templates forms/)->stringify ];
-}
+requires 'crud_model_instance';
 
 # in the controller it would be like:
 # sub form_columns {
@@ -45,19 +27,19 @@ sub get_all_columns {
     return [];
 }
 
-sub _build_form_factory_class {
-    my $self = shift;
+#   sub _build_form_factory_class {
+#       my $self = shift;
 
-    my $this_class_name = ref $self;
-    $this_class_name    =~ s,^Impacto::Controller,,;
+#       my $this_class_name = ref $self;
+#       $this_class_name    =~ s,^Impacto::Controller,,;
 
-    my $default = 'Impacto::FormFactory';
-    my $custom  = $default . $this_class_name;
+#       my $default = 'Impacto::FormFactory';
+#       my $custom  = $default . $this_class_name;
 
-    my $form_factory = load_first_existing_class($custom, $default);
+#       my $form_factory = load_first_existing_class($custom, $default);
 
-    return $form_factory;
-}
+#       return $form_factory;
+#   }
 
 # very easy to override
 sub build_form_factory {
@@ -68,9 +50,9 @@ sub build_form_factory {
 
     my $form_files = $self->_app->path_to(qw/root forms/)->stringify;
 
-    return $self->form_factory_class->new(
-        controller_name => ref $self,
-        path_to_forms   => $form_files,
+    return Form::SensibleX::FormFactory->new(
+#        controller_name => ref $self,
+#        path_to_forms   => $form_files,
         columns         => $self->form_columns,
         extra_params    => $self->form_columns_extra_params,
         request_args    => { req => $c->req },
@@ -80,31 +62,6 @@ sub build_form_factory {
         },
     );
 }
-
-#   sub render_form {
-#       my ( $self, $form ) = @_;
-
-#       my $fs_renderer = Form::Sensible::Renderer::HTML->new({
-#           additional_include_paths => $self->form_templates_paths,
-#       });
-#       $fs_renderer->tt_config->{PRE_CHOMP}  = 2;
-#       $fs_renderer->tt_config->{POST_CHOMP} = 2;
-
-#       my $rendered_form = $fs_renderer->render( $form );
-#       $rendered_form->display_name_delegate(
-#           FSConnector(  sub { $self->_translate_form_field(@_) }  )
-#       );
-
-#       return $rendered_form->complete;
-#   }
-
-#   sub _translate_form_field {
-#       my ($self, $caller, $display_name, $origin_object) = @_;
-
-#       my $str = 'crud.' . $caller->form->name . '.' . $origin_object->name;
-
-#       return $self->i18n->maketext( $str ) || $display_name;
-#   }
 
 1;
 

@@ -4,17 +4,14 @@ use utf8;
 use Moose;
 use namespace::autoclean;
 
-extends 'Form::Sensible::Field::Text';
+has name  => (is => 'rw');
+has value => (is => 'rw');
 
 has resultset => (
     isa      => 'DBIx::Class::ResultSet',
     is       => 'ro',
     required => 1,
 );
-
-sub _default_field_type {
-    'hidden'
-}
 
 sub generate_slug {
     my ($self, $source) = @_;

@@ -3,12 +3,6 @@ use Moose;
 use Class::Load qw/load_class/;
 use namespace::autoclean;
 
-has form => (
-    isa    => 'Form::Sensible::Form',
-    is     => 'ro',
-    writer => '_set_form',
-);
-
 has column_order => (
     isa => 'ArrayRef',
     is  => 'ro',
@@ -72,49 +66,6 @@ sub add_to_factory {
     }
     else {
         $self->init_factory($class_name, $definition);
-    }
-}
-
-sub add_factories_to_form {
-    my ($self, $form) = @_;
-
-    $self->_set_form($form)
-        if $form;
-
-    for my $factory_class ($self->all_factories) {
-        for my $factory_name (@{ $factory_class->field_factory_names }) {
-            $self->add_factory_to_form(
-                $factory_name,
-                $factory_class->get_fields_for_factory($factory_name),
-            );
-        }
-    }
-
-    $form->field_order([ @{ $self->column_order }, 'submit' ]);
-}
-
-sub add_factory_to_form {
-    my ($self, $factory, $factory_fields) = @_;
-    my @fact_field_names;
-    my $form = $self->form;
-
-    foreach my $factory_field (@$factory_fields) {
-        my $name = $factory_field->name;
-        push @fact_field_names, $name;
-        $form->add_field( $factory_field, $name );
-    }
-
-    $self->_replace_fields($factory, \@fact_field_names);
-}
-
-sub _replace_fields {
-    my ($self, $needle, $to_insert) = @_;
-
-    my $columns = $self->column_order;
-
-    for my $i ( 0 .. scalar @$columns - 1 ) {
-        return splice @$columns, $i, 1, @$to_insert
-            if $columns->[$i] eq $needle;
     }
 }
 

@@ -2,27 +2,18 @@ package Form::SensibleX::Field::DBIC::MightBe;
 
 use Moose;
 use namespace::autoclean;
-use Carp;
 
-extends 'Form::Sensible::Field::Toggle';
+has name      => ( is => 'rw' );
+has value     => ( is => 'rw' );
 
-has '+on_value'  => ( default => 1 );
-has '+off_value' => ( default => 0 );
+has on_value  => ( default => 1, is => 'ro' );
+has off_value => ( default => 0, is => 'ro' );
 
 has resultset => (
     isa      => 'DBIx::Class::ResultSet',
     is       => 'ro',
     required => 1,
 );
-
-sub BUILD {
-    my $self = shift;
-    $self->render_hints->{render_as} = 'checkboxes';
-}
-
-sub _default_field_type {
-    'toggle'
-}
 
 sub get_values_from_row {
     my ( $self, $row ) = @_;
@@ -45,10 +36,6 @@ Form::SensibleX::Field::DBIC::MightBe
 =head1 DESCRIPTION
 
 =head1 METHODS
-
-=head2 get_rs
-
-Returns the resultset to the many_to_many accessor that DBIC creates.
 
 =head2 get_option_hash_from_records
 

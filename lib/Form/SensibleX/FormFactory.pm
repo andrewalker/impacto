@@ -14,11 +14,6 @@ has container => (
     },
 );
 
-has path_to_forms => (
-    isa        => 'Str',
-    is         => 'ro',
-);
-
 has columns => (
     isa        => 'ArrayRef',
     is         => 'ro',
@@ -98,13 +93,6 @@ sub BUILD {
         Bread::Board::Literal->new(
             name  => 'model',
             value => $self->model,
-        )
-    );
-
-    $container->add_service(
-        Bread::Board::Literal->new(
-            name  => 'path_to_forms',
-            value => $self->path_to_forms,
         )
     );
 

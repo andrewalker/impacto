@@ -2,23 +2,9 @@ package Form::SensibleX::Field::DBIC::ManyToMany;
 
 use Moose;
 use namespace::autoclean;
-use Form::Sensible::DelegateConnection;
 use Carp;
 
 extends 'Form::SensibleX::Field::Base::DBICSelect';
-
-has '+options_delegate' => (
-    default => sub { FSConnector( \&options_delegate_get_from_db ) },
-);
-
-has '+accepts_multiple' => (
-    default => 1
-);
-
-sub BUILD {
-    my $self = shift;
-    $self->render_hints->{render_as} = 'checkboxes';
-}
 
 sub get_rs {
     my ( $self, $row ) = @_;
@@ -47,7 +33,7 @@ sub get_records_from_db {
     ];
 }
 
-sub options_delegate_get_from_db {
+sub get_options {
     my $self = shift;
 
     return $self->get_option_hash_from_records(

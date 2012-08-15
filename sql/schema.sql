@@ -185,10 +185,10 @@ CREATE TABLE address (
     city text NOT NULL,
     state text NOT NULL,
     country text NOT NULL,
-    phone text
+    phone text,
     zip_code text NOT NULL,
     post_office_box text,
-    is_main_address boolean DEFAULT true NOT NULL,
+    is_main_address boolean DEFAULT true NOT NULL
 );
 
 

@@ -56,6 +56,7 @@
                 1
             )
 :>
+            <li data-dojo-type="imp.MenuBarItem" class="topNavMenuItem" data-dojo-props="href:'http://sistema.revistaimpacto.com.br/rt'" dir="ltr">Problemas?</li>
         </ul>
     </nav>
 </nav>

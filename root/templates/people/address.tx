@@ -12,7 +12,7 @@ block form -> {
     text_field('borough', required(true))
     text_field('city', required(true))
     text_field('state', required(true))
-    text_field('country', required(true))
+    country_field('country', required(true))
     phone_field('phone', required(false))
     zip_code_field('zip_code', required(true))
     text_field('post_office_box', required(false))

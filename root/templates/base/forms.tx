@@ -265,3 +265,17 @@ checked="checked"
 : macro uri_field -> ($field_name, $required) {
 :   text_field($field_name, $required)
 : }
+: macro country_field -> ($field_name, $required) {
+: begin_field($field_name, 'text')
+: label($field_name, 'text', $required)
+<input
+    type="text"
+    id="<: $form_name :>_<: $field_name :>_input"
+    class="text_input <: $field_name :>_input"
+    name="<: $field_name :>"
+    value="<: $values[$field_name] // 'Brasil' :>"
+    data-dojo-type="dijit.form.ValidationTextBox"
+    data-dojo-props="required: <: $required :>"
+/>
+: end_field()
+: }

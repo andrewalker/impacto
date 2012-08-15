@@ -35,10 +35,11 @@ sub execute {
 
     foreach my $field (@{ $self->fields }) {
         my $name    = $field->name;
+        my $value   = ref $val->{$name} ? $val->{name} : [ $val->{name} ];
         my $setter  = "set_${name}";
         my $rs      = $field->get_rs;
 
-        my @records = map { $rs->find($_) } @{ $val->{$name} };
+        my @records = map { $rs->find($_) } @{ $value };
 
         $row->$setter(\@records);
         $i++;

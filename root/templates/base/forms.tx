@@ -93,9 +93,7 @@
     <div data-dojo-type="dijit.Editor"
         id="<: $form_name :>_<: $field_name :>_editor"
         data-dojo-props="onChange: function () {  dojo.byId('<: $form_name :>_<: $field_name :>_input').value = this.getValue() }"
-    >
-        <: $values[$field_name] :>
-    </div>
+    ><: $values[$field_name] | raw :></div>
     <input type="hidden" name="<: $field_name :>" id="<: $form_name :>_<: $field_name :>_input" value="<: $values[$field_name] :>" />
 </div>
 : end_field()

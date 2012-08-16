@@ -7,6 +7,23 @@ use namespace::autoclean;
 
 extends 'Catalyst::View::Xslate';
 
+has '+function' => (
+    default => sub { {
+        number_from_money => \&_number_from_money,
+    } },
+);
+
+sub _number_from_money {
+    my $number = shift;
+
+    if ($number) {
+        $number =~ s/^R\$//;
+        $number =~ s/,/./;
+    }
+
+    return $number;
+}
+
 sub get_first_existing_template {
     my ($self, @names) = @_;
 

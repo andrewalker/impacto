@@ -120,7 +120,7 @@
     id="<: $form_name :>_<: $field_name :>_input"
     class="money_input <: $field_name :>_input"
     name="<: $field_name :>"
-    value="<: $values[$field_name] :>"
+    value="<: $values[$field_name] | number_from_money :>"
     data-dojo-type="dijit.form.CurrencyTextBox"
     data-dojo-props="
         required: <: $required :>,

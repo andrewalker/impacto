@@ -35,6 +35,15 @@
             '/finance/installmentpayment' => 'Pagamento da Parcela',
             '/finance/ledgertype'         => 'Tipo de Transação',
         ], 0)
+        popup_menu("Ações", [
+            '/action/sell'    => 'Vender',
+            '/action/buy'     => 'Comprar',
+            '/action/consign' => 'Consignar',
+            '/action/return'  => 'Devolver',
+        ], 0)
+        popup_menu("Relatórios", [
+            '/report/etiquetas' => 'Imprimir etiquetas',
+        ], 0)
 :>
     </ul>
     <nav id="user-menu" dir="rtl">

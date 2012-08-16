@@ -261,7 +261,7 @@ msgstr "Gravar"
 # -- return form --
 
 msgid "page_title.product.return"
-msgstr "Retorno"
+msgstr "Devolução"
 
 msgid "crud.product.return.id"
 msgstr "Código"

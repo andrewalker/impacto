@@ -5,7 +5,7 @@
     "dependencies": {
         "xstyle": "0.0.5",
         "dojo": "1.7.3",
-        "dijit": "1.7.3",
+        "dijit": "1.13.8",
         "dojox": "1.7.3",
         "put-selector": "0.3.0",
         "dgrid": "0.3.1"
